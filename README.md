@@ -1,29 +1,8 @@
 # my-vue-project
 
-## Project setup
-```
-npm install
-```
+##更新日志
 
-### Compiles and hot-reloads for development
+2021年1月2日
 ```
-npm run serve
+初始化项目
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
