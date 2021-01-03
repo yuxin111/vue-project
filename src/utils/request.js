@@ -8,17 +8,16 @@ import { Message } from 'element-ui'
 axios.defaults.headers.post['Content-type'] = 'application/json'
 
 const service = axios.create({
-  baseURL: 'http://localhost',
+  baseURL: process.env.VUE_APP_BASE_URL,
   timeout: process.env.VUE_APP_REQUEST_TIMEOUT
 })
 
 service.interceptors.response.use(
   response => {
     const res = response.data
-
     // 下载请求
     if (res.type === 'application/octet-stream') {
-      return response
+      return Promise.resolve(response)
     }
 
     // 错误处理
@@ -26,7 +25,7 @@ service.interceptors.response.use(
       Message({
         message: res.message || res.msg || 'Error',
         type: 'error',
-        duration: 3 * 1000
+        duration: process.env.VUE_APP_REQUEST_DURATION
       })
       return Promise.reject(new Error(res.message || res.msg || 'Error'))
     } else {
@@ -37,7 +36,7 @@ service.interceptors.response.use(
     Message({
       message: error.message || error.msg,
       type: 'error',
-      duration: 3 * 1000
+      duration: process.env.VUE_APP_REQUEST_DURATION
     })
     return Promise.reject(error)
   }
