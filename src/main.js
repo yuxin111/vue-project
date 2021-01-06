@@ -8,6 +8,9 @@ import api from '@/api'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+// 全局css
+import '@/css/reset.css'
+
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
