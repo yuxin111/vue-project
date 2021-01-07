@@ -1,7 +1,3 @@
-/**
- * @author YuXin
- * @desc
- */
 const COUNT_ADD = (state, count) => {
   state.count += count
 }
