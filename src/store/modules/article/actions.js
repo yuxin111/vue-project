@@ -1,7 +1,3 @@
-/**
- * @author YuXin
- * @desc
- */
 const asyncAddCount = context => {
   setTimeout(() => {
     context.commit('COUNT_ADD', 5)

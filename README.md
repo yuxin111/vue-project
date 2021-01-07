@@ -5,3 +5,17 @@
 
 ## 开发规范
 https://cn.vuejs.org/v2/style-guide/index.html
+
+### 组件顺序
+- components
+- props
+- data
+- created
+- mounted
+- activited
+- update
+- beforeRouteUpdate
+- methods
+- filter
+- computed
+- watch
