@@ -1,5 +1,5 @@
 <template>
-  <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isCollapse">
+  <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isCollapse" :collapse-transition="false">
     <el-submenu index="1">
       <template slot="title">
         <i class="el-icon-location"></i>
