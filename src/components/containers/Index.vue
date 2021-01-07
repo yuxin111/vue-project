@@ -28,7 +28,7 @@ export default {
     toggleCollpase () {
       this.$store.commit('Main/COLLAPSE_TOGGLE')
     }
-  },
+  }
 }
 </script>
 
