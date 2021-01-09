@@ -1,22 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Container from '@/components/containers/Index'
-import Welcome from '@/views/welcome/Index'
+import Layout from '@/components/layout/Index'
+import Welcome from './modules/welcome'
+import Article from './modules/article'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Container',
-    component: Container,
+    component: Layout,
     redirect: '/welcome',
     children: [
-      {
-        path: '/welcome',
-        name: 'Welcome',
-        component: Welcome
-      }
+      ...Welcome,
+      ...Article
     ]
   }
 ]

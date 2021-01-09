@@ -1,10 +1,10 @@
 <template>
-  <el-container class="container-base">
+  <el-container class="layout-base">
     <el-header>
       <Header></Header>
     </el-header>
     <el-container>
-      <el-aside width="200px" class="aside-base">
+      <el-aside width="175px" class="aside-base">
         <Aside></Aside>
       </el-aside>
       <el-main>
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container-base {
+.layout-base {
   min-height: 100vh;
   overflow: hidden;
 
