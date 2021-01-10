@@ -4,10 +4,13 @@
       <Header></Header>
     </el-header>
     <el-container>
-      <el-aside width="175px" class="aside-base">
+      <el-aside width="auto" class="aside-base">
         <Aside></Aside>
       </el-aside>
       <el-main>
+        <div class="breadcrumb-container">
+          <Breadcrumb></Breadcrumb>
+        </div>
         <el-button @click="toggleCollpase">toggle</el-button>
         <router-view></router-view>
       </el-main>
@@ -18,11 +21,13 @@
 <script>
 import Aside from './Aside'
 import Header from './Header'
+import Breadcrumb from './Breadcrumb'
 
 export default {
   components: {
     Aside,
-    Header
+    Header,
+    Breadcrumb
   },
   methods: {
     toggleCollpase () {
@@ -40,5 +45,15 @@ export default {
   .aside-base {
     min-height: calc(100vh - 60px);
   }
+
+  .breadcrumb-container {
+    padding: 20px;
+    background-color: #f3f3f3;
+  }
+
+  .el-main, .el-header {
+    padding: 0;
+  }
+
 }
 </style>
