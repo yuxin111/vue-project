@@ -2,9 +2,7 @@
   <el-menu
     class="the-el-menu"
     router
-    menu-trigger="click"
     :collapse="isCollapse"
-    :collapse-transition="false"
     :default-active="$route.path"
     :background-color="backgroundColor"
     :text-color="textColor"
@@ -41,9 +39,6 @@ export default {
     activeTextColor () {
       return constant.NAV_MENU_ACTIVE_TEXT_COLOR
     }
-  },
-  mounted () {
-    console.log(this.routes)
   }
 }
 </script>
@@ -53,5 +48,8 @@ export default {
     min-height: 100%;
     text-align: start;
     overflow-x: hidden;
+    &:not(.el-menu--collapse) {
+      width: 175px;
+    }
   }
 </style>

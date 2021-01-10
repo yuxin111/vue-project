@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="header">
     Header
   </div>
 </template>
@@ -11,5 +11,8 @@ export default {
 </script>
 
 <style scoped>
-
+  .header{
+    height: 100%;
+    background-color: #606266;
+  }
 </style>
