@@ -16,7 +16,7 @@ module.exports = {
       // gzip压缩
       new CompressionWebpackPlugin({
         // filename: '[path].gz[query]',
-        // deleteOriginalAssets: true, // 2021年1月12日 -- 此处不能配置为false，否则报错
+        deleteOriginalAssets: false, // 2021年1月12日 -- 此处不能配置为false，否则报错（已解决，不能在开发环境配置为true）
         algorithm: 'gzip',
         test: productionGzipExtensions,
         threshold: 10240, // 10k以下不压缩
@@ -24,6 +24,13 @@ module.exports = {
       })
     )
     config.plugins = [...config.plugins, ...plugins]
+    // CDN依赖分离
+    config.externals = {
+      vue: 'Vue',
+      vuex: 'Vuex',
+      'vue-router': 'VueRouter',
+      'element-ui': 'ELEMENT'
+    }
   },
   chainWebpack: config => {
     // 依赖分析
