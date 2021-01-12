@@ -16,7 +16,7 @@ module.exports = {
       // gzip压缩
       new CompressionWebpackPlugin({
         // filename: '[path].gz[query]',
-        deleteOriginalAssets: true,
+        // deleteOriginalAssets: true, // 2021年1月12日 -- 此处不能配置为false，否则报错
         algorithm: 'gzip',
         test: productionGzipExtensions,
         threshold: 10240, // 10k以下不压缩
