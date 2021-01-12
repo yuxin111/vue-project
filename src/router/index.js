@@ -1,10 +1,10 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from '@/components/layout/Index'
 import Welcome from './modules/welcome'
 import Article from './modules/article'
 
-Vue.use(VueRouter)
+// Vue.use(VueRouter)
 
 const routes = [
   {
