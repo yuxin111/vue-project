@@ -1,7 +1,8 @@
 <template>
-  <el-breadcrumb separator="/">
+  <el-breadcrumb class="breadcrumb-layout" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item
+        class="breadcrumb-item"
         v-for="matchedItem in matched"
         :key="matchedItem.path">
         {{ matchedItem.meta.title }}
@@ -21,6 +22,7 @@ export default {
   watch: {
     $route: {
       handler (route) {
+        console.log(this.matched)
         this.matched = route.matched.slice(1, route.meta.length)
       },
       immediate: true
@@ -29,22 +31,47 @@ export default {
 }
 </script>
 
-<style scoped>
-  .breadcrumb-enter-active {
-    transition: all .5s;
+<style lang="scss" scoped>
+
+  .breadcrumb-layout{
+    width: fit-content;
+    min-height: 1em;
   }
 
-  .breadcrumb-leave-active {
-    transition: all .5s;
+  //.breadcrumb-enter-active,
+  //.breadcrumb-leave-active {
+  //  //::v-deep{
+  //  //  .el-breadcrumb__separator{
+  //  //    display: none;
+  //  //  }
+  //  //}
+  //  transition: all 5s;
+  //}
+
+  //.breadcrumb-enter {
+  //  opacity: 0;
+  //  transform: translateX(30px);
+  //}
+
+  //.breadcrumb-leave-to {
+  //  opacity: 0;
+  //  transform: translateX(30px);
+  //}
+
+  .breadcrumb-item{
+    transition: all 5s;
   }
 
-  .breadcrumb-enter {
+  .breadcrumb-enter,
+  .breadcrumb-leave-to{
     opacity: 0;
-    transform: translateX(30px);
+    transform: translateX(20px);
   }
 
-  .breadcrumb-leave-to {
-    opacity: 0;
-    transform: translateX(-30px);
+  .breadcrumb-leave-active{
+    position: absolute;
   }
+
+</style>
+<style lang="scss">
 </style>
