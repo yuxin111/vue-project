@@ -10,15 +10,25 @@ export default [
     },
     children: [
       {
-        path: '/article',
+        path: '/article1',
         component: Article,
         meta: {
           title: '文章1',
           icon: 'el-icon-user'
-        }
+        },
+        children: [
+          {
+            path: '/article1_1',
+            component: Article,
+            meta: {
+              title: '文章1_1',
+              icon: 'el-icon-user'
+            }
+          }
+        ]
       },
       {
-        path: '/article1',
+        path: '/article2',
         component: Article,
         meta: {
           title: '文章2',
