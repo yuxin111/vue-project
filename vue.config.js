@@ -1,6 +1,7 @@
 // 全局参数
 const path = require('path')
 const resolve = dir => path.join(__dirname, dir)
+const isCompressionGzip = JSON.parse(process.env.VUE_APP_IS_COMPRESSION_GZIP)
 
 // 引入compression-webpack-plugin
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
@@ -12,17 +13,19 @@ module.exports = {
   productionSourceMap: false,
   configureWebpack: config => {
     const plugins = []
-    plugins.push(
-      // gzip压缩
-      new CompressionWebpackPlugin({
-        // filename: '[path].gz[query]',
-        deleteOriginalAssets: false, // 2021年1月12日 -- 此处不能配置为false，否则报错（已解决，不能在开发环境配置为true）
-        algorithm: 'gzip',
-        test: productionGzipExtensions,
-        threshold: 10240, // 10k以下不压缩
-        minRatio: 0.8
-      })
-    )
+    // gzip压缩
+    if (isCompressionGzip) {
+      plugins.push(
+        new CompressionWebpackPlugin({
+          // filename: '[path].gz[query]',
+          deleteOriginalAssets: false, // 2021年1月12日 -- 此处不能配置为false，否则报错（已解决，不能在开发环境配置为true）
+          algorithm: 'gzip',
+          test: productionGzipExtensions,
+          threshold: 10240, // 10k以下不压缩
+          minRatio: 0.8
+        })
+      )
+    }
     config.plugins = [...config.plugins, ...plugins]
     // CDN依赖分离
     config.externals = {

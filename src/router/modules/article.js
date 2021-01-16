@@ -6,7 +6,7 @@ export default [
     component: Article,
     meta: {
       title: '文章_parent',
-      icon: 'el-icon-platform-eleme'
+      icon: 'el-icon-folder-opened'
     },
     children: [
       {
@@ -14,7 +14,11 @@ export default [
         component: Article,
         meta: {
           title: '文章1',
+<<<<<<< HEAD
+          icon: 'el-icon-folder'
+=======
           icon: 'el-icon-user'
+>>>>>>> master
         },
         children: [
           {
@@ -22,7 +26,11 @@ export default [
             component: Article,
             meta: {
               title: '文章1_1',
+<<<<<<< HEAD
+              icon: 'el-icon-document'
+=======
               icon: 'el-icon-user'
+>>>>>>> master
             }
           }
         ]
@@ -32,7 +40,7 @@ export default [
         component: Article,
         meta: {
           title: '文章2',
-          icon: 'el-icon-user'
+          icon: 'el-icon-document'
         }
       }
     ]
