@@ -1,0 +1,46 @@
+$num: (
+        5: '5px',
+        10: '10px',
+        15: '15px',
+        20: '20px'
+);
+$direction: (
+        t: 'top',
+        r: 'right',
+        b: 'bottom',
+        l: 'left'
+);
+
+@each $num-key, $num-value in $num {
+  @each $direction-key, $direction-value in $direction {
+    .m-#{$direction-key}-#{$num-key} {
+      margin-#{$direction-value}: #{$num-value};
+    }
+    .p-#{$direction-key}-#{$num-key} {
+      padding-#{$direction-value}: #{$num-value};
+    }
+  }
+}
+
+.flex{
+  display: flex;
+}
+
+.flex-align-center{
+  @extend .flex;
+  align-items: center;
+}
+
+.flex-justify-center{
+  @extend .flex;
+  justify-content: center;
+}
+
+.flex-regular{
+  @extend .flex-align-center;
+  @extend .flex-justify-center;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}

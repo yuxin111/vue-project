@@ -1,6 +1,11 @@
 <template>
   <el-breadcrumb class="breadcrumb-layout" separator="/">
+<<<<<<< HEAD
+    <transition-group
+      name="breadcrumb">
+=======
     <transition-group name="breadcrumb">
+>>>>>>> master
       <el-breadcrumb-item
         class="breadcrumb-item"
         v-for="matchedItem in matched"
@@ -10,8 +15,8 @@
     </transition-group>
   </el-breadcrumb>
 </template>
-
 <script>
+
 export default {
   name: 'Breadcrumb',
   data () {
@@ -31,6 +36,29 @@ export default {
 }
 </script>
 
+<<<<<<< HEAD
+<style lang="scss">
+
+.breadcrumb-layout {
+  width: fit-content;
+  min-height: 1em;
+}
+
+.breadcrumb-item {
+  transition: all .5s;
+}
+
+.breadcrumb-enter,
+.breadcrumb-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.breadcrumb-leave-active {
+  position: absolute;
+}
+
+=======
 <style lang="scss" scoped>
 
   .breadcrumb-layout{
@@ -74,4 +102,5 @@ export default {
 
 </style>
 <style lang="scss">
+>>>>>>> master
 </style>

@@ -7,4 +7,6 @@
   </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+ @import "~@/css/my.scss";
+</style>

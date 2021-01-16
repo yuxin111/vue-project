@@ -8,10 +8,10 @@
         <Aside></Aside>
       </el-aside>
       <el-main>
-        <div class="breadcrumb-container">
+        <div class="breadcrumb-container flex-align-center">
+          <FoldIcon class="m-r-10"></FoldIcon>
           <Breadcrumb></Breadcrumb>
         </div>
-        <el-button @click="toggleCollpase">toggle</el-button>
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -22,17 +22,16 @@
 import Aside from './Aside'
 import Header from './Header'
 import Breadcrumb from './Breadcrumb'
+import FoldIcon from './FoldIcon'
 
 export default {
   components: {
     Aside,
     Header,
-    Breadcrumb
+    Breadcrumb,
+    FoldIcon
   },
   methods: {
-    toggleCollpase () {
-      this.$store.commit('Main/COLLAPSE_TOGGLE')
-    }
   }
 }
 </script>
