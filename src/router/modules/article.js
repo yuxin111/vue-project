@@ -14,11 +14,7 @@ export default [
         component: Article,
         meta: {
           title: '文章1',
-<<<<<<< HEAD
           icon: 'el-icon-folder'
-=======
-          icon: 'el-icon-user'
->>>>>>> master
         },
         children: [
           {
@@ -26,11 +22,7 @@ export default [
             component: Article,
             meta: {
               title: '文章1_1',
-<<<<<<< HEAD
               icon: 'el-icon-document'
-=======
-              icon: 'el-icon-user'
->>>>>>> master
             }
           }
         ]
