@@ -3,6 +3,9 @@ const path = require('path')
 const resolve = dir => path.join(__dirname, dir)
 const isCompressionGzip = JSON.parse(process.env.VUE_APP_IS_COMPRESSION_GZIP)
 
+// 引入webpack-bundle-analyzer
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+
 // 引入compression-webpack-plugin
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i
@@ -18,7 +21,7 @@ module.exports = {
       plugins.push(
         new CompressionWebpackPlugin({
           // filename: '[path].gz[query]',
-          deleteOriginalAssets: false, // 2021年1月12日 -- 此处不能配置为false，否则报错（已解决，不能在开发环境配置为true）
+          deleteOriginalAssets: false,
           algorithm: 'gzip',
           test: productionGzipExtensions,
           threshold: 10240, // 10k以下不压缩
@@ -40,7 +43,7 @@ module.exports = {
     if (process.env.use_analyzer) {
       config
         .plugin('webpack-bundle-analyzer')
-        .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+        .use(new BundleAnalyzerPlugin())
     }
     // 添加别名
     config.resolve.alias
