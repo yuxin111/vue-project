@@ -8,5 +8,5 @@
 </template>
 
 <style lang="scss">
- @import "~@/css/my.scss";
+ @import "~@/style/my.scss";
 </style>
