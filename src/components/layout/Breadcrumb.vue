@@ -22,7 +22,6 @@ export default {
   watch: {
     $route: {
       handler (route) {
-        console.log(this.matched)
         this.matched = route.matched.slice(1, route.meta.length)
       },
       immediate: true
