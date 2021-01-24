@@ -6,15 +6,15 @@
         <el-divider></el-divider>
         <el-form label-width="80px" :model="loginForm">
           <el-form-item label="用户名">
-            <el-input v-model="loginForm.username"></el-input>
+            <el-input v-model="loginForm.username" placeholder="请输入用户名" clearable></el-input>
           </el-form-item>
           <el-form-item label="密码">
-            <el-input type="password" v-model="loginForm.password"></el-input>
+            <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" clearable></el-input>
           </el-form-item>
         </el-form>
         <div class="login-btn flex">
           <el-button type="primary" @click="toLogin">登录</el-button>
-          <el-button>重置</el-button>
+          <el-button @click="reset">重置</el-button>
         </div>
       </el-card>
     </div>
@@ -22,12 +22,13 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: 'yuxin',
+        password: '12345'
       }
     }
   },
@@ -36,7 +37,25 @@ export default {
   },
   methods: {
     toLogin () {
-      this.$router.push('/')
+      this.$store.dispatch('User/login', this.loginForm)
+        .then(res => {
+          this.$message({
+            message: `欢迎回来，${res.username}`,
+            type: 'success',
+            showClose: true,
+            duration: 1500
+          })
+          this.$router.push('/')
+        })
+        .catch(e => {
+          console.log('登录失败', e)
+        })
+    },
+    reset () {
+      this.loginForm = {
+        username: '',
+        password: ''
+      }
     }
   },
   beforeDestroy () {
@@ -57,7 +76,7 @@ export default {
     margin: auto;
     position: relative;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-70%);
   }
 
   .login-card {

@@ -1,4 +1,5 @@
 import VueRouter from 'vue-router'
+import store from '@/store'
 import Layout from '@/components/layout/Index'
 import Login from '@/views/login/Index'
 import Welcome from './modules/welcome'
@@ -16,7 +17,10 @@ const routes = [
     children: [
       ...Welcome,
       ...Article
-    ]
+    ],
+    meta: {
+      validate: true
+    }
   }
 ]
 
@@ -24,6 +28,16 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  const isLogin = store.getters['User/isLogin'] // 是否已登录
+  const require2Login = to.matched.some(item => item.meta.validate)// 是否需要登录
+  if (!isLogin && require2Login) {
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router
