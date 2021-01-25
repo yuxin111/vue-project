@@ -10,8 +10,6 @@ const login = ({ commit }, userInfo = {}) => {
     } else {
       reject(new Error('账号密码错误'))
     }
-  }).catch(() => {
-    throw new Error('登录发生异常，请联系管理员')
   })
 }
 
@@ -20,8 +18,6 @@ const logout = ({ commit }) => {
     commit('USERINFO_SET')
     cookie.remove(constant.COOKIE_USERINFO)
     resolve('已退出登录')
-  }).catch(() => {
-    throw new Error('退出登录发生异常，请联系管理员')
   })
 }
 
