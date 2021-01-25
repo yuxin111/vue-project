@@ -22,25 +22,42 @@ $direction: (
   }
 }
 
-.flex{
+/* flex家族 */
+.flex {
   display: flex;
 }
 
-.flex-align-center{
+.flex-align-center {
   @extend .flex;
   align-items: center;
 }
 
-.flex-justify-center{
+.flex-justify-center {
   @extend .flex;
   justify-content: center;
 }
 
-.flex-regular{
+.flex-justify-end {
+  @extend .flex;
+  justify-content: flex-end;
+}
+
+.flex-space-between {
+  @extend .flex;
+  justify-content: space-between;
+}
+
+.flex-space-around {
+  @extend .flex;
+  justify-content: space-around;
+}
+
+.flex-regular {
   @extend .flex-align-center;
   @extend .flex-justify-center;
 }
 
-.cursor-pointer{
+/* 其他 */
+.cursor-pointer {
   cursor: pointer;
 }

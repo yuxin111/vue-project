@@ -48,7 +48,12 @@ export default {
           this.$router.push('/')
         })
         .catch(e => {
-          console.log('登录失败', e)
+          this.$message({
+            message: e.message,
+            type: 'error',
+            showClose: true,
+            duration: 1500
+          })
         })
     },
     reset () {
