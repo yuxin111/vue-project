@@ -12,6 +12,9 @@
           <FoldIcon class="m-r-10"></FoldIcon>
           <Breadcrumb></Breadcrumb>
         </div>
+        <div class="tag-container">
+          <Tag></Tag>
+        </div>
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -23,13 +26,15 @@ import Aside from './Aside'
 import Header from './Header'
 import Breadcrumb from './Breadcrumb'
 import FoldIcon from './FoldIcon'
+import Tag from './Tag'
 
 export default {
   components: {
     Aside,
     Header,
     Breadcrumb,
-    FoldIcon
+    FoldIcon,
+    Tag
   },
   methods: {
   }
@@ -46,6 +51,11 @@ export default {
   }
 
   .breadcrumb-container {
+    padding: 20px;
+    background-color: #e2e6ea;
+  }
+
+  .tag-container{
     padding: 20px;
     background-color: #f3f3f3;
   }

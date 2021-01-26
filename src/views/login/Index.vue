@@ -49,7 +49,7 @@ export default {
         })
         .catch(e => {
           this.$message({
-            message: e.message,
+            message: e.message || '登录发生异常，请联系管理员',
             type: 'error',
             showClose: true,
             duration: 1500

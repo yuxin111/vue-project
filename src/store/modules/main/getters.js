@@ -1,2 +1,6 @@
 const isCollapse = (state) => state.isCollapse
-export default { isCollapse }
+const tagList = (state) => state.tagList
+export default {
+  isCollapse,
+  tagList
+}
