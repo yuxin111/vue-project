@@ -1,6 +1,6 @@
 <template>
   <el-dropdown @command="handleCommand" class="cursor-pointer">
-    <el-avatar src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"></el-avatar>
+    <el-avatar :src="avatarDefault"></el-avatar>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item command="info" icon="el-icon-user-solid">个人信息</el-dropdown-item>
       <el-dropdown-item command="logout" icon="el-icon-delete-solid">退出登录</el-dropdown-item>
@@ -9,8 +9,15 @@
 </template>
 
 <script>
+import avatarDefault from '@/assets/avatar_default.png'
+
 export default {
   name: 'HeaderAvatar',
+  data () {
+    return {
+      avatarDefault
+    }
+  },
   methods: {
     handleCommand (command) {
       if (command === 'info') {

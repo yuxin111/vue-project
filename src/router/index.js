@@ -36,6 +36,10 @@ router.beforeEach((to, from, next) => {
   if (!isLogin && require2Login) {
     next('/login')
   } else {
+    store.commit('Main/TAG_PUSH', {
+      name: to.meta.title || '未知名称',
+      url: to.fullPath
+    })
     next()
   }
 })

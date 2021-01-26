@@ -3,7 +3,8 @@ import getters from './getters'
 import mutations from './mutations'
 
 const state = {
-  isCollapse: false // 侧边栏是否收缩
+  isCollapse: false, // 侧边栏是否收缩
+  tagList: [] // tag列表
 }
 
 export default {
