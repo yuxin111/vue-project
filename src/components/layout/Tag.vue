@@ -4,7 +4,7 @@
     tag="div"
     class="flex">
     <div v-for="tag in tagList" :key="tag.url" class="tag-content m-r-10 cursor-pointer">
-      <el-tag type="info" size="small" effect="plain" @close="closeTag(tag)" closable>{{ tag.name }}</el-tag>
+      <el-tag type="info" size="small" effect="plain" @close="closeTag(tag)" :closable="tagList.length !== 1">{{ tag.name }}</el-tag>
     </div>
   </transition-group>
 </template>
@@ -30,22 +30,16 @@ export default {
 <style lang="scss" scoped>
 .tag-content {
   display: inline-block;
-  position: relative;
   transition: all 1s;
 }
 
-.tag-complete-enter {
+.tag-complete-enter, .tag-complete-leave-to {
   opacity: 0;
-  transform: translateX(30px);
-}
-
-.tag-complete-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
+  transform: translateX(20px);
 }
 
 .tag-complete-leave-active {
   position: absolute;
-  left: 10px;
+  z-index: -1;
 }
 </style>
