@@ -19,14 +19,14 @@ module.exports = {
     // gzip压缩
     if (isCompressionGzip) {
       plugins.push(
-        new CompressionWebpackPlugin({
-          // filename: '[path].gz[query]',
-          deleteOriginalAssets: false,
-          algorithm: 'gzip',
-          test: productionGzipExtensions,
-          threshold: 10240, // 10k以下不压缩
-          minRatio: 0.8
-        })
+        // new CompressionWebpackPlugin({
+        //   // filename: '[path].gz[query]',
+        //   deleteOriginalAssets: false,
+        //   algorithm: 'gzip',
+        //   test: productionGzipExtensions,
+        //   threshold: 10240, // 10k以下不压缩
+        //   minRatio: 0.8
+        // })
       )
     }
     config.plugins = [...config.plugins, ...plugins]

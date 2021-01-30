@@ -3,25 +3,70 @@
     name="tag-complete"
     tag="div"
     class="flex">
-    <div v-for="tag in tagList" :key="tag.url" class="tag-content m-r-10 cursor-pointer">
-      <el-tag type="info" size="small" effect="plain" @close="closeTag(tag)" closable>{{ tag.name }}</el-tag>
+    <div v-for="(tag,i) in tagList" :key="tag.url" class="tag-content m-r-10 cursor-pointer">
+      <el-tag
+        type="info"
+        size="small"
+        effect="plain"
+        :class="{'tag-current': isCurRouter(tag)}"
+        @close="closeTag(tag,i)"
+        @click="switchRouter(tag)"
+        :closable="tagList.length !== 1">
+        {{ tag.name }}
+      </el-tag>
     </div>
   </transition-group>
 </template>
 
 <script>
-// import Velocity from 'velocity-animate'
 
 export default {
   name: 'Tag',
+  data () {
+    return {
+      curRoute: null
+    }
+  },
   methods: {
-    closeTag (tag) {
+    closeTag (tag, i) {
+      // 删除的是当前访问的tag时
+      if (this.isCurRouter(tag)) {
+        // 获取最近的tag
+        const nearlyTag = (i => {
+          let nearlyTagIndex = 0
+          const tagListLength = this.tagList.length
+          nearlyTagIndex = tagListLength === i + 1 ? i - 1 : i + 1
+          return this.tagList[nearlyTagIndex]
+        })(i)
+        this.$router.push(nearlyTag.url)
+      }
       this.$store.commit('Main/TAG_DEL', tag)
+    },
+    isCurRouter (tag) {
+      return this._.isEqual(tag, this.curRoute)
+    },
+    switchRouter (tag) {
+      this.$router.push(tag.url)
     }
   },
   computed: {
     tagList () {
       return this.$store.getters['Main/tagList']
+    }
+  },
+  watch: {
+    $route: {
+      handler: function (to) {
+        /**
+         * 格式与tagList中对象一致，方便判断
+         * @type {{name, url: string}}
+         */
+        this.curRoute = {
+          name: to.meta.title,
+          url: to.fullPath
+        }
+      },
+      immediate: true
     }
   }
 }
@@ -30,22 +75,20 @@ export default {
 <style lang="scss" scoped>
 .tag-content {
   display: inline-block;
-  position: relative;
-  transition: all 1s;
+  transition: all .5s;
 }
 
-.tag-complete-enter {
+.tag-complete-enter, .tag-complete-leave-to {
   opacity: 0;
-  transform: translateX(30px);
-}
-
-.tag-complete-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
+  transform: translateX(20px);
 }
 
 .tag-complete-leave-active {
   position: absolute;
-  left: 10px;
+  z-index: -1;
+}
+
+.tag-current {
+  background-color: #9ef673;
 }
 </style>

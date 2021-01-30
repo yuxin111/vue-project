@@ -18,7 +18,7 @@ const TAG_PUSH = (state, tag) => {
 }
 
 /**
- * 往tagList中新增一个tag
+ * 往tagList中删除一个tag
  * @example { name: 详情页面, url: /detail(路由、唯一键) }
  */
 const TAG_DEL = (state, tag) => {
@@ -30,8 +30,16 @@ const TAG_DEL = (state, tag) => {
   state.tagList = tagList
 }
 
+/**
+ * 清空tagList
+ */
+const TAG_EMPTY = state => {
+  state.tagList = []
+}
+
 export default {
   COLLAPSE_TOGGLE,
   TAG_PUSH,
-  TAG_DEL
+  TAG_DEL,
+  TAG_EMPTY
 }
