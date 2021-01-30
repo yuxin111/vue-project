@@ -5,6 +5,11 @@ import Login from '@/views/login/Index'
 import Welcome from './modules/welcome'
 import Article from './modules/article'
 
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 const routes = [
   {
     path: '/login',
@@ -36,10 +41,12 @@ router.beforeEach((to, from, next) => {
   if (!isLogin && require2Login) {
     next('/login')
   } else {
-    store.commit('Main/TAG_PUSH', {
-      name: to.meta.title || '未知名称',
-      url: to.fullPath
-    })
+    if (require2Login) {
+      store.commit('Main/TAG_PUSH', {
+        name: to.meta.title || '未知名称',
+        url: to.fullPath
+      })
+    }
     next()
   }
 })

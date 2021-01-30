@@ -36,6 +36,7 @@ export default {
               showClose: true,
               duration: 1500
             })
+            this.$store.commit('Main/TAG_EMPTY')
             this.$router.push('/login')
           })
           .catch(e => {
