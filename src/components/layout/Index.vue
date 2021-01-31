@@ -13,7 +13,7 @@
           <Breadcrumb></Breadcrumb>
         </div>
         <div class="tag-container">
-          <Tag></Tag>
+          <History></History>
         </div>
         <router-view></router-view>
       </el-main>
@@ -26,7 +26,7 @@ import Aside from './Aside'
 import Header from './Header'
 import Breadcrumb from './Breadcrumb'
 import FoldIcon from './FoldIcon'
-import Tag from './Tag'
+import History from './History'
 
 export default {
   components: {
@@ -34,9 +34,7 @@ export default {
     Header,
     Breadcrumb,
     FoldIcon,
-    Tag
-  },
-  methods: {
+    History
   }
 }
 </script>
