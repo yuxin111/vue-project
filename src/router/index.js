@@ -4,11 +4,12 @@ import Layout from '@/components/layout/Index'
 import Login from '@/views/login/Index'
 import Welcome from './modules/welcome'
 import Article from './modules/article'
+import System from './modules/system'
 
-const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push (location) {
-  return originalPush.call(this, location).catch(err => err)
-}
+// const originalPush = VueRouter.prototype.push
+// VueRouter.prototype.push = function push (location) {
+//   return originalPush.call(this, location).catch(err => err)
+// }
 
 const routes = [
   {
@@ -21,7 +22,8 @@ const routes = [
     redirect: '/welcome',
     children: [
       ...Welcome,
-      ...Article
+      ...Article,
+      ...System
     ],
     meta: {
       validate: true

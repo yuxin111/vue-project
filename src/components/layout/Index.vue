@@ -15,7 +15,9 @@
         <div class="tag-container">
           <History></History>
         </div>
-        <router-view></router-view>
+        <div class="main-container">
+          <router-view></router-view>
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -53,9 +55,13 @@ export default {
     background-color: #e2e6ea;
   }
 
-  .tag-container{
+  .tag-container {
     padding: 10px;
     background-color: #f3f3f3;
+  }
+
+  .main-container {
+    padding: 15px;
   }
 
   .el-main, .el-header {

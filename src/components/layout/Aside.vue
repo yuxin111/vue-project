@@ -6,7 +6,8 @@
     :default-active="$route.path"
     :background-color="backgroundColor"
     :text-color="textColor"
-    :active-text-color="activeTextColor">
+    :active-text-color="activeTextColor"
+    unique-opened>
     <AsideBarItem v-for="route in routes" :key="route.path" :item="route"></AsideBarItem>
   </el-menu>
 </template>

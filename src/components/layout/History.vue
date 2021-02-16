@@ -87,7 +87,13 @@ export default {
 }
 
 .tag-select {
-  background-color: #9ef673;
+  background-color: #3995f3;
+  color: #fff;
+  ::v-deep {
+    .el-icon-close{
+      color: #fff;
+    }
+  }
 }
 
 .tag-item{
