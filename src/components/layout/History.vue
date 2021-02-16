@@ -1,27 +1,25 @@
 <template>
   <transition-group
-    name="tag-complete"
+    name="tag-group-complete"
     tag="div"
     class="flex">
     <div v-for="(tag,i) in tagList" :key="tag.url" class="tag-content m-r-10 cursor-pointer">
-      <el-tag
-        type="info"
-        size="small"
-        effect="plain"
-        :class="{'tag-current': isCurRouter(tag)}"
-        @close="closeTag(tag,i)"
-        @click="switchRouter(tag)"
-        :closable="tagList.length !== 1">
-        {{ tag.name }}
-      </el-tag>
+        <el-tag
+          type="info"
+          size="small"
+          effect="plain"
+          :class="[{'tag-select': isCurRouter(tag)},'tag-item']"
+          @close="closeTag(tag,i)"
+          @click="switchRouter(tag)"
+          :closable="tagList.length !== 1">
+          {{ tag.name }}
+        </el-tag>
     </div>
   </transition-group>
 </template>
 
 <script>
-
 export default {
-  name: 'Tag',
   data () {
     return {
       curRoute: null
@@ -78,17 +76,31 @@ export default {
   transition: all .5s;
 }
 
-.tag-complete-enter, .tag-complete-leave-to {
+.tag-group-complete-enter, .tag-group-complete-leave-to {
   opacity: 0;
   transform: translateX(20px);
 }
 
-.tag-complete-leave-active {
+.tag-group-complete-leave-active {
   position: absolute;
   z-index: -1;
 }
 
-.tag-current {
-  background-color: #9ef673;
+.tag-select {
+  background-color: #3995f3;
+  color: #fff;
+  ::v-deep {
+    .el-icon-close{
+      color: #fff;
+    }
+  }
+}
+
+.tag-item{
+  transition: background-color .2s;
+}
+
+@keyframes mymove {
+  50% {background: blue bottom right/50px 50px;}
 }
 </style>

@@ -13,9 +13,11 @@
           <Breadcrumb></Breadcrumb>
         </div>
         <div class="tag-container">
-          <Tag></Tag>
+          <History></History>
         </div>
-        <router-view></router-view>
+        <div class="main-container">
+          <router-view></router-view>
+        </div>
       </el-main>
     </el-container>
   </el-container>
@@ -26,7 +28,7 @@ import Aside from './Aside'
 import Header from './Header'
 import Breadcrumb from './Breadcrumb'
 import FoldIcon from './FoldIcon'
-import Tag from './Tag'
+import History from './History'
 
 export default {
   components: {
@@ -34,9 +36,7 @@ export default {
     Header,
     Breadcrumb,
     FoldIcon,
-    Tag
-  },
-  methods: {
+    History
   }
 }
 </script>
@@ -55,9 +55,13 @@ export default {
     background-color: #e2e6ea;
   }
 
-  .tag-container{
+  .tag-container {
     padding: 10px;
     background-color: #f3f3f3;
+  }
+
+  .main-container {
+    padding: 15px;
   }
 
   .el-main, .el-header {
