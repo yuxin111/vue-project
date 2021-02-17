@@ -3,7 +3,11 @@
     <div class="search">
       <el-form :model="search" label-width="80px" inline>
         <el-form-item label="登录账号">
-          <el-input v-model="search.loginName" placeholder="请输入登录账号"></el-input>
+          <el-input v-model="search.loginName" placeholder="请输入登录账号" size="small"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" size="mini">搜索</el-button>
+          <el-button icon="el-icon-refresh" size="mini">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
