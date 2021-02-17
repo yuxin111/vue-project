@@ -3,15 +3,17 @@
     <div class="search">
       <el-form :model="search" label-width="80px" inline>
         <el-form-item label="登录账号">
-          <el-input v-model="search.loginName" placeholder="请输入登录账号"></el-input>
+          <el-input v-model="search.loginName" placeholder="请输入登录账号" size="small"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" size="mini">搜索</el-button>
+          <el-button icon="el-icon-refresh" size="mini">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="tools flex-space-between">
       <div class="tools-btn">
-        <el-button type="primary">新增</el-button>
-        <el-button type="success">修改</el-button>
-        <el-button type="info">删除</el-button>
+        <el-button icon="el-icon-plus" type="primary">新增</el-button>
       </div>
       <div class="tools-opera">
         <el-button type="primary" circle><i class="el-icon-refresh"/></el-button>
@@ -24,11 +26,13 @@
         style="width: 100%">
         <el-table-column
           prop="loginName"
-          label="登录账号">
+          label="登录账号"
+        align="center">
         </el-table-column>
         <el-table-column
           prop="password"
-          label="密码">
+          label="密码"
+          align="center">
         </el-table-column>
       </el-table>
     </div>
