@@ -9,6 +9,9 @@ import _ from 'lodash'
 // 全局css
 import '@/style/reset.css'
 
+// elementui样式修改
+import '@/style/elementui.scss'
+
 Vue.config.productionTip = false
 Vue.prototype.$api = api
 Vue.prototype.$keymaster = keymaster

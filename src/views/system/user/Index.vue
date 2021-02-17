@@ -9,9 +9,7 @@
     </div>
     <div class="tools flex-space-between">
       <div class="tools-btn">
-        <el-button type="primary">新增</el-button>
-        <el-button type="success">修改</el-button>
-        <el-button type="info">删除</el-button>
+        <el-button icon="el-icon-plus" type="primary">新增</el-button>
       </div>
       <div class="tools-opera">
         <el-button type="primary" circle><i class="el-icon-refresh"/></el-button>
@@ -24,11 +22,13 @@
         style="width: 100%">
         <el-table-column
           prop="loginName"
-          label="登录账号">
+          label="登录账号"
+        align="center">
         </el-table-column>
         <el-table-column
           prop="password"
-          label="密码">
+          label="密码"
+          align="center">
         </el-table-column>
       </el-table>
     </div>
