@@ -11,9 +11,9 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="tools flex-space-between">
+    <div class="tools flex-space-between flex-align-center">
       <div class="tools-btn">
-        <el-button icon="el-icon-plus" type="primary">新增</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="small">新增</el-button>
       </div>
       <div class="tools-opera">
         <el-button type="primary" circle><i class="el-icon-refresh"/></el-button>

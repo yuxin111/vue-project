@@ -5,7 +5,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 
-axios.defaults.headers.post['Content-type'] = 'application/json'
+// axios.defaults.headers.post['Content-type'] = 'application/json'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,
