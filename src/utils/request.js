@@ -4,13 +4,29 @@
  */
 import axios from 'axios'
 import { Message } from 'element-ui'
-
-axios.defaults.headers.post['Content-type'] = 'application/json'
+import store from '@/store'
+import router from '@/router'
+import _ from 'lodash'
+// axios.defaults.headers.post['Content-type'] = 'application/json'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_URL,
-  timeout: process.env.VUE_APP_REQUEST_TIMEOUT
+  timeout: process.env.VUE_APP_REQUEST_TIMEOUT,
+  withCredentials: false
 })
+
+service.interceptors.request.use(
+  config => {
+    const userInfo = store.getters['User/userInfo'] || {}
+    if (!_.isEmpty(userInfo)) {
+      config.headers.Token = userInfo.token
+    }
+    return config
+  },
+  err => {
+    return Promise.reject(err)
+  }
+)
 
 service.interceptors.response.use(
   response => {
@@ -21,15 +37,21 @@ service.interceptors.response.use(
     }
 
     // 错误处理
-    if (res.retCode !== 200 && res.code !== 0) {
+    if (res.code !== 200) {
       Message({
         message: res.message || res.msg || 'Error',
         type: 'error',
         duration: process.env.VUE_APP_REQUEST_DURATION
       })
+      // shiro权限拦截错误
+      if (res.code === 46000) {
+        store.dispatch('User/logout').then(() => {
+          router.push('/login')
+        })
+      }
       return Promise.reject(new Error(res.message || res.msg || 'Error'))
     } else {
-      return Promise.resolve(response)
+      return Promise.resolve(res.result)
     }
   },
   error => {
