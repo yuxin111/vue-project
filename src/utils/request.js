@@ -6,6 +6,7 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
 import router from '@/router'
+import _ from 'lodash'
 // axios.defaults.headers.post['Content-type'] = 'application/json'
 
 const service = axios.create({
@@ -13,6 +14,19 @@ const service = axios.create({
   timeout: process.env.VUE_APP_REQUEST_TIMEOUT,
   withCredentials: false
 })
+
+service.interceptors.request.use(
+  config => {
+    const userInfo = store.getters['User/userInfo'] || {}
+    if (!_.isEmpty(userInfo)) {
+      config.headers.Token = userInfo.token
+    }
+    return config
+  },
+  err => {
+    return Promise.reject(err)
+  }
+)
 
 service.interceptors.response.use(
   response => {
@@ -32,7 +46,6 @@ service.interceptors.response.use(
       // shiro权限拦截错误
       if (res.code === 46000) {
         store.dispatch('User/logout').then(() => {
-          store.commit('Main/TAG_EMPTY')
           router.push('/login')
         })
       }
