@@ -27,7 +27,7 @@
         <el-table-column
           prop="loginName"
           label="登录账号"
-        align="center">
+          align="center">
         </el-table-column>
         <el-table-column
           prop="password"
@@ -68,6 +68,9 @@ export default {
     handleCurrentChange () {
 
     }
+  },
+  mounted () {
+    this.$api.system.test()
   }
 }
 </script>

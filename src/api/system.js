@@ -7,6 +7,9 @@ import axios from '@/utils/request'
 const system = {
   login (params) {
     return axios.post('/shiro/login', params)
+  },
+  test (params) {
+    return axios.post('/shiro/test', params)
   }
 }
 
