@@ -28,7 +28,7 @@ export default {
     return {
       loginForm: {
         username: 'yuxin',
-        password: '12345'
+        password: '123456'
       }
     }
   },
