@@ -55,6 +55,7 @@ service.interceptors.response.use(
     }
   },
   error => {
+    error.message = error.message === 'Network Error' ? '网络连接异常' : error.message
     Message({
       message: error.message || error.msg,
       type: 'error',
