@@ -16,7 +16,9 @@
     </el-form>
 
     <span class="flex-justify-end">
-      <el-button type="primary" v-show="formData._status === 'edit'" @click="confirm">确 定</el-button>
+      <el-button type="primary" v-show="formData._status === 'edit' || formData._status === 'add'"
+                 @click="confirm('ruleForm')" :loading="loading"
+      >确 定</el-button>
       <el-button @click="$emit('cancel')">取 消</el-button>
     </span>
   </div>
@@ -34,11 +36,16 @@ export default {
           password: ''
         }
       }
+    },
+    confirmLoading: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
     return {
       formData: {},
+      loading: false,
       rules: {
         loginName: [
           {
@@ -63,8 +70,12 @@ export default {
     }
   },
   methods: {
-    confirm () {
-      this.$emit('confirm', this.formData)
+    confirm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          this.$emit('confirm', this.formData)
+        }
+      })
     }
   },
   watch: {
@@ -74,6 +85,12 @@ export default {
       },
       immediate: true,
       deep: true
+    },
+    confirmLoading: {
+      handler (confirmLoading) {
+        this.loading = confirmLoading
+      },
+      immediate: true
     }
   }
 }

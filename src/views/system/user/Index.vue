@@ -48,6 +48,14 @@
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="watchUserInfo(scope.row)">查看</el-button>
             <el-button type="text" size="small" @click="editUserInfo(scope.row)">编辑</el-button>
+            <el-popconfirm
+              title="是否删除该用户信息？"
+              icon="el-icon-info"
+              icon-color="red"
+              @confirm="deleteUserInfo(scope.row)"
+            >
+              <el-button type="text" size="small" slot="reference" class="m-l-10">删除</el-button>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -67,7 +75,7 @@
       </el-pagination>
     </div>
 
-    <!--  用户信息  -->
+    <!--  用户信息dialog  -->
     <el-dialog
       :title="
         operaStatus === 'add' ? '新增用户' :
@@ -76,6 +84,7 @@
       width="600px">
       <SystemUserInfo
         :propData="userDialog.data"
+        :confirmLoading="userDialog.confirmLoading"
         @confirm="confirmUserInfo"
         @cancel="userDialog.visible = false"
       />
@@ -85,6 +94,7 @@
 
 <script>
 import SystemUserInfo from './component/SystemUserInfo'
+import { mapGetters } from 'vuex'
 
 export default {
   components: { SystemUserInfo },
@@ -101,6 +111,7 @@ export default {
       },
       userDialog: {
         visible: false,
+        confirmLoading: false,
         data: {}
       },
       tableData: [],
@@ -149,8 +160,39 @@ export default {
         this._.cloneDeep(row)
       )
     },
+    deleteUserInfo (row) {
+      this.$api.system.deleteUser(row.userId)
+        .then(() => {
+          this.$message({
+            message: '删除用户信息成功',
+            type: 'success'
+          })
+          this.handleCurrentChange(1)
+        })
+    },
     confirmUserInfo (formData) {
-      console.log(formData)
+      const params = {
+        ...formData,
+        createBy: formData._status === 'add' ? this.userInfo.username : formData.createBy,
+        updateBy: formData._status === 'edit' ? this.userInfo.username : formData.updateBy
+      }
+      this.userDialog.confirmLoading = true
+      this.$api.system.insertUser(params)
+        .then(res => {
+          this.$message({
+            message: '保存用户信息成功',
+            type: 'success'
+          })
+          this.userDialog.visible = false
+          this.handleCurrentChange(1)
+        })
+        .finally(() => {
+          this.userDialog.confirmLoading = false
+        })
+    },
+    refresh () {
+      this.resetSearch()
+      this.queryUserList()
     },
     resetSearch () {
       this.search.loginName = ''
@@ -164,6 +206,11 @@ export default {
       this.pagination.pageNum = pageNum
       this.queryUserList()
     }
+  },
+  computed: {
+    ...mapGetters({
+      userInfo: 'User/userInfo'
+    })
   }
 }
 </script>

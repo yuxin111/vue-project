@@ -10,6 +10,8 @@ const login = ({ commit }, userInfo = {}) => {
       commit('USERINFO_SET', userInfo)
       cookie.set(constant.COOKIE_USERINFO, userInfo)
       resolve(userInfo)
+    }).catch(e => {
+      reject(e)
     })
   })
 }

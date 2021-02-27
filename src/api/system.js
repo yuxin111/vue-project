@@ -12,6 +12,12 @@ const system = {
     return axios.post('/user/list', params, {
       params: pagination
     })
+  },
+  insertUser (params) {
+    return axios.post('/user/insert', params)
+  },
+  deleteUser (id) {
+    return axios.get(`/user/delete/${id}`)
   }
 }
 
