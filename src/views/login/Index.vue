@@ -13,7 +13,7 @@
           </el-form-item>
         </el-form>
         <div class="login-btn flex">
-          <el-button type="primary" @click="toLogin">登录</el-button>
+          <el-button type="primary" @click="toLogin" :loading="loginLoading">登录</el-button>
           <el-button @click="reset">重置</el-button>
         </div>
       </el-card>
@@ -28,8 +28,9 @@ export default {
     return {
       loginForm: {
         username: 'yuxin',
-        password: '12345'
-      }
+        password: '123456'
+      },
+      loginLoading: false
     }
   },
   mounted () {
@@ -37,6 +38,7 @@ export default {
   },
   methods: {
     toLogin () {
+      this.loginLoading = true
       this.$store.dispatch('User/login', this.loginForm)
         .then(res => {
           this.$message({
@@ -48,12 +50,10 @@ export default {
           this.$router.push('/')
         })
         .catch(e => {
-          this.$message({
-            message: e.message || '登录发生异常，请联系管理员',
-            type: 'error',
-            showClose: true,
-            duration: 1500
-          })
+          console.log('登录发生异常：', e)
+        })
+        .finally(() => {
+          this.loginLoading = false
         })
     },
     reset () {

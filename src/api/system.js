@@ -8,8 +8,16 @@ const system = {
   login (params) {
     return axios.post('/shiro/login', params)
   },
-  test (params) {
-    return axios.post('/shiro/test', params)
+  getUserList (pagination, params) {
+    return axios.post('/user/list', params, {
+      params: pagination
+    })
+  },
+  insertUser (params) {
+    return axios.post('/user/insert', params)
+  },
+  deleteUser (id) {
+    return axios.get(`/user/delete/${id}`)
   }
 }
 
