@@ -2,14 +2,18 @@
   <div class="system-user-info">
     <el-form :model="formData" :rules="rules" ref="ruleForm" label-width="80px">
       <el-row>
-        <el-col :span="12" class="p-r-5">
+        <el-col :span="12" class="p-l-10">
           <el-form-item label="登录账号" prop="loginName">
             <el-input v-model="formData.loginName" placeholder="请输入登录账号"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12" class="p-l-5">
-          <el-form-item label="登录密码" prop="password">
-            <el-input type="password" v-model="formData.password" autocomplete="off" placeholder="请输入登录密码"></el-input>
+        <el-col :span="12" class="p-l-10">
+          <el-form-item label="登录密码" :prop="formData._status === 'add' ? 'password' : ''">
+            <el-input
+              type="password"
+              v-model="formData.password"
+              autocomplete="off"
+              :placeholder="formData._status === 'add' ? '请输入登录密码' : '不输入则不变'"></el-input>
           </el-form-item>
         </el-col>
       </el-row>

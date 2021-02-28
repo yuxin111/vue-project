@@ -17,11 +17,15 @@
     <!--  工具栏  -->
     <div class="tools flex-space-between flex-align-center">
       <div class="tools-btn">
-        <el-button icon="el-icon-plus" type="primary" size="small" @click="addUserInfo">新增</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="small" plain @click="addUserInfo">新增</el-button>
       </div>
       <div class="tools-opera">
-        <el-button type="primary" circle><i class="el-icon-refresh"/></el-button>
-        <el-button type="primary" circle><i class="el-icon-menu"/></el-button>
+        <el-tooltip class="item" effect="dark" content="刷新" placement="top">
+          <el-button type="primary" size="small" circle><i class="el-icon-refresh"/></el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="显隐列" placement="top-end">
+          <el-button type="primary" size="small" circle><i class="el-icon-menu"/></el-button>
+        </el-tooltip>
       </div>
     </div>
 
@@ -37,8 +41,13 @@
           align="center">
         </el-table-column>
         <el-table-column
-          prop="password"
-          label="密码"
+          prop="createTime"
+          label="创建时间"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          prop="updateTime"
+          label="最后更新时间"
           align="center">
         </el-table-column>
         <el-table-column
@@ -52,6 +61,7 @@
               title="是否删除该用户信息？"
               icon="el-icon-info"
               icon-color="red"
+              placement="top"
               @confirm="deleteUserInfo(scope.row)"
             >
               <el-button type="text" size="small" slot="reference" class="m-l-10">删除</el-button>
@@ -176,8 +186,9 @@ export default {
         createBy: formData._status === 'add' ? this.userInfo.username : formData.createBy,
         updateBy: formData._status === 'edit' ? this.userInfo.username : formData.updateBy
       }
+      const apiName = formData._status === 'add' ? 'addUser' : 'updateUser'
       this.userDialog.confirmLoading = true
-      this.$api.system.insertUser(params)
+      this.$api.system[apiName](params)
         .then(res => {
           this.$message({
             message: '保存用户信息成功',
