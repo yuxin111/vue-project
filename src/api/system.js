@@ -13,8 +13,11 @@ const system = {
       params: pagination
     })
   },
-  insertUser (params) {
-    return axios.post('/user/insert', params)
+  addUser (params) {
+    return axios.post('/user/add', params)
+  },
+  updateUser (params) {
+    return axios.post('/user/update', params)
   },
   deleteUser (id) {
     return axios.get(`/user/delete/${id}`)
