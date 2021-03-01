@@ -1,6 +1,6 @@
 <template>
   <div class="system-user-info">
-    <el-form :model="formData" :rules="rules" ref="ruleForm" label-width="80px">
+    <el-form :model="formData" :rules="rules" :ref="formName" label-width="80px">
       <el-row>
         <el-col :span="12" class="p-l-10">
           <el-form-item label="登录账号" prop="loginName">
@@ -8,7 +8,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12" class="p-l-10">
-          <el-form-item label="登录密码" :prop="formData._status === 'add' ? 'password' : ''">
+          <el-form-item label="登录密码" :prop="formData._status === 'add' ? 'password' : null">
             <el-input
               type="password"
               v-model="formData.password"
@@ -21,7 +21,7 @@
 
     <span class="flex-justify-end">
       <el-button type="primary" v-show="formData._status === 'edit' || formData._status === 'add'"
-                 @click="confirm('ruleForm')" :loading="loading"
+                 @click="confirm()" :loading="loading"
       >确 定</el-button>
       <el-button @click="$emit('cancel')">取 消</el-button>
     </span>
@@ -49,6 +49,7 @@ export default {
   data () {
     return {
       formData: {},
+      formName: 'ruleForm',
       loading: false,
       rules: {
         loginName: [
@@ -74,17 +75,23 @@ export default {
     }
   },
   methods: {
-    confirm (formName) {
-      this.$refs[formName].validate((valid) => {
+    confirm () {
+      this.$refs[this.formName].validate((valid) => {
         if (valid) {
           this.$emit('confirm', this.formData)
         }
+      })
+    },
+    clearValidate () {
+      this.$nextTick(() => {
+        this.$refs[this.formName].clearValidate()
       })
     }
   },
   watch: {
     propData: {
       handler (propData) {
+        this.clearValidate()
         this.formData = propData
       },
       immediate: true,
