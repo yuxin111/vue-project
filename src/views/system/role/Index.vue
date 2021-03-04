@@ -4,8 +4,17 @@
     <!--  查询参数  -->
     <div class="search text-center">
       <el-form :model="search" label-width="80px" inline>
-        <el-form-item label="登录账号">
-          <el-input v-model="search.loginName" placeholder="请输入登录账号" size="small"></el-input>
+        <el-form-item label="角色名称">
+          <el-input v-model="search.roleName" placeholder="请输入角色名称" size="small" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="角色代码">
+          <el-input v-model="search.code" placeholder="请输入角色代码" size="small" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="角色状态">
+          <el-select v-model="search.status" placeholder="请选择角色状态" size="small" clearable>
+            <el-option label="正常" :value="1"></el-option>
+            <el-option label="停用" :value="0"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="queryUserList">搜索</el-button>
@@ -36,8 +45,25 @@
         :data="tableData"
         style="width: 100%">
         <el-table-column
-          prop="loginName"
-          label="登录账号"
+          prop="status"
+          label="角色状态"
+          align="center">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.status"
+              :active-value="1"
+              :inactive-value="0">
+            </el-switch>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="roleName"
+          label="角色名称"
+          align="center">
+        </el-table-column>
+        <el-table-column
+          prop="code"
+          label="角色代码"
           align="center">
         </el-table-column>
         <el-table-column
@@ -112,7 +138,9 @@ export default {
     return {
       operaStatus: '', // 当前操作状态（'add'、'edit'、'watch'）
       search: {
-        loginName: ''
+        roleName: '',
+        code: '',
+        status: null
       },
       pagination: {
         pageSize: 10,
@@ -129,15 +157,17 @@ export default {
     }
   },
   mounted () {
-    this.getUserList()
+    this.getRoleList()
   },
   methods: {
-    getUserList () {
+    getRoleList () {
       const params = {
-        loginName: this.search.loginName
+        roleName: this.search.roleName,
+        code: this.search.code,
+        status: this.search.status
       }
       this.tableLoading = true
-      this.$api.system.getUserList(this.pagination, params)
+      this.$api.system.getRoleList(this.pagination, params)
         .then(res => {
           this.pagination.total = res.total
           this.tableData = res.data
@@ -147,7 +177,7 @@ export default {
         })
     },
     queryUserList () {
-      this.getUserList()
+      this.getRoleList()
     },
     addUserInfo () {
       this.operaStatus = 'add'
@@ -206,7 +236,9 @@ export default {
       this.queryUserList()
     },
     resetSearch () {
-      this.search.loginName = ''
+      this.search.roleName = ''
+      this.search.code = ''
+      this.search.status = null
     },
     handleSizeChange (pageSize) {
       this.pagination.pageSize = pageSize
