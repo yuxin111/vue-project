@@ -118,7 +118,7 @@
         operaStatus === 'edit' ? '修改角色' : '角色信息'"
       :visible.sync="userDialog.visible"
       width="600px">
-      <SystemUserInfo
+      <SystemRoleInfo
         :propData="userDialog.data"
         :confirmLoading="userDialog.confirmLoading"
         @confirm="confirmUserInfo"
@@ -129,11 +129,11 @@
 </template>
 
 <script>
-import SystemUserInfo from './component/SystemUserInfo'
+import SystemRoleInfo from './component/SystemRoleInfo'
 import { mapGetters } from 'vuex'
 
 export default {
-  components: { SystemUserInfo },
+  components: { SystemRoleInfo },
   data () {
     return {
       operaStatus: '', // 当前操作状态（'add'、'edit'、'watch'）
