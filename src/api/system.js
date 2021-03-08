@@ -28,6 +28,9 @@ const system = {
     return axios.post('/role/list', params, {
       params: pagination
     })
+  },
+  addRole (params) {
+    return axios.post('/role/add', params)
   }
 }
 

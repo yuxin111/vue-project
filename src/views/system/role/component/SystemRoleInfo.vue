@@ -56,25 +56,25 @@ export default {
       formName: 'ruleForm',
       loading: false,
       rules: {
-        loginName: [
-          {
-            required: true,
-            message: '请输入登录账号名',
-            trigger: 'blur'
-          },
-          {
-            max: 30,
-            message: '长度不能大于30个字符',
-            trigger: 'blur'
-          }
-        ],
-        password: [
-          {
-            required: true,
-            message: '请输入登录密码',
-            trigger: 'blur'
-          }
-        ]
+        // loginName: [
+        //   {
+        //     required: true,
+        //     message: '请输入登录账号名',
+        //     trigger: 'blur'
+        //   },
+        //   {
+        //     max: 30,
+        //     message: '长度不能大于30个字符',
+        //     trigger: 'blur'
+        //   }
+        // ],
+        // password: [
+        //   {
+        //     required: true,
+        //     message: '请输入登录密码',
+        //     trigger: 'blur'
+        //   }
+        // ]
       }
     }
   },

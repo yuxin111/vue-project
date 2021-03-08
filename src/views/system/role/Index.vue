@@ -17,7 +17,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="queryUserList">搜索</el-button>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="queryRoleList">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
@@ -26,7 +26,7 @@
     <!--  工具栏  -->
     <div class="tools flex-space-between flex-align-center">
       <div class="tools-btn">
-        <el-button icon="el-icon-plus" type="primary" size="small" plain @click="addUserInfo">新增</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="small" plain @click="addRoleInfo">新增</el-button>
       </div>
       <div class="tools-opera">
         <el-tooltip class="item" effect="dark" content="刷新" placement="top">
@@ -81,14 +81,14 @@
           label="操作"
           align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="watchUserInfo(scope.row)">查看</el-button>
-            <el-button type="text" size="small" @click="editUserInfo(scope.row)">编辑</el-button>
+            <el-button type="text" size="small" @click="watchRoleInfo(scope.row)">查看</el-button>
+            <el-button type="text" size="small" @click="editRoleInfo(scope.row)">编辑</el-button>
             <el-popconfirm
               title="是否删除该角色信息？"
               icon="el-icon-info"
               icon-color="red"
               placement="top"
-              @confirm="deleteUserInfo(scope.row)"
+              @confirm="deleteRoleInfo(scope.row)"
             >
               <el-button type="text" size="small" slot="reference" class="m-l-10">删除</el-button>
             </el-popconfirm>
@@ -116,13 +116,13 @@
       :title="
         operaStatus === 'add' ? '新增角色' :
         operaStatus === 'edit' ? '修改角色' : '角色信息'"
-      :visible.sync="userDialog.visible"
+      :visible.sync="roleDialog.visible"
       width="600px">
       <SystemRoleInfo
-        :propData="userDialog.data"
-        :confirmLoading="userDialog.confirmLoading"
-        @confirm="confirmUserInfo"
-        @cancel="userDialog.visible = false"
+        :propData="roleDialog.data"
+        :confirmLoading="roleDialog.confirmLoading"
+        @confirm="confirmRoleInfo"
+        @cancel="roleDialog.visible = false"
       />
     </el-dialog>
   </div>
@@ -147,7 +147,7 @@ export default {
         pageNum: 1,
         total: null
       },
-      userDialog: {
+      roleDialog: {
         visible: false,
         confirmLoading: false,
         data: {}
@@ -176,31 +176,31 @@ export default {
           this.tableLoading = false
         })
     },
-    queryUserList () {
+    queryRoleList () {
       this.getRoleList()
     },
-    addUserInfo () {
+    addRoleInfo () {
       this.operaStatus = 'add'
-      this.userDialog.visible = true
-      this.userDialog.data = { _status: this.operaStatus }
+      this.roleDialog.visible = true
+      this.roleDialog.data = { _status: this.operaStatus }
     },
-    watchUserInfo (row) {
+    watchRoleInfo (row) {
       this.operaStatus = 'watch'
-      this.userDialog.visible = true
-      this.userDialog.data = this._.merge(
+      this.roleDialog.visible = true
+      this.roleDialog.data = this._.merge(
         { _status: this.operaStatus },
         this._.cloneDeep(row)
       )
     },
-    editUserInfo (row) {
+    editRoleInfo (row) {
       this.operaStatus = 'edit'
-      this.userDialog.visible = true
-      this.userDialog.data = this._.merge(
+      this.roleDialog.visible = true
+      this.roleDialog.data = this._.merge(
         { _status: this.operaStatus },
         this._.cloneDeep(row)
       )
     },
-    deleteUserInfo (row) {
+    deleteRoleInfo (row) {
       this.$api.system.deleteUser(row.userId)
         .then(() => {
           this.$message({
@@ -210,30 +210,30 @@ export default {
           this.handleCurrentChange(1)
         })
     },
-    confirmUserInfo (formData) {
+    confirmRoleInfo (formData) {
       const params = {
         ...formData,
         createBy: formData._status === 'add' ? this.userInfo.username : formData.createBy,
         updateBy: formData._status === 'edit' ? this.userInfo.username : formData.updateBy
       }
-      const apiName = formData._status === 'add' ? 'addUser' : 'updateUser'
-      this.userDialog.confirmLoading = true
+      const apiName = formData._status === 'add' ? 'addRole' : 'updateRole'
+      this.roleDialog.confirmLoading = true
       this.$api.system[apiName](params)
         .then(res => {
           this.$message({
             message: '保存角色信息成功',
             type: 'success'
           })
-          this.userDialog.visible = false
+          this.roleDialog.visible = false
           this.handleCurrentChange(1)
         })
         .finally(() => {
-          this.userDialog.confirmLoading = false
+          this.roleDialog.confirmLoading = false
         })
     },
     refresh () {
       this.resetSearch()
-      this.queryUserList()
+      this.queryRoleList()
     },
     resetSearch () {
       this.search.roleName = ''
@@ -243,11 +243,11 @@ export default {
     handleSizeChange (pageSize) {
       this.pagination.pageSize = pageSize
       this.pagination.pageNum = 1
-      this.queryUserList()
+      this.queryRoleList()
     },
     handleCurrentChange (pageNum) {
       this.pagination.pageNum = pageNum
-      this.queryUserList()
+      this.queryRoleList()
     }
   },
   computed: {
