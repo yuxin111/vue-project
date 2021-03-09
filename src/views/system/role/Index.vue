@@ -117,6 +117,7 @@
         operaStatus === 'add' ? '新增角色' :
         operaStatus === 'edit' ? '修改角色' : '角色信息'"
       :visible.sync="roleDialog.visible"
+      :close-on-click-modal="false"
       width="600px">
       <SystemRoleInfo
         :propData="roleDialog.data"
@@ -182,7 +183,10 @@ export default {
     addRoleInfo () {
       this.operaStatus = 'add'
       this.roleDialog.visible = true
-      this.roleDialog.data = { _status: this.operaStatus }
+      this.roleDialog.data = {
+        _status: this.operaStatus,
+        status: 1
+      }
     },
     watchRoleInfo (row) {
       this.operaStatus = 'watch'
@@ -201,7 +205,7 @@ export default {
       )
     },
     deleteRoleInfo (row) {
-      this.$api.system.deleteUser(row.userId)
+      this.$api.system.deleteRole(row.roleId)
         .then(() => {
           this.$message({
             message: '删除角色信息成功',

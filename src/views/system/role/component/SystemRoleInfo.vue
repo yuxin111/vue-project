@@ -3,18 +3,18 @@
     <el-form :model="formData" :rules="rules" :ref="formName" label-width="80px">
       <el-row>
         <el-col :span="12" class="p-l-10">
-          <el-form-item label="角色名称" prop="loginName">
+          <el-form-item label="角色名称" prop="roleName">
             <el-input v-model="formData.roleName" placeholder="请输入角色名称" size="small" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12" class="p-l-10">
-          <el-form-item label="角色代码">
+          <el-form-item label="角色代码" prop="code">
             <el-input v-model="formData.code" placeholder="请输入角色代码" size="small" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12" class="p-l-10">
-          <el-form-item label="角色状态">
-            <el-select v-model="formData.status" placeholder="请选择角色状态" size="small" clearable>
+          <el-form-item label="角色状态" prop="status">
+            <el-select v-model="formData.status" placeholder="请选择角色状态" size="small">
               <el-option label="正常" :value="1"></el-option>
               <el-option label="停用" :value="0"></el-option>
             </el-select>
@@ -40,8 +40,9 @@ export default {
       default: () => {
         return {
           _status: 'watch',
-          loginName: '',
-          password: ''
+          roleName: '',
+          code: '',
+          status: 1
         }
       }
     },
@@ -56,25 +57,37 @@ export default {
       formName: 'ruleForm',
       loading: false,
       rules: {
-        // loginName: [
-        //   {
-        //     required: true,
-        //     message: '请输入登录账号名',
-        //     trigger: 'blur'
-        //   },
-        //   {
-        //     max: 30,
-        //     message: '长度不能大于30个字符',
-        //     trigger: 'blur'
-        //   }
-        // ],
-        // password: [
-        //   {
-        //     required: true,
-        //     message: '请输入登录密码',
-        //     trigger: 'blur'
-        //   }
-        // ]
+        roleName: [
+          {
+            required: true,
+            message: '请输入角色名称',
+            trigger: 'blur'
+          },
+          {
+            max: 30,
+            message: '长度不能大于30个字符',
+            trigger: 'blur'
+          }
+        ],
+        code: [
+          {
+            required: true,
+            message: '请输入角色代码',
+            trigger: 'blur'
+          },
+          {
+            max: 30,
+            message: '长度不能大于30个字符',
+            trigger: 'blur'
+          }
+        ],
+        status: [
+          {
+            required: true,
+            message: '请选择角色状态',
+            trigger: 'blur'
+          }
+        ]
       }
     }
   },

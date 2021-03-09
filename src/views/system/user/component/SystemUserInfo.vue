@@ -69,6 +69,11 @@ export default {
             required: true,
             message: '请输入登录密码',
             trigger: 'blur'
+          },
+          {
+            max: 50,
+            message: '长度不能大于50个字符',
+            trigger: 'blur'
           }
         ]
       }

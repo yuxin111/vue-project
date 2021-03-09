@@ -91,6 +91,7 @@
         operaStatus === 'add' ? '新增用户' :
         operaStatus === 'edit' ? '修改用户' : '用户信息'"
       :visible.sync="userDialog.visible"
+      :close-on-click-modal="false"
       width="600px">
       <SystemUserInfo
         :propData="userDialog.data"

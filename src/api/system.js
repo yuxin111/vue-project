@@ -31,6 +31,12 @@ const system = {
   },
   addRole (params) {
     return axios.post('/role/add', params)
+  },
+  updateRole (params) {
+    return axios.post('/role/update', params)
+  },
+  deleteRole (id) {
+    return axios.get(`/role/delete/${id}`)
   }
 }
 
