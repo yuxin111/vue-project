@@ -16,6 +16,18 @@
               :placeholder="formData._status === 'add' ? '请输入登录密码' : '不输入则不变'"></el-input>
           </el-form-item>
         </el-col>
+        <el-col :span="12" class="p-l-10">
+          <el-form-item label="角色">
+            <el-select v-model="formData.roleIds" multiple placeholder="请选择">
+              <el-option
+                v-for="role in roleList"
+                :key="role.roleId"
+                :label="role.roleName"
+                :value="role.roleId">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
 
@@ -37,7 +49,8 @@ export default {
         return {
           _status: 'watch',
           loginName: '',
-          password: ''
+          password: '',
+          roleIds: []
         }
       }
     },
@@ -76,10 +89,20 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+      roleList: [] // 所有角色列表
     }
   },
+  mounted () {
+    this.getAllRoleList()
+  },
   methods: {
+    getAllRoleList () {
+      this.$api.system.getRoleList({}, {})
+        .then(res => {
+          this.roleList = res.data
+        })
+    },
     confirm () {
       this.$refs[this.formName].validate((valid) => {
         if (valid) {
