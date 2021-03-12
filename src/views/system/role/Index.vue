@@ -81,8 +81,8 @@
           label="操作"
           align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="watchRoleInfo(scope.row)">查看</el-button>
-            <el-button type="text" size="small" @click="editRoleInfo(scope.row)">编辑</el-button>
+            <el-button type="text" size="small" @click="handleRoleInfo('watch',scope.row)">查看</el-button>
+            <el-button type="text" size="small" @click="handleRoleInfo('edit',scope.row)">编辑</el-button>
             <el-popconfirm
               title="是否删除该角色信息？"
               icon="el-icon-info"
@@ -188,16 +188,8 @@ export default {
         status: 1
       }
     },
-    watchRoleInfo (row) {
-      this.operaStatus = 'watch'
-      this.roleDialog.visible = true
-      this.roleDialog.data = this._.merge(
-        { _status: this.operaStatus },
-        this._.cloneDeep(row)
-      )
-    },
-    editRoleInfo (row) {
-      this.operaStatus = 'edit'
+    handleRoleInfo (operaStatus, row) {
+      this.operaStatus = operaStatus
       this.roleDialog.visible = true
       this.roleDialog.data = this._.merge(
         { _status: this.operaStatus },
