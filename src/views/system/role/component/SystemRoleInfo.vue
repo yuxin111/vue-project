@@ -1,30 +1,22 @@
 <template>
-  <div class="system-user-info">
+  <div class="system-role-info">
     <el-form :model="formData" :rules="rules" :ref="formName" label-width="80px">
       <el-row>
         <el-col :span="12" class="p-l-10">
-          <el-form-item label="登录账号" prop="loginName">
-            <el-input v-model="formData.loginName" placeholder="请输入登录账号"></el-input>
+          <el-form-item label="角色名称" prop="roleName">
+            <el-input v-model="formData.roleName" placeholder="请输入角色名称" size="small" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12" class="p-l-10">
-          <el-form-item label="登录密码" :prop="formData._status === 'add' ? 'password' : null">
-            <el-input
-              type="password"
-              v-model="formData.password"
-              autocomplete="off"
-              :placeholder="formData._status === 'add' ? '请输入登录密码' : '不输入则不变'"></el-input>
+          <el-form-item label="角色代码" prop="code">
+            <el-input v-model="formData.code" placeholder="请输入角色代码" size="small" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12" class="p-l-10">
-          <el-form-item label="角色">
-            <el-select v-model="formData.roleIds" multiple placeholder="请选择">
-              <el-option
-                v-for="role in roleList"
-                :key="role.roleId"
-                :label="role.roleName"
-                :value="role.roleId">
-              </el-option>
+          <el-form-item label="角色状态" prop="status">
+            <el-select v-model="formData.status" placeholder="请选择角色状态" size="small">
+              <el-option label="正常" :value="1"></el-option>
+              <el-option label="停用" :value="0"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -48,9 +40,9 @@ export default {
       default: () => {
         return {
           _status: 'watch',
-          loginName: '',
-          password: '',
-          roleIds: []
+          roleName: '',
+          code: '',
+          status: 1
         }
       }
     },
@@ -65,10 +57,10 @@ export default {
       formName: 'ruleForm',
       loading: false,
       rules: {
-        loginName: [
+        roleName: [
           {
             required: true,
-            message: '请输入登录账号名',
+            message: '请输入角色名称',
             trigger: 'blur'
           },
           {
@@ -77,32 +69,29 @@ export default {
             trigger: 'blur'
           }
         ],
-        password: [
+        code: [
           {
             required: true,
-            message: '请输入登录密码',
+            message: '请输入角色代码',
             trigger: 'blur'
           },
           {
-            max: 50,
-            message: '长度不能大于50个字符',
+            max: 30,
+            message: '长度不能大于30个字符',
+            trigger: 'blur'
+          }
+        ],
+        status: [
+          {
+            required: true,
+            message: '请选择角色状态',
             trigger: 'blur'
           }
         ]
-      },
-      roleList: [] // 所有角色列表
+      }
     }
   },
-  mounted () {
-    this.getAllRoleList()
-  },
   methods: {
-    getAllRoleList () {
-      this.$api.system.getRoleList({}, {})
-        .then(res => {
-          this.roleList = res.data
-        })
-    },
     confirm () {
       this.$refs[this.formName].validate((valid) => {
         if (valid) {
@@ -135,8 +124,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-  .el-select{
-    width: 100%;
-  }
+<style scoped>
+
 </style>

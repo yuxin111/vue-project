@@ -51,12 +51,12 @@ export default {
   }
 
   .breadcrumb-container {
-    padding: 15px;
+    padding: 10px;
     background-color: #e2e6ea;
   }
 
   .tag-container {
-    padding: 10px;
+    padding: 6px 0 6px 10px;
     background-color: #f3f3f3;
   }
 

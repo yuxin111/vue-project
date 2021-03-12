@@ -23,9 +23,14 @@
         <el-tooltip class="item" effect="dark" content="刷新" placement="top">
           <el-button type="primary" size="small" circle><i class="el-icon-refresh"/></el-button>
         </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="显隐列" placement="top-end">
+        <el-dropdown class="m-l-10" :hide-on-click="false">
           <el-button type="primary" size="small" circle><i class="el-icon-menu"/></el-button>
-        </el-tooltip>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-for="(tc,i) in tableColumn" :key="i">
+              <el-checkbox v-model="tc.show">{{ tc.label }}</el-checkbox>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </div>
 
@@ -36,18 +41,10 @@
         :data="tableData"
         style="width: 100%">
         <el-table-column
-          prop="loginName"
-          label="登录账号"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="创建时间"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          prop="updateTime"
-          label="最后更新时间"
+          v-for="(tc,i) in tableColumnShown"
+          :key="i"
+          :prop="tc.prop"
+          :label="tc.label"
           align="center">
         </el-table-column>
         <el-table-column
@@ -55,8 +52,8 @@
           label="操作"
           align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="watchUserInfo(scope.row)">查看</el-button>
-            <el-button type="text" size="small" @click="editUserInfo(scope.row)">编辑</el-button>
+            <el-button type="text" size="small" @click="handleUserInfo('watch',scope.row)">查看</el-button>
+            <el-button type="text" size="small" @click="handleUserInfo('edit',scope.row)">编辑</el-button>
             <el-popconfirm
               title="是否删除该用户信息？"
               icon="el-icon-info"
@@ -91,7 +88,8 @@
         operaStatus === 'add' ? '新增用户' :
         operaStatus === 'edit' ? '修改用户' : '用户信息'"
       :visible.sync="userDialog.visible"
-      width="600px">
+      :close-on-click-modal="false"
+      width="700px">
       <SystemUserInfo
         :propData="userDialog.data"
         :confirmLoading="userDialog.confirmLoading"
@@ -103,6 +101,7 @@
 </template>
 
 <script>
+import tableColumn from './tableColumn'
 import SystemUserInfo from './component/SystemUserInfo'
 import { mapGetters } from 'vuex'
 
@@ -110,6 +109,7 @@ export default {
   components: { SystemUserInfo },
   data () {
     return {
+      tableColumn, // 表格字段数据
       operaStatus: '', // 当前操作状态（'add'、'edit'、'watch'）
       search: {
         loginName: ''
@@ -139,8 +139,12 @@ export default {
       this.tableLoading = true
       this.$api.system.getUserList(this.pagination, params)
         .then(res => {
+          const data = res.data
           this.pagination.total = res.total
-          this.tableData = res.data
+          data.map(dat => {
+            dat.roleIds = dat.roles.map(role => role.roleId)
+          })
+          this.tableData = data
         })
         .finally(() => {
           this.tableLoading = false
@@ -154,16 +158,8 @@ export default {
       this.userDialog.visible = true
       this.userDialog.data = { _status: this.operaStatus }
     },
-    watchUserInfo (row) {
-      this.operaStatus = 'watch'
-      this.userDialog.visible = true
-      this.userDialog.data = this._.merge(
-        { _status: this.operaStatus },
-        this._.cloneDeep(row)
-      )
-    },
-    editUserInfo (row) {
-      this.operaStatus = 'edit'
+    handleUserInfo (operaStatus, row) {
+      this.operaStatus = operaStatus
       this.userDialog.visible = true
       this.userDialog.data = this._.merge(
         { _status: this.operaStatus },
@@ -221,7 +217,10 @@ export default {
   computed: {
     ...mapGetters({
       userInfo: 'User/userInfo'
-    })
+    }),
+    tableColumnShown () {
+      return this.tableColumn.filter(tc => tc.show)
+    }
   }
 }
 </script>
