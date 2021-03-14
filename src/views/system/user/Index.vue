@@ -46,6 +46,9 @@
           :prop="tc.prop"
           :label="tc.label"
           align="center">
+          <template slot-scope="scope">
+            {{scope.row[tc.prop]}}
+          </template>
         </el-table-column>
         <el-table-column
           fixed="right"

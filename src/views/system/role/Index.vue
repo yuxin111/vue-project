@@ -32,9 +32,14 @@
         <el-tooltip class="item" effect="dark" content="刷新" placement="top">
           <el-button type="primary" size="small" circle><i class="el-icon-refresh"/></el-button>
         </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="显隐列" placement="top-end">
+        <el-dropdown class="m-l-10" :hide-on-click="false">
           <el-button type="primary" size="small" circle><i class="el-icon-menu"/></el-button>
-        </el-tooltip>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item v-for="(tc,i) in tableColumn" :key="i">
+              <el-checkbox v-model="tc.show">{{ tc.label }}</el-checkbox>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </div>
 
@@ -45,36 +50,25 @@
         :data="tableData"
         style="width: 100%">
         <el-table-column
-          prop="status"
-          label="角色状态"
+          v-for="(tc,i) in tableColumnShown"
+          :key="i"
+          :label="tc.label"
           align="center">
           <template slot-scope="scope">
-            <el-switch
-              v-model="scope.row.status"
-              :active-value="1"
-              :inactive-value="0">
-            </el-switch>
+            <!-- 状态 -->
+            <template v-if="tc.prop === 'status'">
+              <el-switch
+                v-model="scope.row[tc.prop]"
+                :active-value="1"
+                :inactive-value="0"
+                @change="changeStatus($event,scope.row)">
+              </el-switch>
+            </template>
+            <!-- 其他属性 -->
+            <template v-else>
+              {{ scope.row[tc.prop] }}
+            </template>
           </template>
-        </el-table-column>
-        <el-table-column
-          prop="roleName"
-          label="角色名称"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          prop="code"
-          label="角色代码"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="创建时间"
-          align="center">
-        </el-table-column>
-        <el-table-column
-          prop="updateTime"
-          label="最后更新时间"
-          align="center">
         </el-table-column>
         <el-table-column
           fixed="right"
@@ -130,6 +124,7 @@
 </template>
 
 <script>
+import tableColumn from './tableColumn'
 import SystemRoleInfo from './component/SystemRoleInfo'
 import { mapGetters } from 'vuex'
 
@@ -137,6 +132,7 @@ export default {
   components: { SystemRoleInfo },
   data () {
     return {
+      tableColumn, // 表格字段数据
       operaStatus: '', // 当前操作状态（'add'、'edit'、'watch'）
       search: {
         roleName: '',
@@ -227,6 +223,23 @@ export default {
           this.roleDialog.confirmLoading = false
         })
     },
+    changeStatus (status, row) {
+      const tip = status === 1 ? '是否启用该角色？' : '是否停用该角色？'
+      this.$confirm(tip, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.operaStatus = 'edit'
+        row = this._.merge(
+          { _status: this.operaStatus },
+          this._.cloneDeep(row)
+        )
+        this.confirmRoleInfo(row)
+      }).catch(() => {
+        row.status = 1 ^ status
+      })
+    },
     refresh () {
       this.resetSearch()
       this.queryRoleList()
@@ -249,7 +262,10 @@ export default {
   computed: {
     ...mapGetters({
       userInfo: 'User/userInfo'
-    })
+    }),
+    tableColumnShown () {
+      return this.tableColumn.filter(tc => tc.show)
+    }
   }
 }
 </script>

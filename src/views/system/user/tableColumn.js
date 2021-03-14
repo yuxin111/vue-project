@@ -12,6 +12,6 @@ export default [
   {
     label: '最后更新时间',
     prop: 'updateTime',
-    show: true
+    show: false
   }
 ]
