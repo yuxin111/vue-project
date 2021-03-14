@@ -1,7 +1,17 @@
 export default [
   {
-    label: '登录账号',
-    prop: 'loginName',
+    label: '角色状态',
+    prop: 'status',
+    show: true
+  },
+  {
+    label: '角色名称',
+    prop: 'roleName',
+    show: true
+  },
+  {
+    label: '角色代码',
+    prop: 'code',
     show: true
   },
   {
@@ -12,6 +22,6 @@ export default [
   {
     label: '最后更新时间',
     prop: 'updateTime',
-    show: true
+    show: false
   }
 ]
