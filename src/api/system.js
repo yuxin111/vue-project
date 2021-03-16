@@ -8,6 +8,7 @@ const system = {
   login (params) {
     return axios.post('/shiro/login', params)
   },
+
   /* 用户 */
   getUserList (pagination, params) {
     return axios.post('/user/list', params, {
@@ -23,6 +24,7 @@ const system = {
   deleteUser (id) {
     return axios.get(`/user/delete/${id}`)
   },
+
   /* 角色 */
   getRoleList (pagination, params) {
     return axios.post('/role/list', params, {
@@ -37,6 +39,11 @@ const system = {
   },
   deleteRole (id) {
     return axios.get(`/role/delete/${id}`)
+  },
+
+  /* 菜单 */
+  getMenuList (params) {
+    return axios.post('/menu/list', params)
   }
 }
 

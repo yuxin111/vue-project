@@ -4,14 +4,11 @@
     <!--  查询参数  -->
     <div class="search text-center">
       <el-form :model="search" label-width="80px" inline>
-        <el-form-item label="角色名称">
-          <el-input v-model="search.menuName" placeholder="请输入角色名称" size="small" clearable></el-input>
+        <el-form-item label="菜单名称">
+          <el-input v-model="search.menuName" placeholder="请输入菜单名称" size="small" clearable></el-input>
         </el-form-item>
-        <el-form-item label="角色代码">
-          <el-input v-model="search.code" placeholder="请输入角色代码" size="small" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="角色状态">
-          <el-select v-model="search.status" placeholder="请选择角色状态" size="small" clearable>
+        <el-form-item label="菜单状态">
+          <el-select v-model="search.status" placeholder="请选择菜单状态" size="small" clearable>
             <el-option label="正常" :value="1"></el-option>
             <el-option label="停用" :value="0"></el-option>
           </el-select>
@@ -43,7 +40,7 @@
       </div>
     </div>
 
-    <!--  角色表格  -->
+    <!--  菜单表格  -->
     <div class="table m-t-15">
       <el-table
         v-loading="tableLoading"
@@ -52,17 +49,8 @@
         default-expand-all
         style="width: 100%">
         <el-table-column
-          prop="date"
-          label="日期"
-          sortable>
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="姓名"
-          sortable>
-        </el-table-column>
-        <el-table-column
-          prop="address">
+          prop="menuName"
+          label="菜单名称">
         </el-table-column>
         <el-table-column
           fixed="right"
@@ -72,7 +60,7 @@
             <el-button type="text" size="small" @click="handleMenuInfo('watch',scope.row)">查看</el-button>
             <el-button type="text" size="small" @click="handleMenuInfo('edit',scope.row)">编辑</el-button>
             <el-popconfirm
-              title="是否删除该角色信息？"
+              title="是否删除该菜单信息？"
               icon="el-icon-info"
               icon-color="red"
               placement="top"
@@ -99,11 +87,11 @@
       </el-pagination>
     </div>
 
-    <!--  角色信息dialog  -->
+    <!--  菜单信息dialog  -->
     <el-dialog
       :title="
-        operaStatus === 'add' ? '新增角色' :
-        operaStatus === 'edit' ? '修改角色' : '角色信息'"
+        operaStatus === 'add' ? '新增菜单' :
+        operaStatus === 'edit' ? '修改菜单' : '菜单信息'"
       :visible.sync="menuDialog.visible"
       :close-on-click-modal="false"
       width="600px">
@@ -118,6 +106,7 @@
 </template>
 
 <script>
+import { formatToTree } from '@/utils/common'
 import tableColumn from './tableColumn'
 import SystemMenuInfo from './component/SystemMenuInfo'
 import { mapGetters } from 'vuex'
@@ -130,7 +119,6 @@ export default {
       operaStatus: '', // 当前操作状态（'add'、'edit'、'watch'）
       search: {
         menuName: '',
-        code: '',
         status: null
       },
       pagination: {
@@ -143,78 +131,25 @@ export default {
         confirmLoading: false,
         data: {}
       },
-      tableData: [{
-        menuId: 1,
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        menuId: 2,
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        menuId: 3,
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄',
-        children: [{
-          menuId: 31,
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }, {
-          menuId: 32,
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄'
-        }]
-      }, {
-        menuId: 4,
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
-      tableData1: [{
-        menuId: 1,
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        menuId: 2,
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        menuId: 3,
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄',
-        hasChildren: true
-      }, {
-        menuId: 4,
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
+      tableData: [],
       tableLoading: false
     }
   },
   mounted () {
-    // this.getMenuList()
+    this.getMenuList()
   },
   methods: {
     getMenuList () {
       const params = {
         menuName: this.search.menuName,
-        code: this.search.code,
         status: this.search.status
       }
       this.tableLoading = true
-      this.$api.system.getMenuList(this.pagination, params)
+      this.$api.system.getMenuList(params)
         .then(res => {
-          this.pagination.total = res.total
-          this.tableData = res.data
+          this.tableData = !params.menuName
+            ? formatToTree(res, 'menuId', 'parentId', 'children')
+            : res
         })
         .finally(() => {
           this.tableLoading = false
@@ -243,7 +178,7 @@ export default {
       this.$api.system.deleteMenu(row.menuId)
         .then(() => {
           this.$message({
-            message: '删除角色信息成功',
+            message: '删除菜单信息成功',
             type: 'success'
           })
           this.handleCurrentChange(1)
@@ -260,7 +195,7 @@ export default {
       this.$api.system[apiName](params)
         .then(res => {
           this.$message({
-            message: '保存角色信息成功',
+            message: '保存菜单信息成功',
             type: 'success'
           })
           this.menuDialog.visible = false
@@ -271,7 +206,7 @@ export default {
         })
     },
     changeStatus (status, row) {
-      const tip = status === 1 ? '是否启用该角色？' : '是否停用该角色？'
+      const tip = status === 1 ? '是否启用该菜单？' : '是否停用该菜单？'
       this.$confirm(tip, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -293,7 +228,6 @@ export default {
     },
     resetSearch () {
       this.search.menuName = ''
-      this.search.code = ''
       this.search.status = null
     },
     handleSizeChange (pageSize) {

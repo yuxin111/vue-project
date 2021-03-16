@@ -32,7 +32,7 @@ export default [
         path: '/system/menu',
         component: SystemMenu,
         meta: {
-          title: '权限管理',
+          title: '菜单管理',
           icon: 'el-icon-key'
         }
       }
