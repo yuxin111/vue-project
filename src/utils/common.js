@@ -11,7 +11,11 @@ function formatToTree (list, id = 'id', parentId = 'parentId', children = 'child
     const branchArr = list.filter(child => {
       return parent[id] === child[parentId]
     })
-    parent[children] = branchArr
+    if (branchArr.length !== 0) {
+      parent[children] = branchArr
+    } else {
+      delete parent[children]
+    }
     return !parent[parentId]
   })
 }

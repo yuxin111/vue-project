@@ -25,7 +25,7 @@ export default [
         component: SystemRole,
         meta: {
           title: '角色管理',
-          icon: 'el-icon-s-opportunity'
+          icon: 'el-icon-help'
         }
       },
       {
@@ -33,7 +33,7 @@ export default [
         component: SystemMenu,
         meta: {
           title: '菜单管理',
-          icon: 'el-icon-key'
+          icon: 'el-icon-menu'
         }
       }
     ]

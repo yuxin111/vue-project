@@ -4,17 +4,17 @@
       <el-row>
         <el-col :span="12" class="p-l-10">
           <el-form-item label="角色名称" prop="roleName">
-            <el-input v-model="formData.roleName" placeholder="请输入角色名称" size="small" clearable></el-input>
+            <el-input v-model="formData.roleName" placeholder="请输入角色名称" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12" class="p-l-10">
           <el-form-item label="角色代码" prop="code">
-            <el-input v-model="formData.code" placeholder="请输入角色代码" size="small" clearable></el-input>
+            <el-input v-model="formData.code" placeholder="请输入角色代码" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12" class="p-l-10">
           <el-form-item label="角色状态" prop="status">
-            <el-select v-model="formData.status" placeholder="请选择角色状态" size="small">
+            <el-select v-model="formData.status" placeholder="请选择角色状态">
               <el-option label="正常" :value="1"></el-option>
               <el-option label="停用" :value="0"></el-option>
             </el-select>

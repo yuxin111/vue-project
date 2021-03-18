@@ -2,19 +2,23 @@
   <div class="system-menu-info">
     <el-form :model="formData" :rules="rules" :ref="formName" label-width="80px">
       <el-row>
-        <el-col :span="12" class="p-l-10">
-          <el-form-item label="角色名称" prop="menuName">
-            <el-input v-model="formData.menuName" placeholder="请输入角色名称" size="small" clearable></el-input>
+        <el-col :span="24" class="p-l-10">
+          <el-form-item label="上级菜单" prop="menuName">
+            <treeselect
+              v-model="formData.parentMenuId"
+              placeholder="请选择上级菜单"
+              :options="treeOptions"
+              :normalizer="treeNormalizer"/>
           </el-form-item>
         </el-col>
         <el-col :span="12" class="p-l-10">
           <el-form-item label="角色代码" prop="code">
-            <el-input v-model="formData.code" placeholder="请输入角色代码" size="small" clearable></el-input>
+            <el-input v-model="formData.code" placeholder="请输入角色代码" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12" class="p-l-10">
           <el-form-item label="角色状态" prop="status">
-            <el-select v-model="formData.status" placeholder="请选择角色状态" size="small">
+            <el-select v-model="formData.status" placeholder="请选择角色状态">
               <el-option label="正常" :value="1"></el-option>
               <el-option label="停用" :value="0"></el-option>
             </el-select>
@@ -33,7 +37,14 @@
 </template>
 
 <script>
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import { formatToTree } from '@/utils/common'
+
 export default {
+  components: {
+    Treeselect
+  },
   props: {
     propData: {
       type: Object,
@@ -88,10 +99,31 @@ export default {
             trigger: 'blur'
           }
         ]
+      },
+      treeOptions: [], // 树形菜单选项
+      treeNormalizer (node) { // 树形菜单格式化
+        return {
+          id: node.menuId,
+          label: node.menuName,
+          children: node.children
+        }
       }
     }
   },
+  mounted () {
+    this.getMenuList()
+  },
   methods: {
+    getMenuList () {
+      this.tableLoading = true
+      this.$api.system.getMenuList({})
+        .then(res => {
+          this.treeOptions = formatToTree(res, 'menuId', 'parentId', 'children')
+        })
+        .finally(() => {
+          this.tableLoading = false
+        })
+    },
     confirm () {
       this.$refs[this.formName].validate((valid) => {
         if (valid) {
