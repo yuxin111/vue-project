@@ -27,7 +27,7 @@
           <el-button type="primary" size="small" circle><i class="el-icon-menu"/></el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item v-for="(tc,i) in tableColumn" :key="i">
-              <el-checkbox v-model="tc.show">{{ tc.label }}</el-checkbox>
+              <el-checkbox v-model="tc.show" :disabled="!tc.editable">{{ tc.label }}</el-checkbox>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>

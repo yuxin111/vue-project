@@ -44,6 +44,15 @@ const system = {
   /* 菜单 */
   getMenuList (params) {
     return axios.post('/menu/list', params)
+  },
+  addMenu (params) {
+    return axios.post('/menu/add', params)
+  },
+  updateMenu (params) {
+    return axios.post('/menu/update', params)
+  },
+  deleteMenu (id) {
+    return axios.get(`/menu/delete/${id}`)
   }
 }
 

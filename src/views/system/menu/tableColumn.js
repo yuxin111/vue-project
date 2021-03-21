@@ -1,27 +1,26 @@
 export default [
   {
-    label: '角色状态',
-    prop: 'status',
-    show: true
+    label: '菜单名称',
+    prop: 'menuName',
+    show: true,
+    editable: false
   },
   {
-    label: '角色名称',
-    prop: 'roleName',
-    show: true
-  },
-  {
-    label: '角色代码',
+    label: '菜单标识',
     prop: 'code',
-    show: true
+    show: true,
+    editable: true
   },
   {
     label: '创建时间',
     prop: 'createTime',
-    show: true
+    show: false,
+    editable: true
   },
   {
     label: '最后更新时间',
     prop: 'updateTime',
-    show: false
+    show: false,
+    editable: true
   }
 ]
