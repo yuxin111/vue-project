@@ -56,7 +56,6 @@
           :key="i"
           :label="tc.label">
           <template slot-scope="scope">
-            <!-- 其他属性 -->
             <template>
               {{ scope.row[tc.prop] }}
             </template>

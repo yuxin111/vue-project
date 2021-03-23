@@ -181,7 +181,8 @@ export default {
       this.roleDialog.visible = true
       this.roleDialog.data = {
         _status: this.operaStatus,
-        status: 1
+        status: 1,
+        menuIds: []
       }
     },
     handleRoleInfo (operaStatus, row) {

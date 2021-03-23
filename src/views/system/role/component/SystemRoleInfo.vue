@@ -20,6 +20,19 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :span="24" class="p-l-10">
+          <el-form-item label="权限菜单">
+            <el-tree
+              ref="treeMenu"
+              v-loading="treeLoading"
+              :data="treeData"
+              show-checkbox
+              node-key="menuId"
+              default-expand-all
+              :props="defaultProps">
+            </el-tree>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
 
@@ -33,6 +46,8 @@
 </template>
 
 <script>
+import { formatToTree } from '@/utils/common'
+
 export default {
   props: {
     propData: {
@@ -42,7 +57,8 @@ export default {
           _status: 'watch',
           roleName: '',
           code: '',
-          status: 1
+          status: 1,
+          menuIds: []
         }
       }
     },
@@ -88,14 +104,29 @@ export default {
             trigger: 'blur'
           }
         ]
+      },
+
+      // 权限菜单
+      treeData: [],
+      treeLoading: false,
+      defaultProps: {
+        children: 'children',
+        label: 'menuName'
       }
     }
+  },
+  mounted () {
+    this.getMenuList()
   },
   methods: {
     confirm () {
       this.$refs[this.formName].validate((valid) => {
         if (valid) {
-          this.$emit('confirm', this.formData)
+          const menuIds = this.$refs.treeMenu.getCheckedKeys()
+          this.$emit('confirm', {
+            ...this.formData,
+            menuIds
+          })
         }
       })
     },
@@ -103,6 +134,16 @@ export default {
       this.$nextTick(() => {
         this.$refs[this.formName].clearValidate()
       })
+    },
+    getMenuList () {
+      this.treeLoading = true
+      this.$api.system.getMenuList({})
+        .then(res => {
+          this.treeData = formatToTree(res, 'menuId', 'parentId', 'children')
+        })
+        .finally(() => {
+          this.treeLoading = false
+        })
     }
   },
   watch: {
@@ -124,6 +165,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.el-tree {
+  padding: 15px;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+}
 
 </style>
