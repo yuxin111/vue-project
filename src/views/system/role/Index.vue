@@ -166,7 +166,11 @@ export default {
       this.tableLoading = true
       this.$api.system.getRoleList(this.pagination, params)
         .then(res => {
+          const data = res.data
           this.pagination.total = res.total
+          data.map(dat => {
+            dat.menuIds = dat.menus.map(menu => menu.menuId)
+          })
           this.tableData = res.data
         })
         .finally(() => {

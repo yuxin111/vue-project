@@ -151,6 +151,9 @@ export default {
       handler (propData) {
         this.clearValidate()
         this.formData = propData
+        this.$nextTick(() => {
+          this.$refs.treeMenu.setCheckedKeys(propData.menuIds)
+        })
       },
       immediate: true,
       deep: true
