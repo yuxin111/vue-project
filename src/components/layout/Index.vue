@@ -64,6 +64,11 @@ export default {
     padding: 15px;
   }
 
+  .el-main{
+    height: calc(100vh - 60px);
+    overflow: scroll;
+  }
+
   .el-main, .el-header {
     padding: 0;
   }

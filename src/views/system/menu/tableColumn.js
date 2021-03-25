@@ -1,14 +1,20 @@
 export default [
   {
-    label: '登录账号',
-    prop: 'loginName',
+    label: '菜单名称',
+    prop: 'menuName',
+    show: true,
+    editable: false
+  },
+  {
+    label: '菜单标识',
+    prop: 'code',
     show: true,
     editable: true
   },
   {
     label: '创建时间',
     prop: 'createTime',
-    show: true,
+    show: false,
     editable: true
   },
   {

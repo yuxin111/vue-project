@@ -27,7 +27,7 @@
           <el-button type="primary" size="small" circle><i class="el-icon-menu"/></el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item v-for="(tc,i) in tableColumn" :key="i">
-              <el-checkbox v-model="tc.show">{{ tc.label }}</el-checkbox>
+              <el-checkbox v-model="tc.show" :disabled="!tc.editable">{{ tc.label }}</el-checkbox>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -47,7 +47,7 @@
           :label="tc.label"
           align="center">
           <template slot-scope="scope">
-            {{scope.row[tc.prop]}}
+            {{ scope.row[tc.prop] }}
           </template>
         </el-table-column>
         <el-table-column
@@ -140,18 +140,27 @@ export default {
         loginName: this.search.loginName
       }
       this.tableLoading = true
-      this.$api.system.getUserList(this.pagination, params)
+      this.$api.system.getUserList({
+        pageSize: this.pagination.pageSize,
+        pageNum: this.pagination.pageNum
+      }, params)
         .then(res => {
           const data = res.data
           this.pagination.total = res.total
-          data.map(dat => {
-            dat.roleIds = dat.roles.map(role => role.roleId)
-          })
           this.tableData = data
         })
         .finally(() => {
           this.tableLoading = false
         })
+    },
+    getUserById (id) {
+      return new Promise(resolve => {
+        this.$api.system.getUserById(id)
+          .then(res => {
+            res.roleIds = res.roles.map(role => role.roleId)
+            resolve(res)
+          })
+      })
     },
     queryUserList () {
       this.getUserList()
@@ -161,13 +170,15 @@ export default {
       this.userDialog.visible = true
       this.userDialog.data = { _status: this.operaStatus }
     },
-    handleUserInfo (operaStatus, row) {
+    async handleUserInfo (operaStatus, row) {
+      const userInfo = await this.getUserById(row.userId)
       this.operaStatus = operaStatus
       this.userDialog.visible = true
       this.userDialog.data = this._.merge(
         { _status: this.operaStatus },
-        this._.cloneDeep(row)
+        this._.cloneDeep(userInfo)
       )
+      console.log(this.userDialog.data)
     },
     deleteUserInfo (row) {
       this.$api.system.deleteUser(row.userId)

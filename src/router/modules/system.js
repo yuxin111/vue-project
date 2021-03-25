@@ -1,6 +1,7 @@
 import System from '@/views/system/Index'
 import SystemUser from '@/views/system/user/Index'
 import SystemRole from '@/views/system/role/Index'
+import SystemMenu from '@/views/system/menu/Index'
 
 export default [
   {
@@ -24,7 +25,15 @@ export default [
         component: SystemRole,
         meta: {
           title: '角色管理',
-          icon: 'el-icon-s-opportunity'
+          icon: 'el-icon-help'
+        }
+      },
+      {
+        path: '/system/menu',
+        component: SystemMenu,
+        meta: {
+          title: '菜单管理',
+          icon: 'el-icon-menu'
         }
       }
     ]

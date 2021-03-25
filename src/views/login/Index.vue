@@ -49,9 +49,6 @@ export default {
           })
           this.$router.push('/')
         })
-        .catch(e => {
-          console.log('登录发生异常：', e)
-        })
         .finally(() => {
           this.loginLoading = false
         })

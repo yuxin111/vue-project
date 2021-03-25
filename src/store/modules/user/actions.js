@@ -17,7 +17,7 @@ const login = ({ commit }, userInfo = {}) => {
 }
 
 const logout = ({ commit }) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     commit('USERINFO_SET')
     cookie.remove(constant.COOKIE_USERINFO)
     commit('Main/TAG_EMPTY', '', { root: true })
