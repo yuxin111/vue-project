@@ -15,6 +15,9 @@ const system = {
       params: pagination
     })
   },
+  getUserById (id) {
+    return axios.get(`/user/get/${id}`)
+  },
   addUser (params) {
     return axios.post('/user/add', params)
   },
@@ -30,6 +33,9 @@ const system = {
     return axios.post('/role/list', params, {
       params: pagination
     })
+  },
+  getRoleById (id) {
+    return axios.get(`/role/get/${id}`)
   },
   addRole (params) {
     return axios.post('/role/add', params)

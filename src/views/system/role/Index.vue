@@ -164,18 +164,27 @@ export default {
         status: this.search.status
       }
       this.tableLoading = true
-      this.$api.system.getRoleList(this.pagination, params)
+      this.$api.system.getRoleList({
+        pageSize: this.pagination.pageSize,
+        pageNum: this.pagination.pageNum
+      }, params)
         .then(res => {
           const data = res.data
           this.pagination.total = res.total
-          data.map(dat => {
-            dat.menuIds = dat.menus.map(menu => menu.menuId)
-          })
-          this.tableData = res.data
+          this.tableData = data
         })
         .finally(() => {
           this.tableLoading = false
         })
+    },
+    getRoleById (id) {
+      return new Promise(resolve => {
+        this.$api.system.getRoleById(id)
+          .then(res => {
+            res.menuIds = res.menus.map(menu => menu.menuId)
+            resolve(res)
+          })
+      })
     },
     queryRoleList () {
       this.getRoleList()
@@ -189,12 +198,13 @@ export default {
         menuIds: []
       }
     },
-    handleRoleInfo (operaStatus, row) {
+    async handleRoleInfo (operaStatus, row) {
+      const roleInfo = await this.getRoleById(row.roleId)
       this.operaStatus = operaStatus
       this.roleDialog.visible = true
       this.roleDialog.data = this._.merge(
         { _status: this.operaStatus },
-        this._.cloneDeep(row)
+        this._.cloneDeep(roleInfo)
       )
     },
     deleteRoleInfo (row) {
