@@ -108,9 +108,6 @@ export default {
       }
     }
   },
-  mounted () {
-    this.getMenuList()
-  },
   methods: {
     getMenuList () {
       this.tableLoading = true
@@ -139,6 +136,7 @@ export default {
     propData: {
       handler (propData) {
         this.clearValidate()
+        this.getMenuList()
         this.formData = propData
       },
       immediate: true,
