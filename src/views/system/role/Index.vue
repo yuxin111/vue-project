@@ -116,6 +116,7 @@
       <SystemRoleInfo
         :propData="roleDialog.data"
         :confirmLoading="roleDialog.confirmLoading"
+        :visible="roleDialog.visible"
         @confirm="confirmRoleInfo"
         @cancel="roleDialog.visible = false"
       />

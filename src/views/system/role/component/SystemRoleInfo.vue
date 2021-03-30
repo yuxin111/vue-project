@@ -65,6 +65,10 @@ export default {
     confirmLoading: {
       type: Boolean,
       default: false
+    },
+    visible: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -149,18 +153,24 @@ export default {
   watch: {
     propData: {
       handler (propData) {
-        this.clearValidate()
         this.formData = propData
-        this.$nextTick(() => {
-          this.$refs.treeMenu.setCheckedKeys(propData.menuIds)
-        })
       },
-      immediate: true,
-      deep: true
+      immediate: true
     },
     confirmLoading: {
       handler (confirmLoading) {
         this.loading = confirmLoading
+      },
+      immediate: true
+    },
+    visible: {
+      handler (visible) {
+        if (visible) {
+          this.clearValidate()
+          this.$nextTick(() => {
+            this.$refs.treeMenu.setCheckedKeys(this.propData.menuIds)
+          })
+        }
       },
       immediate: true
     }

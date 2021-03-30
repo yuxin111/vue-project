@@ -96,6 +96,7 @@
       <SystemUserInfo
         :propData="userDialog.data"
         :confirmLoading="userDialog.confirmLoading"
+        :visible="userDialog.visible"
         @confirm="confirmUserInfo"
         @cancel="userDialog.visible = false"
       />
@@ -178,7 +179,6 @@ export default {
         { _status: this.operaStatus },
         this._.cloneDeep(userInfo)
       )
-      console.log(this.userDialog.data)
     },
     deleteUserInfo (row) {
       this.$api.system.deleteUser(row.userId)

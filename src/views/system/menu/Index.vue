@@ -115,6 +115,7 @@
       <SystemMenuInfo
         :propData="menuDialog.data"
         :confirmLoading="menuDialog.confirmLoading"
+        :visible="menuDialog.visible"
         @confirm="confirmMenuInfo"
         @cancel="menuDialog.visible = false"
       />

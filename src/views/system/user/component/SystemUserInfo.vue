@@ -57,6 +57,10 @@ export default {
     confirmLoading: {
       type: Boolean,
       default: false
+    },
+    visible: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -119,15 +123,21 @@ export default {
   watch: {
     propData: {
       handler (propData) {
-        this.clearValidate()
         this.formData = propData
       },
-      immediate: true,
-      deep: true
+      immediate: true
     },
     confirmLoading: {
       handler (confirmLoading) {
         this.loading = confirmLoading
+      },
+      immediate: true
+    },
+    visible: {
+      handler (visible) {
+        if (visible) {
+          this.clearValidate()
+        }
       },
       immediate: true
     }
