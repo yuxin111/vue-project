@@ -88,18 +88,6 @@ export default {
             message: '长度不能大于30个字符',
             trigger: 'blur'
           }
-        ],
-        code: [
-          {
-            required: true,
-            message: '请输入菜单标识',
-            trigger: 'blur'
-          },
-          {
-            max: 30,
-            message: '长度不能大于30个字符',
-            trigger: 'blur'
-          }
         ]
       },
       treeOptions: [], // 树形菜单选项
@@ -153,7 +141,7 @@ export default {
         }
       },
       immediate: true
-    },
+    }
   }
 }
 </script>

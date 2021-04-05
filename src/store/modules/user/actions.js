@@ -9,6 +9,7 @@ const login = ({ commit }, userInfo = {}) => {
       userInfo = _.merge(userInfo, res)
       commit('USERINFO_SET', userInfo)
       cookie.set(constant.COOKIE_USERINFO, userInfo)
+      console.log('当前用户信息：', userInfo)
       resolve(userInfo)
     }).catch(e => {
       reject(e)

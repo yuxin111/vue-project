@@ -20,4 +20,15 @@ function formatToTree (list, id = 'id', parentId = 'parentId', children = 'child
   })
 }
 
-export { formatToTree }
+/**
+ * 是否拥有权限（菜单）
+ * @param menuName 菜单名。
+ *        例：'system:user:list'
+ * @param menus 权限列表，通常在登录时获取。
+ *        例：['system:user:list','system:user:add','system:user:edit'...]
+ */
+function hasPermission (menuName = '', menus = []) {
+  return menuName ? menus.includes(menuName) : true
+}
+
+export { formatToTree, hasPermission }
