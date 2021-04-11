@@ -55,8 +55,14 @@
           label="操作"
           align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="handleUserInfo('watch',scope.row)">查看</el-button>
-            <el-button type="text" size="small" @click="handleUserInfo('edit',scope.row)">编辑</el-button>
+            <el-button type="text" size="small"
+                       :disabled="!$_hasPermission('system:user:watch')"
+                       @click="handleUserInfo('watch',scope.row)">查看
+            </el-button>
+            <el-button type="text" size="small"
+                       :disabled="!$_hasPermission('system:user:edit')"
+                       @click="handleUserInfo('edit',scope.row)">编辑
+            </el-button>
             <el-popconfirm
               title="是否删除该用户信息？"
               icon="el-icon-info"
@@ -64,7 +70,9 @@
               placement="top"
               @confirm="deleteUserInfo(scope.row)"
             >
-              <el-button type="text" size="small" slot="reference" class="m-l-10">删除</el-button>
+              <el-button type="text" size="small" slot="reference" class="m-l-10"
+                         :disabled="!$_hasPermission('system:user:delete')">删除
+              </el-button>
             </el-popconfirm>
           </template>
         </el-table-column>
@@ -105,11 +113,13 @@
 </template>
 
 <script>
+import permission from '@/utils/mixin/permission'
 import tableColumn from './tableColumn'
 import SystemUserInfo from './component/SystemUserInfo'
 import { mapGetters } from 'vuex'
 
 export default {
+  mixins: [permission],
   components: { SystemUserInfo },
   data () {
     return {

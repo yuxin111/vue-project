@@ -10,12 +10,12 @@
         <el-form-item label="菜单标识">
           <el-input v-model="search.code" placeholder="请输入菜单标识" size="small" clearable></el-input>
         </el-form-item>
-<!--        <el-form-item label="菜单状态">-->
-<!--          <el-select v-model="search.status" placeholder="请选择菜单状态" size="small" clearable>-->
-<!--            <el-option label="正常" :value="1"></el-option>-->
-<!--            <el-option label="停用" :value="0"></el-option>-->
-<!--          </el-select>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item label="菜单状态">-->
+        <!--          <el-select v-model="search.status" placeholder="请选择菜单状态" size="small" clearable>-->
+        <!--            <el-option label="正常" :value="1"></el-option>-->
+        <!--            <el-option label="停用" :value="0"></el-option>-->
+        <!--          </el-select>-->
+        <!--        </el-form-item>-->
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="queryMenuList">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetSearch">重置</el-button>
@@ -61,21 +61,18 @@
             </template>
           </template>
         </el-table-column>
-<!--        <el-table-column-->
-<!--          prop="menuName"-->
-<!--          label="菜单名称">-->
-<!--        </el-table-column>-->
-<!--        <el-table-column-->
-<!--          prop="code"-->
-<!--          label="菜单标识">-->
-<!--        </el-table-column>-->
         <el-table-column
           fixed="right"
           label="操作"
           align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="handleMenuInfo('watch',scope.row)">查看</el-button>
-            <el-button type="text" size="small" @click="handleMenuInfo('edit',scope.row)">编辑</el-button>
+            <el-button type="text" size="small"
+                       :disabled="!$_hasPermission('system:menu:watch')"
+                       @click="handleMenuInfo('watch',scope.row)">查看</el-button>
+            <el-button type="text" size="small"
+                       :disabled="!$_hasPermission('system:menu:edit')"
+                       @click="handleMenuInfo('edit',scope.row)">编辑
+            </el-button>
             <el-popconfirm
               title="是否删除该菜单？"
               icon="el-icon-info"
@@ -83,7 +80,8 @@
               placement="top"
               @confirm="deleteMenuInfo(scope.row)"
             >
-              <el-button type="text" size="small" slot="reference" class="m-l-10">删除</el-button>
+              <el-button type="text" size="small" slot="reference" class="m-l-10"
+                         :disabled="!$_hasPermission('system:menu:delete')">删除</el-button>
             </el-popconfirm>
           </template>
         </el-table-column>
@@ -124,12 +122,14 @@
 </template>
 
 <script>
+import permission from '@/utils/mixin/permission'
 import { formatToTree } from '@/utils/common'
 import tableColumn from './tableColumn'
 import SystemMenuInfo from './component/SystemMenuInfo'
 import { mapGetters } from 'vuex'
 
 export default {
+  mixins: [permission],
   components: { SystemMenuInfo },
   data () {
     return {

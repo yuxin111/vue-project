@@ -5,6 +5,7 @@ import store from './store'
 import api from '@/api'
 import keymaster from '@/plugin/keymaster'
 import _ from 'lodash'
+import directive from '@/utils/directive'
 
 // 全局css
 import '@/style/reset.css'
@@ -16,6 +17,8 @@ Vue.config.productionTip = false
 Vue.prototype.$api = api
 Vue.prototype.$keymaster = keymaster
 Vue.prototype._ = _
+
+Vue.use(directive)
 
 new Vue({
   router,
