@@ -75,8 +75,14 @@
           label="操作"
           align="center">
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="handleRoleInfo('watch',scope.row)">查看</el-button>
-            <el-button type="text" size="small" @click="handleRoleInfo('edit',scope.row)">编辑</el-button>
+            <el-button type="text" size="small"
+                       :disabled="!$_hasPermission('system:role:watch')"
+                       @click="handleRoleInfo('watch',scope.row)">查看
+            </el-button>
+            <el-button type="text" size="small"
+                       :disabled="!$_hasPermission('system:role:edit')"
+                       @click="handleRoleInfo('edit',scope.row)">编辑
+            </el-button>
             <el-popconfirm
               title="是否删除该角色信息？"
               icon="el-icon-info"
@@ -84,7 +90,8 @@
               placement="top"
               @confirm="deleteRoleInfo(scope.row)"
             >
-              <el-button type="text" size="small" slot="reference" class="m-l-10">删除</el-button>
+              <el-button type="text" size="small" slot="reference" class="m-l-10"
+                         :disabled="!$_hasPermission('system:role:delete')">删除</el-button>
             </el-popconfirm>
           </template>
         </el-table-column>
@@ -116,6 +123,7 @@
       <SystemRoleInfo
         :propData="roleDialog.data"
         :confirmLoading="roleDialog.confirmLoading"
+        :visible="roleDialog.visible"
         @confirm="confirmRoleInfo"
         @cancel="roleDialog.visible = false"
       />
@@ -124,11 +132,13 @@
 </template>
 
 <script>
+import permission from '@/utils/mixin/permission'
 import tableColumn from './tableColumn'
 import SystemRoleInfo from './component/SystemRoleInfo'
 import { mapGetters } from 'vuex'
 
 export default {
+  mixins: [permission],
   components: { SystemRoleInfo },
   data () {
     return {

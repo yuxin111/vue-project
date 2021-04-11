@@ -21,14 +21,14 @@
             <el-input v-model="formData.code" placeholder="请输入菜单标识" clearable></el-input>
           </el-form-item>
         </el-col>
-<!--        <el-col :span="12" class="p-l-10">-->
-<!--          <el-form-item label="菜单状态" prop="status">-->
-<!--            <el-select v-model="formData.status" placeholder="请选择菜单状态">-->
-<!--              <el-option label="正常" :value="1"></el-option>-->
-<!--              <el-option label="停用" :value="0"></el-option>-->
-<!--            </el-select>-->
-<!--          </el-form-item>-->
-<!--        </el-col>-->
+        <!--        <el-col :span="12" class="p-l-10">-->
+        <!--          <el-form-item label="菜单状态" prop="status">-->
+        <!--            <el-select v-model="formData.status" placeholder="请选择菜单状态">-->
+        <!--              <el-option label="正常" :value="1"></el-option>-->
+        <!--              <el-option label="停用" :value="0"></el-option>-->
+        <!--            </el-select>-->
+        <!--          </el-form-item>-->
+        <!--        </el-col>-->
       </el-row>
     </el-form>
 
@@ -65,6 +65,10 @@ export default {
     confirmLoading: {
       type: Boolean,
       default: false
+    },
+    visible: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -84,18 +88,6 @@ export default {
             message: '长度不能大于30个字符',
             trigger: 'blur'
           }
-        ],
-        code: [
-          {
-            required: true,
-            message: '请输入菜单标识',
-            trigger: 'blur'
-          },
-          {
-            max: 30,
-            message: '长度不能大于30个字符',
-            trigger: 'blur'
-          }
         ]
       },
       treeOptions: [], // 树形菜单选项
@@ -108,18 +100,11 @@ export default {
       }
     }
   },
-  mounted () {
-    this.getMenuList()
-  },
   methods: {
     getMenuList () {
-      this.tableLoading = true
       this.$api.system.getMenuList({})
         .then(res => {
           this.treeOptions = formatToTree(res, 'menuId', 'parentId', 'children')
-        })
-        .finally(() => {
-          this.tableLoading = false
         })
     },
     confirm () {
@@ -138,15 +123,22 @@ export default {
   watch: {
     propData: {
       handler (propData) {
-        this.clearValidate()
         this.formData = propData
       },
-      immediate: true,
-      deep: true
+      immediate: true
     },
     confirmLoading: {
       handler (confirmLoading) {
         this.loading = confirmLoading
+      },
+      immediate: true
+    },
+    visible: {
+      handler (visible) {
+        if (visible) {
+          this.clearValidate()
+          this.getMenuList()
+        }
       },
       immediate: true
     }

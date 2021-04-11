@@ -1,3 +1,5 @@
+import store from '@/store'
+
 /**
  * 树形结构数据 <- 列表
  * @param list 列表
@@ -20,4 +22,18 @@ function formatToTree (list, id = 'id', parentId = 'parentId', children = 'child
   })
 }
 
-export { formatToTree }
+/**
+ * 是否拥有权限（菜单）
+ * @param menuName 菜单名。
+ *        例：'system:user:list'
+ * @param menus 权限列表，通常在登录时获取。不传时默认为当前登录用户的权限列表
+ *        例：['system:user:list','system:user:add','system:user:edit'...]
+ */
+function hasPermission (menuName = '', menus = []) {
+  if (menus.length === 0) {
+    menus = store.getters['User/userInfo'].menus || []
+  }
+  return menuName ? menus.includes(menuName) : true
+}
+
+export { formatToTree, hasPermission }
