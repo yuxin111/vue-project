@@ -26,7 +26,10 @@
     <!--  工具栏  -->
     <div class="tools flex-space-between flex-align-center">
       <div class="tools-btn">
-        <el-button icon="el-icon-plus" type="primary" size="small" plain @click="addMenuInfo">新增</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="small" plain
+                   :disabled="!$_hasPermission('system:menu:add')"
+                   @click="addMenuInfo">新增
+        </el-button>
       </div>
       <div class="tools-opera">
         <el-tooltip class="item" effect="dark" content="刷新" placement="top">
@@ -67,8 +70,13 @@
           align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small"
+                       :disabled="!$_hasPermission('system:menu:add')"
+                       @click="addMenuInfo({parentId: scope.row.menuId})">新增
+            </el-button>
+            <el-button type="text" size="small"
                        :disabled="!$_hasPermission('system:menu:watch')"
-                       @click="handleMenuInfo('watch',scope.row)">查看</el-button>
+                       @click="handleMenuInfo('watch',scope.row)">查看
+            </el-button>
             <el-button type="text" size="small"
                        :disabled="!$_hasPermission('system:menu:edit')"
                        @click="handleMenuInfo('edit',scope.row)">编辑
@@ -81,7 +89,8 @@
               @confirm="deleteMenuInfo(scope.row)"
             >
               <el-button type="text" size="small" slot="reference" class="m-l-10"
-                         :disabled="!$_hasPermission('system:menu:delete')">删除</el-button>
+                         :disabled="!$_hasPermission('system:menu:delete')">删除
+              </el-button>
             </el-popconfirm>
           </template>
         </el-table-column>
@@ -176,12 +185,13 @@ export default {
     queryMenuList () {
       this.getMenuList()
     },
-    addMenuInfo () {
+    addMenuInfo (params) {
       this.operaStatus = 'add'
       this.menuDialog.visible = true
       this.menuDialog.data = {
         _status: this.operaStatus,
-        status: 1
+        status: 1,
+        ...params
       }
     },
     handleMenuInfo (operaStatus, row) {
