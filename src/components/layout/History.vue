@@ -4,16 +4,16 @@
     tag="div"
     class="flex">
     <div v-for="(tag,i) in tagList" :key="tag.url" class="tag-content m-r-10 cursor-pointer">
-        <el-tag
-          type="info"
-          size="small"
-          effect="plain"
-          :class="[{'tag-select': isCurRouter(tag)},'tag-item']"
-          @close="closeTag(tag,i)"
-          @click="switchRouter(tag)"
-          :closable="tagList.length !== 1">
-          {{ tag.name }}
-        </el-tag>
+      <el-tag
+        type="info"
+        size="small"
+        effect="plain"
+        :class="[{'tag-select': isCurRouter(tag)},'tag-item']"
+        @close="closeTag(tag,i)"
+        @click="switchRouter(tag)"
+        :closable="tagList.length !== 1">
+        {{ tag.name }}
+      </el-tag>
     </div>
   </transition-group>
 </template>
@@ -44,7 +44,9 @@ export default {
       return this._.isEqual(tag, this.curRoute)
     },
     switchRouter (tag) {
-      this.$router.push(tag.url)
+      if (tag.url !== this.$route.fullPath) {
+        this.$router.push(tag.url)
+      }
     }
   },
   computed: {
@@ -89,18 +91,21 @@ export default {
 .tag-select {
   background-color: #3995f3;
   color: #fff;
+
   ::v-deep {
-    .el-icon-close{
+    .el-icon-close {
       color: #fff;
     }
   }
 }
 
-.tag-item{
+.tag-item {
   transition: background-color .2s;
 }
 
 @keyframes mymove {
-  50% {background: blue bottom right/50px 50px;}
+  50% {
+    background: blue bottom right/50px 50px;
+  }
 }
 </style>

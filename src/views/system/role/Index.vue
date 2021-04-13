@@ -26,7 +26,9 @@
     <!--  工具栏  -->
     <div class="tools flex-space-between flex-align-center">
       <div class="tools-btn">
-        <el-button icon="el-icon-plus" type="primary" size="small" plain @click="addRoleInfo">新增</el-button>
+        <el-button icon="el-icon-plus" type="primary" size="small" plain
+                   :disabled="!$_hasPermission('system:role:add')"
+                   @click="addRoleInfo">新增</el-button>
       </div>
       <div class="tools-opera">
         <el-tooltip class="item" effect="dark" content="刷新" placement="top">
