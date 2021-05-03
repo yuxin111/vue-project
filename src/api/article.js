@@ -1,6 +1,6 @@
 /**
  * @author YuXin
- * @desc 文章模块相关请求
+ * @desc 文章模块相关api
  */
 import axios from '@/utils/request'
 
