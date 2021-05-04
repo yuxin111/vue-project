@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <!--  用户表格  -->
+    <!--  操作日志表格  -->
     <div class="table m-t-15">
       <el-table
         v-loading="tableLoading"
@@ -63,23 +63,23 @@
           <template slot-scope="scope">
             <el-button type="text" size="small"
                        :disabled="!$_hasPermission('system:user:watch')"
-                       @click="handleUserInfo('watch',scope.row)">查看
+                       @click="handleOperLogInfo('watch',scope.row)">查看
             </el-button>
-            <el-button type="text" size="small"
-                       :disabled="!$_hasPermission('system:user:edit')"
-                       @click="handleUserInfo('edit',scope.row)">编辑
-            </el-button>
-            <el-popconfirm
-              title="是否删除该用户信息？"
-              icon="el-icon-info"
-              icon-color="red"
-              placement="top"
-              @confirm="deleteUserInfo(scope.row)"
-            >
-              <el-button type="text" size="small" slot="reference" class="m-l-10"
-                         :disabled="!$_hasPermission('system:user:delete')">删除
-              </el-button>
-            </el-popconfirm>
+<!--            <el-button type="text" size="small"-->
+<!--                       :disabled="!$_hasPermission('system:user:edit')"-->
+<!--                       @click="handleOperLogInfo('edit',scope.row)">编辑-->
+<!--            </el-button>-->
+<!--            <el-popconfirm-->
+<!--              title="是否删除该操作日志信息？"-->
+<!--              icon="el-icon-info"-->
+<!--              icon-color="red"-->
+<!--              placement="top"-->
+<!--              @confirm="deleteUserInfo(scope.row)"-->
+<!--            >-->
+<!--              <el-button type="text" size="small" slot="reference" class="m-l-10"-->
+<!--                         :disabled="!$_hasPermission('system:user:delete')">删除-->
+<!--              </el-button>-->
+<!--            </el-popconfirm>-->
           </template>
         </el-table-column>
       </el-table>
@@ -99,20 +99,17 @@
       </el-pagination>
     </div>
 
-    <!--  用户信息dialog  -->
+    <!--  操作日志信息dialog  -->
     <el-dialog
-      :title="
-        operaStatus === 'add' ? '新增用户' :
-        operaStatus === 'edit' ? '修改用户' : '用户信息'"
-      :visible.sync="userDialog.visible"
+      title=""
+      :visible.sync="operLogDialog.visible"
       :close-on-click-modal="false"
       width="700px">
-      <SystemUserInfo
-        :propData="userDialog.data"
-        :confirmLoading="userDialog.confirmLoading"
-        :visible="userDialog.visible"
-        @confirm="confirmUserInfo"
-        @cancel="userDialog.visible = false"
+      <SystemOperLogInfo
+        :propData="operLogDialog.data"
+        :confirmLoading="operLogDialog.confirmLoading"
+        :visible="operLogDialog.visible"
+        @cancel="operLogDialog.visible = false"
       />
     </el-dialog>
   </div>
@@ -121,12 +118,12 @@
 <script>
 import permission from '@/utils/mixin/permission'
 import tableColumn from './tableColumn'
-import SystemUserInfo from './component/SystemUserInfo'
+import SystemOperLogInfo from './component/SystemOperLogInfo'
 import { mapGetters } from 'vuex'
 
 export default {
   mixins: [permission],
-  components: { SystemUserInfo },
+  components: { SystemOperLogInfo },
   data () {
     return {
       tableColumn, // 表格字段数据
@@ -139,7 +136,7 @@ export default {
         pageNum: 1,
         total: null
       },
-      userDialog: {
+      operLogDialog: {
         visible: false,
         confirmLoading: false,
         data: {}
@@ -170,11 +167,11 @@ export default {
           this.tableLoading = false
         })
     },
-    getUserById (id) {
+    getOperLogById (id) {
       return new Promise(resolve => {
-        this.$api.log.getUserById(id)
+        this.$api.log.getOperLogById(id)
           .then(res => {
-            res.roleIds = res.roles.map(role => role.roleId)
+            // res.roleIds = res.roles.map(role => role.roleId)
             resolve(res)
           })
       })
@@ -184,49 +181,49 @@ export default {
     },
     // addUserInfo () {
     //   this.operaStatus = 'add'
-    //   this.userDialog.visible = true
-    //   this.userDialog.data = { _status: this.operaStatus }
+    //   this.operLogDialog.visible = true
+    //   this.operLogDialog.data = { _status: this.operaStatus }
     // },
-    async handleUserInfo (operaStatus, row) {
-      const userInfo = await this.getUserById(row.userId)
+    async handleOperLogInfo (operaStatus, row) {
+      const operLog = await this.getOperLogById(row.operLogId)
       this.operaStatus = operaStatus
-      this.userDialog.visible = true
-      this.userDialog.data = this._.merge(
+      this.operLogDialog.visible = true
+      this.operLogDialog.data = this._.merge(
         { _status: this.operaStatus },
-        this._.cloneDeep(userInfo)
+        this._.cloneDeep(operLog)
       )
     },
-    deleteUserInfo (row) {
-      this.$api.log.deleteUser(row.userId)
-        .then(() => {
-          this.$message({
-            message: '删除用户信息成功',
-            type: 'success'
-          })
-          this.handleCurrentChange(1)
-        })
-    },
-    confirmUserInfo (formData) {
-      const params = {
-        ...formData,
-        createBy: formData._status === 'add' ? this.userInfo.username : formData.createBy,
-        updateBy: formData._status === 'edit' ? this.userInfo.username : formData.updateBy
-      }
-      const apiName = formData._status === 'add' ? 'addUser' : 'updateUser'
-      this.userDialog.confirmLoading = true
-      this.$api.log[apiName](params)
-        .then(res => {
-          this.$message({
-            message: '保存用户信息成功',
-            type: 'success'
-          })
-          this.userDialog.visible = false
-          this.handleCurrentChange(1)
-        })
-        .finally(() => {
-          this.userDialog.confirmLoading = false
-        })
-    },
+    // deleteUserInfo (row) {
+    //   this.$api.log.deleteUser(row.userId)
+    //     .then(() => {
+    //       this.$message({
+    //         message: '删除操作日志信息成功',
+    //         type: 'success'
+    //       })
+    //       this.handleCurrentChange(1)
+    //     })
+    // },
+    // confirmUserInfo (formData) {
+    //   const params = {
+    //     ...formData,
+    //     createBy: formData._status === 'add' ? this.userInfo.username : formData.createBy,
+    //     updateBy: formData._status === 'edit' ? this.userInfo.username : formData.updateBy
+    //   }
+    //   const apiName = formData._status === 'add' ? 'addUser' : 'updateUser'
+    //   this.operLogDialog.confirmLoading = true
+    //   this.$api.log[apiName](params)
+    //     .then(res => {
+    //       this.$message({
+    //         message: '保存操作日志信息成功',
+    //         type: 'success'
+    //       })
+    //       this.operLogDialog.visible = false
+    //       this.handleCurrentChange(1)
+    //     })
+    //     .finally(() => {
+    //       this.operLogDialog.confirmLoading = false
+    //     })
+    // },
     refresh () {
       this.resetSearch()
       this.queryUserList()

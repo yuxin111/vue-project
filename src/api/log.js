@@ -11,10 +11,10 @@ const log = {
     return axios.post('/operLog/list', params, {
       params: pagination
     })
+  },
+  getOperLogById (id) {
+    return axios.get(`/operLog/get/${id}`)
   }
-  // getUserById (id) {
-  //   return axios.get(`/user/get/${id}`)
-  // },
   // addUser (params) {
   //   return axios.post('/user/add', params)
   // },
