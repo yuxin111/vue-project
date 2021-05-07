@@ -62,24 +62,9 @@
           align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small"
-                       :disabled="!$_hasPermission('system:user:watch')"
+                       :disabled="!$_hasPermission('log:operLog:watch')"
                        @click="handleOperLogInfo('watch',scope.row)">查看
             </el-button>
-<!--            <el-button type="text" size="small"-->
-<!--                       :disabled="!$_hasPermission('system:user:edit')"-->
-<!--                       @click="handleOperLogInfo('edit',scope.row)">编辑-->
-<!--            </el-button>-->
-<!--            <el-popconfirm-->
-<!--              title="是否删除该操作日志信息？"-->
-<!--              icon="el-icon-info"-->
-<!--              icon-color="red"-->
-<!--              placement="top"-->
-<!--              @confirm="deleteUserInfo(scope.row)"-->
-<!--            >-->
-<!--              <el-button type="text" size="small" slot="reference" class="m-l-10"-->
-<!--                         :disabled="!$_hasPermission('system:user:delete')">删除-->
-<!--              </el-button>-->
-<!--            </el-popconfirm>-->
           </template>
         </el-table-column>
       </el-table>
@@ -103,7 +88,6 @@
     <el-dialog
       title=""
       :visible.sync="operLogDialog.visible"
-      :close-on-click-modal="false"
       width="700px">
       <SystemOperLogInfo
         :propData="operLogDialog.data"

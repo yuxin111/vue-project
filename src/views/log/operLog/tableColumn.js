@@ -18,7 +18,7 @@ export default [
     editable: true
   },
   {
-    label: '创建时间',
+    label: '操作时间',
     prop: 'createTime',
     show: true,
     editable: true

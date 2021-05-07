@@ -18,23 +18,20 @@
           </el-form-item>
         </el-col>
         <el-col :span="12" class="p-l-10">
-          <el-form-item label="创建时间">
+          <el-form-item label="操作时间">
             <div>{{ formData.createTime }}</div>
           </el-form-item>
         </el-col>
         <el-col :span="24" class="p-l-10">
           <el-form-item label="返回结果">
-<!--            <json-view-->
-<!--              :data="jsonViewConfig.jsonResult"-->
-<!--              :theme="jsonViewConfig.theme"-->
-<!--              :deep="jsonViewConfig.deep"-->
-<!--              :iconStyle="jsonViewConfig.iconStyle"-->
-<!--              :fontSize="jsonViewConfig.fontSize"-->
-<!--              :lineHeight="jsonViewConfig.lineHeight"-->
-<!--              :closed="jsonViewConfig.closed"-->
-<!--              :iconColor="jsonViewConfig.iconColor"/>-->
-            <vue-json-pretty :deep="1" :data="jsonViewConfig.jsonResult"> </vue-json-pretty>
-            <!--            <div>{{ formData.jsonResult }}</div>-->
+            <el-tabs v-model="jsonResultActiveName" type="card">
+              <el-tab-pane label="字符串" :name="0">
+                {{ jsonViewConfig.jsonResult }}
+              </el-tab-pane>
+              <el-tab-pane label="格式化" :name="1">
+                <vue-json-pretty :deep="1" :data="jsonViewConfig.jsonResult"></vue-json-pretty>
+              </el-tab-pane>
+            </el-tabs>
           </el-form-item>
         </el-col>
       </el-row>
@@ -50,12 +47,10 @@
 </template>
 
 <script>
-// import jsonView from '@/assets/json-view/index.vue'
 import VueJsonPretty from 'vue-json-pretty'
-import 'vue-json-pretty/lib/styles.css';
+import 'vue-json-pretty/lib/styles.css'
 export default {
   components: {
-    // jsonView,
     VueJsonPretty
   },
   props: {
@@ -84,6 +79,7 @@ export default {
       formData: {},
       formName: 'ruleForm',
       loading: false,
+      jsonResultActiveName: 1,
       jsonViewConfig: {
         jsonResult: null,
         theme: '',
