@@ -260,12 +260,12 @@ export default {
         type: 'warning'
       }).then(() => {
         this.operaStatus = 'edit'
-        // row = {
-        //   _status: this.operaStatus,
-        //   roleId: row.roleId
-        // }
-        // this.confirmRoleInfo(row)
-        // TODO
+        row = {
+          _status: this.operaStatus,
+          roleId: row.roleId,
+          status: row.status
+        }
+        this.confirmRoleInfo(row)
       }).catch(() => {
         row.status = 1 ^ status
       })

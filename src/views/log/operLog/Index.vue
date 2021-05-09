@@ -4,8 +4,17 @@
     <!--  查询参数  -->
     <div class="search text-center">
       <el-form :model="search" label-width="80px" inline>
-        <el-form-item label="登录账号">
-          <el-input v-model="search.loginName" placeholder="请输入登录账号" size="small"></el-input>
+        <el-form-item label="操作">
+          <el-input v-model="search.operLog" placeholder="请输入操作" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="返回结果">
+          <el-select v-model="search.status" placeholder="请选择返回结果" size="small" clearable>
+            <el-option label="成功" :value="1"></el-option>
+            <el-option label="失败" :value="0"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="操作人">
+          <el-input v-model="search.loginName" placeholder="请输入操作人" size="small"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="queryUserList">搜索</el-button>
@@ -48,7 +57,7 @@
           <template slot-scope="scope">
             <!-- 状态 -->
             <template v-if="tc.prop === 'status'">
-              {{scope.row[tc.prop] === 0 ? '失败' : scope.row[tc.prop]  === 1 ? '成功' : ''}}
+              {{ scope.row[tc.prop] === 0 ? '失败' : scope.row[tc.prop] === 1 ? '成功' : '' }}
             </template>
             <!-- 其他属性 -->
             <template v-else>
@@ -113,7 +122,9 @@ export default {
       tableColumn, // 表格字段数据
       operaStatus: '', // 当前操作状态（'add'、'edit'、'watch'）
       search: {
-        loginName: ''
+        operLog: '',
+        loginName: '',
+        status: ''
       },
       pagination: {
         pageSize: 10,
@@ -135,7 +146,9 @@ export default {
   methods: {
     getOperLogList () {
       const params = {
-        loginName: this.search.loginName
+        operLog: this.search.operLog,
+        loginName: this.search.loginName,
+        status: this.search.status
       }
       this.tableLoading = true
       this.$api.log.getOperLogList({
@@ -213,7 +226,9 @@ export default {
       this.queryUserList()
     },
     resetSearch () {
+      this.search.operLog = ''
       this.search.loginName = ''
+      this.search.status = ''
     },
     handleSizeChange (pageSize) {
       this.pagination.pageSize = pageSize

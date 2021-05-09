@@ -22,7 +22,7 @@
             <div>{{ formData.createTime }}</div>
           </el-form-item>
         </el-col>
-        <el-col :span="24" class="p-l-10">
+        <el-col v-show="formData.status === 1" :span="24" class="p-l-10">
           <el-form-item label="返回结果">
             <el-tabs v-model="jsonResultActiveName" type="card">
               <el-tab-pane label="字符串" :name="0">
@@ -32,6 +32,11 @@
                 <vue-json-pretty :deep="1" :data="jsonViewConfig.jsonResult"></vue-json-pretty>
               </el-tab-pane>
             </el-tabs>
+          </el-form-item>
+        </el-col>
+        <el-col v-show="formData.status === 0" :span="24" class="p-l-10">
+          <el-form-item label="错误信息">
+            <div class="error-msg">{{ formData.errorMsg }}</div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -130,5 +135,8 @@ export default {
 <style lang="scss" scoped>
 .el-select {
   width: 100%;
+}
+.error-msg{
+  color: #FF0033;
 }
 </style>

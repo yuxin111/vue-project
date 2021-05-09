@@ -57,6 +57,8 @@ $direction: (
   @extend .flex-justify-center;
 }
 
+/* 颜色相关 */
+
 /* 其他 */
 .cursor-pointer {
   cursor: pointer;
@@ -65,3 +67,4 @@ $direction: (
 .text-center{
   text-align: center;
 }
+
