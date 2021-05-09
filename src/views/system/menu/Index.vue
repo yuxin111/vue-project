@@ -98,18 +98,18 @@
     </div>
 
     <!--  分页  -->
-    <div class="pagination flex-justify-end m-t-15">
-      <el-pagination
-        v-show="pagination.total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pagination.pageNum"
-        :page-sizes="[5, 10, 20, 50]"
-        :page-size="pagination.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total">
-      </el-pagination>
-    </div>
+    <!--    <div class="pagination flex-justify-end m-t-15">-->
+    <!--      <el-pagination-->
+    <!--        v-show="pagination.total"-->
+    <!--        @size-change="handleSizeChange"-->
+    <!--        @current-change="handleCurrentChange"-->
+    <!--        :current-page="pagination.pageNum"-->
+    <!--        :page-sizes="[5, 10, 20, 50]"-->
+    <!--        :page-size="pagination.pageSize"-->
+    <!--        layout="total, sizes, prev, pager, next, jumper"-->
+    <!--        :total="pagination.total">-->
+    <!--      </el-pagination>-->
+    <!--    </div>-->
 
     <!--  菜单dialog  -->
     <el-dialog
@@ -148,11 +148,11 @@ export default {
         menuName: '',
         status: null
       },
-      pagination: {
-        pageSize: 10,
-        pageNum: 1,
-        total: null
-      },
+      // pagination: {
+      //   pageSize: 10,
+      //   pageNum: 1,
+      //   total: null
+      // },
       menuDialog: {
         visible: false,
         confirmLoading: false,
@@ -183,6 +183,7 @@ export default {
         })
     },
     queryMenuList () {
+      // this.pagination.pageNum = 1
       this.getMenuList()
     },
     addMenuInfo (params) {
@@ -257,16 +258,16 @@ export default {
     resetSearch () {
       this.search.menuName = ''
       this.search.status = null
-    },
-    handleSizeChange (pageSize) {
-      this.pagination.pageSize = pageSize
-      this.pagination.pageNum = 1
-      this.queryMenuList()
-    },
-    handleCurrentChange (pageNum) {
-      this.pagination.pageNum = pageNum
-      this.queryMenuList()
     }
+    // handleSizeChange (pageSize) {
+    //   this.pagination.pageSize = pageSize
+    //   this.pagination.pageNum = 1
+    //   this.getMenuList()
+    // },
+    // handleCurrentChange (pageNum) {
+    //   this.pagination.pageNum = pageNum
+    //   this.getMenuList()
+    // }
   },
   computed: {
     ...mapGetters({

@@ -176,6 +176,7 @@ export default {
       })
     },
     queryUserList () {
+      this.pagination.pageNum = 1
       this.getUserList()
     },
     addUserInfo () {
@@ -233,11 +234,11 @@ export default {
     handleSizeChange (pageSize) {
       this.pagination.pageSize = pageSize
       this.pagination.pageNum = 1
-      this.queryUserList()
+      this.getUserList()
     },
     handleCurrentChange (pageNum) {
       this.pagination.pageNum = pageNum
-      this.queryUserList()
+      this.getUserList()
     }
   },
   computed: {

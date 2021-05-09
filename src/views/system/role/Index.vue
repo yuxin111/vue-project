@@ -201,6 +201,7 @@ export default {
       })
     },
     queryRoleList () {
+      this.pagination.pageNum = 1
       this.getRoleList()
     },
     addRoleInfo () {
@@ -282,11 +283,11 @@ export default {
     handleSizeChange (pageSize) {
       this.pagination.pageSize = pageSize
       this.pagination.pageNum = 1
-      this.queryRoleList()
+      this.getRoleList()
     },
     handleCurrentChange (pageNum) {
       this.pagination.pageNum = pageNum
-      this.queryRoleList()
+      this.getRoleList()
     }
   },
   computed: {

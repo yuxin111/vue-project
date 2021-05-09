@@ -16,8 +16,11 @@
         <el-form-item label="操作人">
           <el-input v-model="search.loginName" placeholder="请输入操作人" size="small"></el-input>
         </el-form-item>
+        <el-form-item label="操作时间">
+          <date-time v-model="search.operDateTime"></date-time>
+        </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="queryUserList">搜索</el-button>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="queryOperLogList">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
@@ -110,13 +113,17 @@
 
 <script>
 import permission from '@/utils/mixin/permission'
+import DateTime from '@/components/DateTime'
 import tableColumn from './tableColumn'
 import SystemOperLogInfo from './component/SystemOperLogInfo'
 import { mapGetters } from 'vuex'
 
 export default {
   mixins: [permission],
-  components: { SystemOperLogInfo },
+  components: {
+    SystemOperLogInfo,
+    DateTime
+  },
   data () {
     return {
       tableColumn, // 表格字段数据
@@ -124,7 +131,8 @@ export default {
       search: {
         operLog: '',
         loginName: '',
-        status: ''
+        status: '',
+        operDateTime: []
       },
       pagination: {
         pageSize: 10,
@@ -145,10 +153,13 @@ export default {
   },
   methods: {
     getOperLogList () {
+      const [createBeginTime, createEndTime] = this.search.operDateTime
       const params = {
         operLog: this.search.operLog,
         loginName: this.search.loginName,
-        status: this.search.status
+        status: this.search.status,
+        createBeginTime,
+        createEndTime
       }
       this.tableLoading = true
       this.$api.log.getOperLogList({
@@ -173,14 +184,10 @@ export default {
           })
       })
     },
-    queryUserList () {
+    queryOperLogList () {
+      this.pagination.pageNum = 1
       this.getOperLogList()
     },
-    // addUserInfo () {
-    //   this.operaStatus = 'add'
-    //   this.operLogDialog.visible = true
-    //   this.operLogDialog.data = { _status: this.operaStatus }
-    // },
     async handleOperLogInfo (operaStatus, row) {
       const operLog = await this.getOperLogById(row.operLogId)
       this.operaStatus = operaStatus
@@ -190,54 +197,24 @@ export default {
         this._.cloneDeep(operLog)
       )
     },
-    // deleteUserInfo (row) {
-    //   this.$api.log.deleteUser(row.userId)
-    //     .then(() => {
-    //       this.$message({
-    //         message: '删除操作日志信息成功',
-    //         type: 'success'
-    //       })
-    //       this.handleCurrentChange(1)
-    //     })
-    // },
-    // confirmUserInfo (formData) {
-    //   const params = {
-    //     ...formData,
-    //     createBy: formData._status === 'add' ? this.userInfo.username : formData.createBy,
-    //     updateBy: formData._status === 'edit' ? this.userInfo.username : formData.updateBy
-    //   }
-    //   const apiName = formData._status === 'add' ? 'addUser' : 'updateUser'
-    //   this.operLogDialog.confirmLoading = true
-    //   this.$api.log[apiName](params)
-    //     .then(res => {
-    //       this.$message({
-    //         message: '保存操作日志信息成功',
-    //         type: 'success'
-    //       })
-    //       this.operLogDialog.visible = false
-    //       this.handleCurrentChange(1)
-    //     })
-    //     .finally(() => {
-    //       this.operLogDialog.confirmLoading = false
-    //     })
-    // },
     refresh () {
       this.resetSearch()
-      this.queryUserList()
+      this.queryOperLogList()
     },
     resetSearch () {
       this.search.operLog = ''
       this.search.loginName = ''
       this.search.status = ''
+      this.search.operDateTime = []
     },
     handleSizeChange (pageSize) {
       this.pagination.pageSize = pageSize
       this.pagination.pageNum = 1
-      this.queryUserList()
+      this.getOperLogList()
     },
     handleCurrentChange (pageNum) {
       this.pagination.pageNum = pageNum
-      this.queryUserList()
+      this.getOperLogList()
     }
   },
   computed: {
