@@ -28,7 +28,8 @@
       <div class="tools-btn">
         <el-button icon="el-icon-plus" type="primary" size="small" plain
                    :disabled="!$_hasPermission('system:role:add')"
-                   @click="addRoleInfo">新增</el-button>
+                   @click="addRoleInfo">新增
+        </el-button>
       </div>
       <div class="tools-opera">
         <el-tooltip class="item" effect="dark" content="刷新" placement="top">
@@ -93,7 +94,8 @@
               @confirm="deleteRoleInfo(scope.row)"
             >
               <el-button type="text" size="small" slot="reference" class="m-l-10"
-                         :disabled="!$_hasPermission('system:role:delete')">删除</el-button>
+                         :disabled="!$_hasPermission('system:role:delete')">删除
+              </el-button>
             </el-popconfirm>
           </template>
         </el-table-column>
@@ -199,6 +201,7 @@ export default {
       })
     },
     queryRoleList () {
+      this.pagination.pageNum = 1
       this.getRoleList()
     },
     addRoleInfo () {
@@ -258,10 +261,11 @@ export default {
         type: 'warning'
       }).then(() => {
         this.operaStatus = 'edit'
-        row = this._.merge(
-          { _status: this.operaStatus },
-          this._.cloneDeep(row)
-        )
+        row = {
+          _status: this.operaStatus,
+          roleId: row.roleId,
+          status: row.status
+        }
         this.confirmRoleInfo(row)
       }).catch(() => {
         row.status = 1 ^ status
@@ -279,11 +283,11 @@ export default {
     handleSizeChange (pageSize) {
       this.pagination.pageSize = pageSize
       this.pagination.pageNum = 1
-      this.queryRoleList()
+      this.getRoleList()
     },
     handleCurrentChange (pageNum) {
       this.pagination.pageNum = pageNum
-      this.queryRoleList()
+      this.getRoleList()
     }
   },
   computed: {

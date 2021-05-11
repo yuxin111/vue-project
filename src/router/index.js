@@ -5,6 +5,7 @@ import Login from '@/views/login/Index'
 import Welcome from './modules/welcome'
 import Article from './modules/article'
 import System from './modules/system'
+import Log from './modules/log'
 
 // const originalPush = VueRouter.prototype.push
 // VueRouter.prototype.push = function push (location) {
@@ -23,7 +24,8 @@ const routes = [
     children: [
       ...Welcome,
       ...Article,
-      ...System
+      ...System,
+      ...Log
     ],
     meta: {
       validate: true

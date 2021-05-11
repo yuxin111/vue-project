@@ -1,14 +1,26 @@
 <template>
-  <div class="system-user">
+  <div class="oper-log">
 
     <!--  查询参数  -->
     <div class="search text-center">
       <el-form :model="search" label-width="80px" inline>
-        <el-form-item label="登录账号">
-          <el-input v-model="search.loginName" placeholder="请输入登录账号" size="small"></el-input>
+        <el-form-item label="操作">
+          <el-input v-model="search.operLog" placeholder="请输入操作" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="返回结果">
+          <el-select v-model="search.status" placeholder="请选择返回结果" size="small" clearable>
+            <el-option label="成功" :value="1"></el-option>
+            <el-option label="失败" :value="0"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="操作人">
+          <el-input v-model="search.loginName" placeholder="请输入操作人" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="操作时间">
+          <date-time v-model="search.operDateTime"></date-time>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="queryUserList">搜索</el-button>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="queryOperLogList">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
@@ -17,9 +29,6 @@
     <!--  工具栏  -->
     <div class="tools flex-space-between flex-align-center">
       <div class="tools-btn">
-        <el-button icon="el-icon-plus" type="primary" size="small" plain
-                   :disabled="!$_hasPermission('system:user:add')"
-                   @click="addUserInfo">新增</el-button>
       </div>
       <div class="tools-opera">
         <el-tooltip class="item" effect="dark" content="刷新" placement="top">
@@ -36,7 +45,7 @@
       </div>
     </div>
 
-    <!--  用户表格  -->
+    <!--  操作日志表格  -->
     <div class="table m-t-15">
       <el-table
         v-loading="tableLoading"
@@ -49,7 +58,14 @@
           :label="tc.label"
           align="center">
           <template slot-scope="scope">
-            {{ scope.row[tc.prop] }}
+            <!-- 状态 -->
+            <template v-if="tc.prop === 'status'">
+              {{ scope.row[tc.prop] === 0 ? '失败' : scope.row[tc.prop] === 1 ? '成功' : '' }}
+            </template>
+            <!-- 其他属性 -->
+            <template v-else>
+              {{ scope.row[tc.prop] }}
+            </template>
           </template>
         </el-table-column>
         <el-table-column
@@ -58,24 +74,9 @@
           align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small"
-                       :disabled="!$_hasPermission('system:user:watch')"
-                       @click="handleUserInfo('watch',scope.row)">查看
+                       :disabled="!$_hasPermission('log:operLog:watch')"
+                       @click="handleOperLogInfo('watch',scope.row)">查看
             </el-button>
-            <el-button type="text" size="small"
-                       :disabled="!$_hasPermission('system:user:edit')"
-                       @click="handleUserInfo('edit',scope.row)">编辑
-            </el-button>
-            <el-popconfirm
-              title="是否删除该用户信息？"
-              icon="el-icon-info"
-              icon-color="red"
-              placement="top"
-              @confirm="deleteUserInfo(scope.row)"
-            >
-              <el-button type="text" size="small" slot="reference" class="m-l-10"
-                         :disabled="!$_hasPermission('system:user:delete')">删除
-              </el-button>
-            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -95,20 +96,16 @@
       </el-pagination>
     </div>
 
-    <!--  用户信息dialog  -->
+    <!--  操作日志信息dialog  -->
     <el-dialog
-      :title="
-        operaStatus === 'add' ? '新增用户' :
-        operaStatus === 'edit' ? '修改用户' : '用户信息'"
-      :visible.sync="userDialog.visible"
-      :close-on-click-modal="false"
+      title=""
+      :visible.sync="operLogDialog.visible"
       width="700px">
-      <SystemUserInfo
-        :propData="userDialog.data"
-        :confirmLoading="userDialog.confirmLoading"
-        :visible="userDialog.visible"
-        @confirm="confirmUserInfo"
-        @cancel="userDialog.visible = false"
+      <SystemOperLogInfo
+        :propData="operLogDialog.data"
+        :confirmLoading="operLogDialog.confirmLoading"
+        :visible="operLogDialog.visible"
+        @cancel="operLogDialog.visible = false"
       />
     </el-dialog>
   </div>
@@ -116,26 +113,33 @@
 
 <script>
 import permission from '@/utils/mixin/permission'
+import DateTime from '@/components/DateTime'
 import tableColumn from './tableColumn'
-import SystemUserInfo from './component/SystemUserInfo'
+import SystemOperLogInfo from './component/SystemOperLogInfo'
 import { mapGetters } from 'vuex'
 
 export default {
   mixins: [permission],
-  components: { SystemUserInfo },
+  components: {
+    SystemOperLogInfo,
+    DateTime
+  },
   data () {
     return {
       tableColumn, // 表格字段数据
       operaStatus: '', // 当前操作状态（'add'、'edit'、'watch'）
       search: {
-        loginName: ''
+        operLog: '',
+        loginName: '',
+        status: '',
+        operDateTime: []
       },
       pagination: {
         pageSize: 10,
         pageNum: 1,
         total: null
       },
-      userDialog: {
+      operLogDialog: {
         visible: false,
         confirmLoading: false,
         data: {}
@@ -145,15 +149,20 @@ export default {
     }
   },
   mounted () {
-    this.getUserList()
+    this.getOperLogList()
   },
   methods: {
-    getUserList () {
+    getOperLogList () {
+      const [createBeginTime, createEndTime] = this.search.operDateTime
       const params = {
-        loginName: this.search.loginName
+        operLog: this.search.operLog,
+        loginName: this.search.loginName,
+        status: this.search.status,
+        createBeginTime,
+        createEndTime
       }
       this.tableLoading = true
-      this.$api.system.getUserList({
+      this.$api.log.getOperLogList({
         pageSize: this.pagination.pageSize,
         pageNum: this.pagination.pageNum
       }, params)
@@ -166,79 +175,46 @@ export default {
           this.tableLoading = false
         })
     },
-    getUserById (id) {
+    getOperLogById (id) {
       return new Promise(resolve => {
-        this.$api.system.getUserById(id)
+        this.$api.log.getOperLogById(id)
           .then(res => {
-            res.roleIds = res.roles.map(role => role.roleId)
+            // res.roleIds = res.roles.map(role => role.roleId)
             resolve(res)
           })
       })
     },
-    queryUserList () {
+    queryOperLogList () {
       this.pagination.pageNum = 1
-      this.getUserList()
+      this.getOperLogList()
     },
-    addUserInfo () {
-      this.operaStatus = 'add'
-      this.userDialog.visible = true
-      this.userDialog.data = { _status: this.operaStatus }
-    },
-    async handleUserInfo (operaStatus, row) {
-      const userInfo = await this.getUserById(row.userId)
+    async handleOperLogInfo (operaStatus, row) {
+      const operLog = await this.getOperLogById(row.operLogId)
       this.operaStatus = operaStatus
-      this.userDialog.visible = true
-      this.userDialog.data = this._.merge(
+      this.operLogDialog.visible = true
+      this.operLogDialog.data = this._.merge(
         { _status: this.operaStatus },
-        this._.cloneDeep(userInfo)
+        this._.cloneDeep(operLog)
       )
-    },
-    deleteUserInfo (row) {
-      this.$api.system.deleteUser(row.userId)
-        .then(() => {
-          this.$message({
-            message: '删除用户信息成功',
-            type: 'success'
-          })
-          this.handleCurrentChange(1)
-        })
-    },
-    confirmUserInfo (formData) {
-      const params = {
-        ...formData,
-        createBy: formData._status === 'add' ? this.userInfo.username : formData.createBy,
-        updateBy: formData._status === 'edit' ? this.userInfo.username : formData.updateBy
-      }
-      const apiName = formData._status === 'add' ? 'addUser' : 'updateUser'
-      this.userDialog.confirmLoading = true
-      this.$api.system[apiName](params)
-        .then(res => {
-          this.$message({
-            message: '保存用户信息成功',
-            type: 'success'
-          })
-          this.userDialog.visible = false
-          this.handleCurrentChange(1)
-        })
-        .finally(() => {
-          this.userDialog.confirmLoading = false
-        })
     },
     refresh () {
       this.resetSearch()
-      this.queryUserList()
+      this.queryOperLogList()
     },
     resetSearch () {
+      this.search.operLog = ''
       this.search.loginName = ''
+      this.search.status = ''
+      this.search.operDateTime = []
     },
     handleSizeChange (pageSize) {
       this.pagination.pageSize = pageSize
       this.pagination.pageNum = 1
-      this.getUserList()
+      this.getOperLogList()
     },
     handleCurrentChange (pageNum) {
       this.pagination.pageNum = pageNum
-      this.getUserList()
+      this.getOperLogList()
     }
   },
   computed: {
