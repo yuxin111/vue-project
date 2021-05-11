@@ -43,16 +43,19 @@
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
+        <el-tooltip class="item m-l-10" effect="dark" content="全部展开/收缩" placement="top">
+          <el-button type="primary" size="small" circle @click="toggleTableExpand"><i class="el-icon-sort"/></el-button>
+        </el-tooltip>
       </div>
     </div>
 
     <!--  菜单表格  -->
     <div class="table m-t-15">
       <el-table
+        ref="table"
         v-loading="tableLoading"
         :data="tableData"
         row-key="menuId"
-        default-expand-all
         style="width: 100%">
         <el-table-column
           v-for="(tc,i) in tableColumnShown"
@@ -159,13 +162,17 @@ export default {
         data: {}
       },
       tableData: [],
-      tableLoading: false
+      tableLoading: false,
+      tableExpand: false
     }
   },
   mounted () {
     this.getMenuList()
   },
   methods: {
+    toggleTableExpand () {
+      this.tableExpand = !this.tableExpand
+    },
     getMenuList () {
       const params = {
         menuName: this.search.menuName,
@@ -275,6 +282,22 @@ export default {
     }),
     tableColumnShown () {
       return this.tableColumn.filter(tc => tc.show)
+    }
+  },
+  watch: {
+    tableExpand (tableExpand) {
+      const vm = this
+
+      function toggleTree (tableData) {
+        for (let i = 0; i < tableData.length; i++) {
+          const tableDat = tableData[i]
+          vm.$refs.table.toggleRowExpansion(tableDat, tableExpand)
+          if (tableDat.children && tableDat.children.length !== 0) {
+            toggleTree(tableDat.children)
+          }
+        }
+      }
+      toggleTree(this.tableData)
     }
   }
 }
