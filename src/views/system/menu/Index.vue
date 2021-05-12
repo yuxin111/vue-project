@@ -18,7 +18,7 @@
         <!--        </el-form-item>-->
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="queryMenuList">搜索</el-button>
-          <el-button icon="el-icon-refresh" size="mini" @click="resetSearch">重置</el-button>
+          <el-button icon="el-icon-refresh" size="mini" v-icon-rotate @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -33,7 +33,7 @@
       </div>
       <div class="tools-opera">
         <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-          <el-button type="primary" size="small" circle><i class="el-icon-refresh"/></el-button>
+          <el-button type="primary" size="small" circle v-icon-rotate><i class="el-icon-refresh"/></el-button>
         </el-tooltip>
         <el-dropdown class="m-l-10" :hide-on-click="false">
           <el-button type="primary" size="small" circle><i class="el-icon-menu"/></el-button>
@@ -44,7 +44,7 @@
           </el-dropdown-menu>
         </el-dropdown>
         <el-tooltip class="item m-l-10" effect="dark" content="全部展开/收缩" placement="top">
-          <el-button type="primary" size="small" circle @click="toggleTableExpand"><i class="el-icon-sort"/></el-button>
+          <el-button type="primary" size="small" circle v-icon-rotate @click="toggleTableExpand"><i class="el-icon-sort"/></el-button>
         </el-tooltip>
       </div>
     </div>
