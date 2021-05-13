@@ -8,7 +8,7 @@
           <el-input v-model="search.loginName" placeholder="请输入登录账号" size="small"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="queryUserList">搜索</el-button>
+          <el-button type="primary" icon="el-icon-search" size="mini" v-icon-shake @click="queryUserList">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" v-icon-rotate @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>

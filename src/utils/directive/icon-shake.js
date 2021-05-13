@@ -6,10 +6,9 @@ export default {
     const iconEl = el.getElementsByTagName('i')[0]
     if (iconEl) {
       el.onmouseenter = e => {
-        Velocity(iconEl, { rotateZ: '180deg' })
+        Velocity(iconEl, { rotateZ: '90deg' }, { loop: 1 })
       }
       el.onmouseleave = e => {
-        Velocity(iconEl, { rotateZ: '-180deg' }, { duration: 0 })
       }
     }
   }
