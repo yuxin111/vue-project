@@ -1,34 +1,96 @@
 <template>
-  <transition-group
-    name="tag-group-complete"
-    tag="div"
-    class="flex">
-    <div v-for="(tag,i) in tagList" :key="tag.url" class="tag-content m-r-10 cursor-pointer">
-      <el-tag
-        type="info"
-        size="small"
-        effect="plain"
-        :class="[{'tag-select': isCurRouter(tag)},'tag-item']"
-        @close="closeTag(tag,i)"
-        @click="switchRouter(tag)"
-        :closable="tagList.length !== 1">
-        {{ tag.name }}
-      </el-tag>
-    </div>
-  </transition-group>
+  <div>
+    <transition-group
+      name="tag-group-complete"
+      tag="div"
+      class="flex">
+      <div
+        v-for="(tag,i) in tagList"
+        :key="tag.url"
+        class="tag-content m-r-10 cursor-pointer"
+        @contextmenu.prevent="openMenu($event,tag,i)">
+        <el-tag
+          type="info"
+          size="small"
+          effect="plain"
+          :class="[{'tag-select': isCurRouter(tag)},'tag-item']"
+          @close="closeTag(tag,i)"
+          @click="switchRouter(tag)"
+          :closable="tagList.length !== 1">
+          {{ tag.name }}
+        </el-tag>
+      </div>
+    </transition-group>
+
+    <ContextMenu
+      class="contextmenu"
+      v-show="contextmenu.visible"
+      :content="contextmenu.content"
+      :top="contextmenu.top"
+      :left="contextmenu.left">
+    </ContextMenu>
+
+  </div>
 </template>
 
 <script>
+import ContextMenu from '@/components/ContextMenu'
+
 export default {
+  components: { ContextMenu },
   data () {
     return {
-      curRoute: null
+      curRoute: null,
+      contextmenu: {
+        visible: false,
+        content: [
+          {
+            title: '关闭',
+            icon: 'el-icon-document-delete',
+            onClick: () => {
+              const {
+                tag,
+                i
+              } = this.contextmenu
+              this.closeTag(tag, i)
+            }
+          },
+          {
+            title: '关闭其他',
+            icon: 'el-icon-folder-delete'
+          }
+        ],
+        tag: null,
+        i: 0,
+        top: 0,
+        left: 0
+      }
     }
   },
+  mounted () {
+    // document.addEventListener('click', e => {
+    //   const flag = e.target.contains(document.getElementsByClassName('contextmenu')[0])
+    //   if (flag) return
+    //   this.contextmenu.visible = false
+    // })
+  },
   methods: {
+    openMenu (e, tag, i) {
+      this.contextmenu.visible = true
+      this.contextmenu.left = e.clientX
+      this.contextmenu.top = e.clientY
+      this.contextmenu.tag = tag
+      this.contextmenu.i = i
+      document.addEventListener('click', this.foo)
+    },
+    foo () {
+      this.contextmenu.visible = false
+      document.removeEventListener('click', this.foo)
+    },
     closeTag (tag, i) {
       // 删除的是当前访问的tag时
       if (this.isCurRouter(tag)) {
+        if (this.tagList.length === 1) return
         // 获取最近的tag
         const nearlyTag = (i => {
           let nearlyTagIndex = 0
