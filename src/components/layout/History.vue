@@ -57,7 +57,14 @@ export default {
           },
           {
             title: '关闭其他',
-            icon: 'el-icon-folder-delete'
+            icon: 'el-icon-folder-delete',
+            onClick: () => {
+              const {
+                tag,
+                i
+              } = this.contextmenu
+              this.closeOtherTag(tag, i)
+            }
           }
         ],
         tag: null,
@@ -101,6 +108,15 @@ export default {
         this.$router.push(nearlyTag.url)
       }
       this.$store.commit('Main/TAG_DEL', tag)
+    },
+    closeOtherTag (tag, i) {
+      // 获取要删除的其他tagList
+      const inputTagList = this.tagList.filter((_, j) => j !== i)
+      // 跳转到选中的tag中
+      if (!this.isCurRouter(tag)) {
+        this.$router.push(tag.url)
+      }
+      this.$store.commit('Main/TAG_DEL_LIST', inputTagList)
     },
     isCurRouter (tag) {
       return this._.isEqual(tag, this.curRoute)
