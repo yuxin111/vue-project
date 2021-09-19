@@ -22,13 +22,15 @@
       </div>
     </transition-group>
 
-    <ContextMenu
-      class="contextmenu"
-      v-show="contextmenu.visible"
-      :content="contextmenu.content"
-      :top="contextmenu.top"
-      :left="contextmenu.left">
-    </ContextMenu>
+    <transition name="contextmenu-fade">
+      <ContextMenu
+        class="contextmenu"
+        v-show="contextmenu.visible"
+        :content="contextmenu.content"
+        :top="contextmenu.top"
+        :left="contextmenu.left">
+      </ContextMenu>
+    </transition>
 
   </div>
 </template>
@@ -166,6 +168,19 @@ export default {
   z-index: -1;
 }
 
+.contextmenu-fade-enter-active, .contextmenu-fade-leave-active {
+  //transition: opacity .2s;
+  transition: all .5s;
+  width: 200px;
+  height: fit-content;
+}
+.contextmenu-fade-enter, .contextmenu-fade-leave-to {
+  //opacity: 0;
+  width: 0;
+  height: 0;
+  //transform: translateX(20px);
+}
+
 .tag-select {
   background-color: #3995f3;
   color: #fff;
@@ -181,9 +196,9 @@ export default {
   transition: background-color .2s;
 }
 
-@keyframes mymove {
-  50% {
-    background: blue bottom right/50px 50px;
-  }
-}
+//@keyframes mymove {
+//  50% {
+//    background: blue bottom right/50px 50px;
+//  }
+//}
 </style>

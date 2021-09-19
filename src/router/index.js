@@ -23,9 +23,9 @@ const routes = [
     redirect: '/welcome',
     children: [
       ...Welcome,
-      ...Article,
       ...System,
-      ...Log
+      ...Log,
+      ...Article
     ],
     meta: {
       validate: true

@@ -18,7 +18,8 @@
     "keymaster": "^1.6.2",
     "lodash": "^4.17.20",
     "vue": "^2.6.11",
-    "vue-json-pretty": "^1.8.0"
+    "vue-json-pretty": "^1.8.0",
+    "element-ui": "^2.14.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
