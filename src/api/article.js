@@ -8,10 +8,20 @@ const article = {
   articleList (params) {
     return axios.post('/article/list', params)
   },
+
   getArticleList (pagination, params) {
     return axios.post('/article/findAll', params, {
       params: pagination
     })
+  },
+  addArticle (params) {
+    return axios.post('/article/add', params)
+  },
+  updateArticle (params) {
+    return axios.post('/article/update', params)
+  },
+  getArticleById (id) {
+    return axios.get(`/article/get/${id}`)
   }
 }
 
