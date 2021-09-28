@@ -100,20 +100,6 @@
       </el-table>
     </div>
 
-    <!--  分页  -->
-    <!--    <div class="pagination flex-justify-end m-t-15">-->
-    <!--      <el-pagination-->
-    <!--        v-show="pagination.total"-->
-    <!--        @size-change="handleSizeChange"-->
-    <!--        @current-change="handleCurrentChange"-->
-    <!--        :current-page="pagination.pageNum"-->
-    <!--        :page-sizes="[5, 10, 20, 50]"-->
-    <!--        :page-size="pagination.pageSize"-->
-    <!--        layout="total, sizes, prev, pager, next, jumper"-->
-    <!--        :total="pagination.total">-->
-    <!--      </el-pagination>-->
-    <!--    </div>-->
-
     <!--  菜单dialog  -->
     <el-dialog
       :title="
@@ -217,7 +203,7 @@ export default {
             message: '删除菜单成功',
             type: 'success'
           })
-          this.handleCurrentChange(1)
+          this.getMenuList()
         })
     },
     confirmMenuInfo (formData) {
@@ -235,7 +221,7 @@ export default {
             type: 'success'
           })
           this.menuDialog.visible = false
-          this.handleCurrentChange(1)
+          this.getMenuList()
         })
         .finally(() => {
           this.menuDialog.confirmLoading = false
@@ -266,15 +252,6 @@ export default {
       this.search.menuName = ''
       this.search.status = null
     }
-    // handleSizeChange (pageSize) {
-    //   this.pagination.pageSize = pageSize
-    //   this.pagination.pageNum = 1
-    //   this.getMenuList()
-    // },
-    // handleCurrentChange (pageNum) {
-    //   this.pagination.pageNum = pageNum
-    //   this.getMenuList()
-    // }
   },
   computed: {
     ...mapGetters({

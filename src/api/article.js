@@ -20,6 +20,9 @@ const article = {
   updateArticle (params) {
     return axios.post('/article/update', params)
   },
+  deleteArticle (id) {
+    return axios.get(`/article/delete/${id}`)
+  },
   getArticleById (id) {
     return axios.get(`/article/get/${id}`)
   }

@@ -30,6 +30,7 @@
     <div class="tools flex-space-between flex-align-center">
       <div class="tools-btn">
         <el-button icon="el-icon-plus" type="primary" size="small" plain
+                   :disabled="!$_hasPermission('article:operArticle:add')"
                    @click="addArticle">新增
         </el-button>
       </div>
@@ -77,8 +78,24 @@
           align="center">
           <template slot-scope="scope">
             <el-button type="text" size="small"
+                       :disabled="!$_hasPermission('article:operArticle:watch')"
                        @click="handleArticleInfo('watch',scope.row)">查看
             </el-button>
+            <el-button type="text" size="small"
+                       :disabled="!$_hasPermission('article:operArticle:edit')"
+                       @click="handleArticleInfo('edit',scope.row)">编辑
+            </el-button>
+            <el-popconfirm
+              title="是否删除此文章？"
+              icon="el-icon-info"
+              icon-color="red"
+              placement="top"
+              @confirm="deleteArticleInfo(scope.row)"
+            >
+              <el-button type="text" size="small" slot="reference" class="m-l-10"
+                         :disabled="!$_hasPermission('article:operArticle:delete')">删除
+              </el-button>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -224,6 +241,16 @@ export default {
         { _status: this.operaStatus },
         this._.cloneDeep(article)
       )
+    },
+    deleteArticleInfo (row) {
+      this.$api.article.deleteArticle(row.id)
+        .then(() => {
+          this.$message({
+            message: '删除文章成功',
+            type: 'success'
+          })
+          this.handleCurrentChange(1)
+        })
     },
     refresh () {
       this.resetSearch()

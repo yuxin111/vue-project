@@ -3,7 +3,7 @@ import store from '@/store'
 import Layout from '@/components/layout/Index'
 import Login from '@/views/login/Index'
 import Welcome from './modules/welcome'
-import Article from './modules/article'
+// import Article from './modules/article'
 import System from './modules/system'
 import Log from './modules/log'
 
@@ -25,7 +25,7 @@ const routes = [
       ...Welcome,
       ...System,
       ...Log,
-      ...Article
+      // ...Article
     ],
     meta: {
       validate: true

@@ -155,30 +155,6 @@ export default {
 <style lang="scss" scoped>
 .tag-content {
   display: inline-block;
-  transition: all .5s;
-}
-
-.tag-group-complete-enter, .tag-group-complete-leave-to {
-  opacity: 0;
-  transform: translateX(20px);
-}
-
-.tag-group-complete-leave-active {
-  position: absolute;
-  z-index: -1;
-}
-
-.contextmenu-fade-enter-active, .contextmenu-fade-leave-active {
-  //transition: opacity .2s;
-  transition: all .5s;
-  width: 200px;
-  height: fit-content;
-}
-.contextmenu-fade-enter, .contextmenu-fade-leave-to {
-  //opacity: 0;
-  width: 0;
-  height: 0;
-  //transform: translateX(20px);
 }
 
 .tag-select {
@@ -195,10 +171,4 @@ export default {
 .tag-item {
   transition: background-color .2s;
 }
-
-//@keyframes mymove {
-//  50% {
-//    background: blue bottom right/50px 50px;
-//  }
-//}
 </style>

@@ -95,7 +95,6 @@ export default {
           }
         ]
       },
-      roleList: [] // 所有角色列表
     }
   },
   methods: {
