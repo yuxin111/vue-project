@@ -18,7 +18,7 @@ export default [
         meta: {
           title: '用户管理',
           icon: 'el-icon-user-solid',
-          permission: 'system:user:list'
+          // permission: 'system:user:list'
         }
       },
       {
@@ -27,7 +27,7 @@ export default [
         meta: {
           title: '角色管理',
           icon: 'el-icon-help',
-          permission: 'system:role:list'
+          // permission: 'system:role:list'
         }
       },
       {
@@ -36,7 +36,7 @@ export default [
         meta: {
           title: '菜单管理',
           icon: 'el-icon-menu',
-          permission: 'system:menu:list'
+          // permission: 'system:menu:list'
         }
       }
     ]
