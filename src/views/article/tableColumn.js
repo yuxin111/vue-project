@@ -24,9 +24,15 @@ export default [
     editable: false
   },
   {
+    label: '创建时间',
+    prop: 'createTime',
+    show: false,
+    editable: true
+  },
+  {
     label: '最后修改日期',
     prop: 'updateTime',
-    show: true,
+    show: false,
     editable: true
   }
 ]

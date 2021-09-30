@@ -17,7 +17,7 @@ export default [
         component: SystemUser,
         meta: {
           title: '用户管理',
-          icon: 'el-icon-user-solid',
+          icon: 'el-icon-user-solid'
           // permission: 'system:user:list'
         }
       },
@@ -26,7 +26,7 @@ export default [
         component: SystemRole,
         meta: {
           title: '角色管理',
-          icon: 'el-icon-help',
+          icon: 'el-icon-help'
           // permission: 'system:role:list'
         }
       },
@@ -35,7 +35,7 @@ export default [
         component: SystemMenu,
         meta: {
           title: '菜单管理',
-          icon: 'el-icon-menu',
+          icon: 'el-icon-menu'
           // permission: 'system:menu:list'
         }
       }

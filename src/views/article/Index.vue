@@ -122,7 +122,7 @@
         operaStatus === 'edit' ? '修改文章' : '文章信息'"
       :visible.sync="articleDialog.visible"
       :close-on-click-modal="false"
-      width="700px">
+      width="1200px">
       <ArticleInfo
         :propData="articleDialog.data"
         :confirmLoading="articleDialog.confirmLoading"
@@ -139,6 +139,7 @@
 import permission from '@/utils/mixin/permission'
 import tableColumn from './tableColumn'
 import ArticleInfo from './component/ArticleInfo'
+
 import { mapGetters } from 'vuex'
 
 export default {

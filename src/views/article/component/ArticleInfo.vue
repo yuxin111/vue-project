@@ -14,12 +14,13 @@
         </el-col>
         <el-col :span="24" class="p-l-10">
           <el-form-item label="内容" prop="content">
-            <el-input
-              type="textarea"
-              :autosize="{ minRows: 10}"
-              placeholder="请输入内容"
-              v-model="formData.content">
-            </el-input>
+            <tinymce-editor v-model="formData.content"></tinymce-editor>
+<!--            <el-input-->
+<!--              type="textarea"-->
+<!--              :autosize="{ minRows: 10}"-->
+<!--              placeholder="请输入内容"-->
+<!--              v-model="formData.content">-->
+<!--            </el-input>-->
           </el-form-item>
         </el-col>
       </el-row>
@@ -35,7 +36,11 @@
 </template>
 
 <script>
+import TinymceEditor from '@/components/tinymce/TinymceEditor'
 export default {
+  components: {
+    TinymceEditor
+  },
   props: {
     propData: {
       type: Object,
@@ -94,7 +99,7 @@ export default {
             trigger: 'blur'
           }
         ]
-      },
+      }
     }
   },
   methods: {
