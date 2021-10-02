@@ -20,7 +20,7 @@
           <date-time v-model="search.operDateTime"></date-time>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="queryOperLogList">搜索</el-button>
+          <el-button type="primary" icon="el-icon-search" size="mini" v-icon-shake @click="queryOperLogList">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" v-icon-rotate @click="resetSearch">重置</el-button>
         </el-form-item>
       </el-form>

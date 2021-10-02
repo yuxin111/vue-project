@@ -2,39 +2,11 @@ import Article from '@/views/article/Index'
 
 export default [
   {
-    path: '/article_parent',
+    path: '/article',
     component: Article,
     meta: {
-      title: '文章_parent',
+      title: '文章',
       icon: 'el-icon-folder-opened'
-    },
-    children: [
-      {
-        path: '/article1',
-        component: Article,
-        meta: {
-          title: '文章1',
-          icon: 'el-icon-folder'
-        },
-        children: [
-          {
-            path: '/article1_1',
-            component: Article,
-            meta: {
-              title: '文章1_1',
-              icon: 'el-icon-document'
-            }
-          }
-        ]
-      },
-      {
-        path: '/article2',
-        component: Article,
-        meta: {
-          title: '文章2',
-          icon: 'el-icon-document'
-        }
-      }
-    ]
+    }
   }
 ]

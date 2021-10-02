@@ -27,8 +27,10 @@ export default {
   data () {
     return {
       loginForm: {
-        username: 'yuxin',
-        password: '123456'
+        // username: 'yuxin',
+        // password: '123456'
+        username: '',
+        password: ''
       },
       loginLoading: false
     }

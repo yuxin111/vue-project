@@ -6,6 +6,8 @@ import _ from 'lodash'
 const login = ({ commit }, userInfo = {}) => {
   return new Promise((resolve, reject) => {
     system.login(userInfo).then(res => {
+      // 保存进cookie的时候删除密码信息
+      delete userInfo.password
       userInfo = _.merge(userInfo, res)
       commit('USERINFO_SET', userInfo)
       cookie.set(constant.COOKIE_USERINFO, userInfo)
