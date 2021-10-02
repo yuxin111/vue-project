@@ -36,4 +36,14 @@ function hasPermission (menuName = '', menus = []) {
   return menuName ? menus.includes(menuName) : true
 }
 
-export { formatToTree, hasPermission }
+/**
+ * 去除html标签
+ * @param htmlText 传入的html字符串
+ *        例：<p>你好</p>
+ */
+function removeHtmlTag (htmlText) {
+  const regex = /(<([^>]+)>)/ig
+  return htmlText.replace(regex, '')
+}
+
+export { formatToTree, hasPermission, removeHtmlTag }
