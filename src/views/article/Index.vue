@@ -26,26 +26,25 @@
 
     <!--  查询参数  -->
     <div class="search text-center m-t-15">
-      <el-input placeholder="请输入任意想搜索的内容.." v-model="search.text" class="input-with-select">
-        <el-button slot="append" type="primary" icon="el-icon-search"></el-button>
+      <el-input placeholder="请输入任意想搜索的内容.." v-model="search.text" class="input-with-select" @input="debounceInput">
+        <el-button slot="append" type="primary" icon="el-icon-search" @click="queryArticleList"></el-button>
       </el-input>
     </div>
 
     <div class="search-result-list m-t-15">
-      <el-card shadow="hover" v-for="(td,i) in tableData" :key="i">
-        <div class="card-container">
-          <div class="card-title">
-            {{ td.title }}
+<!--      <transition-group name="article-list">-->
+        <el-card shadow="hover" v-for="(td,i) in tableData" :key="i">
+          <div class="card-container">
+            <div class="card-title" v-html="td.title"></div>
+            <div class="card-content" v-html="td.content_withDeal">
+            </div>
+            <div class="card-footer flex-space-between">
+              <span v-html="td.author"></span>
+              <span>{{ td.updateTime }}</span>
+            </div>
           </div>
-          <div class="card-content">
-            {{ td.content_withDeal }}
-          </div>
-          <div class="card-footer flex-space-between">
-            <span>{{ td.author }}</span>
-            <span>{{ td.updateTime }}</span>
-          </div>
-        </div>
-      </el-card>
+        </el-card>
+<!--      </transition-group>-->
     </div>
 
     <!--  操作日志表格  -->
@@ -101,18 +100,18 @@
     <!--    </div>-->
 
     <!--  分页  -->
-        <div class="pagination flex-justify-end m-t-15">
-          <el-pagination
-            v-show="pagination.total"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="pagination.pageNum"
-            :page-sizes="[5, 10, 20, 50]"
-            :page-size="pagination.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="pagination.total">
-          </el-pagination>
-        </div>
+    <div class="pagination flex-justify-end m-t-15">
+      <el-pagination
+        v-show="pagination.total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pagination.pageNum"
+        :page-sizes="[5, 10, 20, 50]"
+        :page-size="pagination.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="pagination.total">
+      </el-pagination>
+    </div>
 
     <!--  用户信息dialog  -->
     <el-dialog
@@ -136,7 +135,7 @@
 
 <script>
 import permission from '@/utils/mixin/permission'
-import { removeHtmlTag } from '@/utils/common'
+import { removeHtmlTag, debounce } from '@/utils/common'
 import tableColumn from './tableColumn'
 import ArticleInfo from './component/ArticleInfo'
 
@@ -172,8 +171,14 @@ export default {
     this.getArticleList()
   },
   methods: {
+    // attention：不要用匿名() => {}这种方法，this指向会有问题
+    debounceInput: debounce(function () {
+      this.queryArticleList()
+    }, 300),
     getArticleList () {
-      const params = {}
+      const params = {
+        text: this.search.text
+      }
       this.tableLoading = true
       this.$api.article.getArticleList({
         pageSize: this.pagination.pageSize,
@@ -192,7 +197,7 @@ export default {
         })
     },
     dealWithContent (content) {
-      const noHtmlContent = removeHtmlTag(content)
+      const noHtmlContent = removeHtmlTag(content, 'highlight')
       if (noHtmlContent.length > 300) {
         return noHtmlContent.slice(0, 300) + '...'
       } else {
@@ -301,5 +306,9 @@ export default {
     font-size: .9em;
     color: #ccc;
   }
+
+  //.article-list-move {
+  //  transition: transform 5s;
+  //}
 }
 </style>
