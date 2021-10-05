@@ -58,10 +58,13 @@ $direction: (
 }
 
 /* 颜色相关 */
-.word-highlight{
+hl{
   background-color: yellow;
 }
 
+.font-color-warn{
+  color: #dc3c3c;
+}
 /* 其他 */
 .cursor-pointer {
   cursor: pointer;
