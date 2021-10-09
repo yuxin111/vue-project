@@ -57,6 +57,7 @@ export default {
         elementpath: false,
         // 上传图片
         paste_data_images: true, // 允许直接黏贴图片
+        // TODO 图片大小、类型设置等
         images_file_types: 'jpeg,jpg,png',
         images_upload_handler: function (blobInfo, success, failure) {
           const formdata = new FormData()
