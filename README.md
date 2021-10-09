@@ -1,21 +1,15 @@
-# my-vue-project
 
 ## 目的
-完成一个简单、高效的自用vue2.0前端模板
+完成一个简单、高效的自用vue2.0前端模板\
+该项目后端在[这里](https://github.com/yuxin111/java-project)
 
-## 开发规范
-https://cn.vuejs.org/v2/style-guide/index.html
+## 演示
+http://119.29.197.72:8080/ \
+账号：guest\
+密码：guest
 
-### 组件顺序
-- components
-- props
-- data
-- created
-- mounted
-- activited
-- update
-- beforeRouteUpdate
-- methods
-- filter
-- computed
-- watch
+## 启动
+```
+npm install   // 安装依赖 
+npm run serve   // 启动项目
+```

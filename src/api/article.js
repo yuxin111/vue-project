@@ -25,6 +25,9 @@ const article = {
   },
   getArticleById (id) {
     return axios.get(`/article/get/${id}`)
+  },
+  uploadImage (params) {
+    return axios.post('/article/upload/img', params)
   }
 }
 

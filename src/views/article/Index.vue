@@ -26,26 +26,52 @@
 
     <!--  查询参数  -->
     <div class="search text-center m-t-15">
-      <el-input placeholder="请输入任意想搜索的内容.." v-model="search.text" class="input-with-select">
-        <el-button slot="append" type="primary" icon="el-icon-search"></el-button>
+      <el-input placeholder="请输入任意想搜索的内容.." v-model="search.text" class="input-with-select" @input="debounceInput">
+        <el-button slot="append" type="primary" icon="el-icon-plus" v-icon-rotate @click="addArticle" :disabled="!$_hasPermission('article:operArticle:add')"></el-button>
       </el-input>
     </div>
 
     <div class="search-result-list m-t-15">
+      <!--      <transition-group name="article-list">-->
       <el-card shadow="hover" v-for="(td,i) in tableData" :key="i">
         <div class="card-container">
-          <div class="card-title">
-            {{ td.title }}
+          <div class="card-header flex-space-between">
+            <!-- TODO 加上权限  -->
+            <div class="card-title" v-html="td.title" @click="handleArticleInfo('watch',td)"></div>
+            <div class="card-more">
+              <el-dropdown trigger="click" @command="handleCommand">
+                <i class="el-icon-more"></i>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    icon="el-icon-view"
+                    :command="beforeHandleCommand('watch',td)"
+                    :disabled="!$_hasPermission('article:operArticle:watch')">查看
+                  </el-dropdown-item>
+                  <el-dropdown-item
+                    icon="el-icon-edit"
+                    :command="beforeHandleCommand('edit',td)"
+                    :disabled="!$_hasPermission('article:operArticle:edit')">编辑
+                  </el-dropdown-item>
+                  <el-dropdown-item
+                    icon="el-icon-delete"
+                    class="font-color-warn"
+                    :command="beforeHandleCommand('delete',td)"
+                    :disabled="!$_hasPermission('article:operArticle:delete')"
+                  >删除
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
           </div>
-          <div class="card-content">
-            {{ td.content_withDeal }}
+          <div class="card-content" v-html="td.content_withDeal">
           </div>
           <div class="card-footer flex-space-between">
-            <span>{{ td.author }}</span>
+            <span v-html="td.author"></span>
             <span>{{ td.updateTime }}</span>
           </div>
         </div>
       </el-card>
+      <!--      </transition-group>-->
     </div>
 
     <!--  操作日志表格  -->
@@ -101,18 +127,18 @@
     <!--    </div>-->
 
     <!--  分页  -->
-        <div class="pagination flex-justify-end m-t-15">
-          <el-pagination
-            v-show="pagination.total"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="pagination.pageNum"
-            :page-sizes="[5, 10, 20, 50]"
-            :page-size="pagination.pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="pagination.total">
-          </el-pagination>
-        </div>
+    <div class="pagination flex-justify-end m-t-15">
+      <el-pagination
+        v-show="pagination.total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pagination.pageNum"
+        :page-sizes="[5, 10, 20, 50]"
+        :page-size="pagination.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="pagination.total">
+      </el-pagination>
+    </div>
 
     <!--  用户信息dialog  -->
     <el-dialog
@@ -136,7 +162,7 @@
 
 <script>
 import permission from '@/utils/mixin/permission'
-import { removeHtmlTag } from '@/utils/common'
+import { removeHtmlTag, debounce } from '@/utils/common'
 import tableColumn from './tableColumn'
 import ArticleInfo from './component/ArticleInfo'
 
@@ -172,8 +198,33 @@ export default {
     this.getArticleList()
   },
   methods: {
+    beforeHandleCommand (command, row) {
+      return {
+        command,
+        row
+      }
+    },
+    handleCommand (command) {
+      switch (command.command) {
+        case 'watch':
+          this.handleArticleInfo('watch', command.row)
+          break
+        case 'edit':
+          this.handleArticleInfo('edit', command.row)
+          break
+        case 'delete':
+          this.deleteArticleInfo(command.row)
+          break
+      }
+    },
+    // attention：不要用匿名() => {}这种方法，this指向会有问题
+    debounceInput: debounce(function () {
+      this.queryArticleList()
+    }, 300),
     getArticleList () {
-      const params = {}
+      const params = {
+        text: this.search.text
+      }
       this.tableLoading = true
       this.$api.article.getArticleList({
         pageSize: this.pagination.pageSize,
@@ -191,10 +242,20 @@ export default {
           this.tableLoading = false
         })
     },
-    dealWithContent (content) {
-      const noHtmlContent = removeHtmlTag(content)
-      if (noHtmlContent.length > 300) {
-        return noHtmlContent.slice(0, 300) + '...'
+    /**
+     * 处理返回内容
+     * @param content 带有html的内容
+     * @param hitTag highlight标记的标签
+     * @param sliceNum 截取多少个字符（不包含html标签，单纯看到的字符）
+     */
+    dealWithContent (content, hitTag = 'hl', sliceNum = 300) {
+      const noHtmlContent = removeHtmlTag(content, hitTag)
+      // eslint-disable-next-line no-eval
+      const hits = (noHtmlContent.match(eval(`/<${hitTag}>/g`)) || []).length
+      // 加上highlight的标签字符数，确保截得完整
+      sliceNum += hits * ((hitTag.length + 2) * 2 + 1)
+      if (noHtmlContent.length > sliceNum) {
+        return noHtmlContent.slice(0, sliceNum) + '...'
       } else {
         return noHtmlContent
       }
@@ -236,6 +297,14 @@ export default {
         })
     },
     async handleArticleInfo (operaStatus, row) {
+      const noPermit = !this.$_hasPermission('article:operArticle:watch')
+      if (noPermit) {
+        this.$message({
+          message: '暂无查看文章权限，请联系管理员',
+          type: 'warning'
+        })
+        return
+      }
       const article = await this.getArticleById(row.id)
       this.operaStatus = operaStatus
       this.articleDialog.visible = true
@@ -283,11 +352,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.search{
+  .el-button--primary{
+    color: #fff;
+    background-color: #409eff;
+    border-radius: 0;
+    border: 1px solid #409eff;
+    margin: -10px -21px;
+  }
+  ::v-deep {
+    .el-input-group__append {
+      border: 1px solid #409eff;
+    }
+  }
+}
 .card-container {
   .card-title {
     font-size: 1.3em;
     color: #207ab7;
     text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+      color: #2e9de8;
+    }
+  }
+
+  .el-icon-more {
+    font-size: 1.3em;
+    color: #ccc;
+    cursor: pointer;
   }
 
   .card-content {
@@ -301,5 +395,9 @@ export default {
     font-size: .9em;
     color: #ccc;
   }
+
+  //.article-list-move {
+  //  transition: transform 5s;
+  //}
 }
 </style>

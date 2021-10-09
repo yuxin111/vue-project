@@ -39,11 +39,54 @@ function hasPermission (menuName = '', menus = []) {
 /**
  * 去除html标签
  * @param htmlText 传入的html字符串
- *        例：<p>你好</p>
+ *        例：<p>你好<highlight>呀！</highlight></p>
+ *        结果：你好呀！
+ * @param except 除了这个标签外
+ *        例：highlight
+ *        结果：你好<highlight>呀！</highlight>
  */
-function removeHtmlTag (htmlText) {
-  const regex = /(<([^>]+)>)/ig
+function removeHtmlTag (htmlText, exceptTagName) {
+  let regex
+  if (!exceptTagName) {
+    regex = /(<([^>]+)>)/ig
+  } else {
+    // eslint-disable-next-line no-eval
+    regex = eval(`/<(?!${exceptTagName}|\\/${exceptTagName}).*?>/ig`)
+  }
   return htmlText.replace(regex, '')
 }
 
-export { formatToTree, hasPermission, removeHtmlTag }
+/**
+ * 防抖：防止重复点击触发事件
+ * @param fn 执行的函数
+ * @param time 间隔时间
+ */
+function debounce (fn, time) {
+  let timeout = null // 创建一个标记用来存放定时器的返回值
+  return function () {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      fn.apply(this, arguments)
+    }, time)
+  }
+}
+
+/**
+ * 节流：指定时间间隔内只会执行一次任务
+ * @param fn 执行的函数
+ * @param time 间隔时间
+ */
+function throttle (fn, time) {
+  const _arguments = arguments
+  let canRun = true
+  return function () {
+    if (!canRun) return
+    canRun = false
+    setTimeout(() => {
+      fn.call(this, _arguments)
+      canRun = true
+    }, time)
+  }
+}
+
+export { formatToTree, hasPermission, removeHtmlTag, debounce, throttle }
