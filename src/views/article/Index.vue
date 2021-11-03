@@ -27,7 +27,8 @@
     <!--  查询参数  -->
     <div class="search text-center m-t-15">
       <el-input placeholder="请输入任意想搜索的内容.." v-model="search.text" class="input-with-select" @input="debounceInput">
-        <el-button slot="append" type="primary" icon="el-icon-plus" v-icon-rotate @click="addArticle" :disabled="!$_hasPermission('article:operArticle:add')"></el-button>
+        <el-button slot="append" type="primary" icon="el-icon-plus" v-icon-rotate @click="addArticle"
+                   :disabled="!$_hasPermission('article:operArticle:add')"></el-button>
       </el-input>
     </div>
 
@@ -63,7 +64,10 @@
               </el-dropdown>
             </div>
           </div>
-          <div class="card-content" v-html="td.content_withDeal">
+          <div class="card-main">
+            <img v-if="td.content_previewUrl" :src="td.content_previewUrl" class="card-preview">
+            <div class="card-content" v-html="td.content_withDeal">
+            </div>
           </div>
           <div class="card-footer flex-space-between">
             <span v-html="td.author"></span>
@@ -162,7 +166,7 @@
 
 <script>
 import permission from '@/utils/mixin/permission'
-import { removeHtmlTag, debounce } from '@/utils/common'
+import { removeHtmlTag, getFirstTagOrAttr, getThumbImg, debounce } from '@/utils/common'
 import tableColumn from './tableColumn'
 import ArticleInfo from './component/ArticleInfo'
 
@@ -235,7 +239,11 @@ export default {
           this.pagination.total = res.total
           this.tableData = data
           this.tableData.map(td => {
+            // TODO 压缩图片没有则读取原图片
+            const originImgUrl = getFirstTagOrAttr(td.content, 'img', 'src').replace(/"/g, '')
+            const thumbImgUrl = originImgUrl && getThumbImg(originImgUrl)
             this.$set(td, 'content_withDeal', this.dealWithContent(td.content))
+            this.$set(td, 'content_previewUrl', thumbImgUrl)
           })
         })
         .finally(() => {
@@ -352,20 +360,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.search{
-  .el-button--primary{
+.search {
+  .el-button--primary {
     color: #fff;
     background-color: #409eff;
     border-radius: 0;
     border: 1px solid #409eff;
     margin: -10px -21px;
   }
+
   ::v-deep {
     .el-input-group__append {
       border: 1px solid #409eff;
     }
   }
 }
+
 .card-container {
   .card-title {
     font-size: 1.3em;
@@ -384,11 +394,22 @@ export default {
     cursor: pointer;
   }
 
-  .card-content {
+  .card-main {
+    display: flex;
+    align-items: center;
     margin: 5px 0;
-    font-size: .9em;
-    line-height: 1.5em;
-    color: rgb(34 47 62);
+
+    .card-preview {
+      width: 75px;
+      height: 75px;
+      padding-right: 5px;
+    }
+
+    .card-content {
+      font-size: .9em;
+      line-height: 1.5em;
+      color: rgb(34 47 62);
+    }
   }
 
   .card-footer {
