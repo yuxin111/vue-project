@@ -1,4 +1,5 @@
 import store from '@/store'
+import ta from 'element-ui/src/locale/lang/ta'
 
 /**
  * 树形结构数据 <- 列表
@@ -57,6 +58,28 @@ function removeHtmlTag (htmlText, exceptTagName) {
 }
 
 /**
+ * 获取html中第一个标签/标签内属性内容
+ * @param htmlText 传入的html字符串
+ * @param tag 匹配的标签
+ * @param attr 匹配的属性（可不填）
+ */
+function getFirstTagOrAttr (htmlText, tag, attr) {
+  // eslint-disable-next-line no-eval
+  let result = htmlText.match(eval(`/<${tag}[^>]*>/ig`))
+  result = result ? result[0] : ''
+  // eslint-disable-next-line no-eval
+  result = result.match(eval(`/(${attr})(=)([^\\s|>]*)/i`))
+  result = result ? result[3] : ''
+  return result
+}
+
+function getThumbImg (imgUrl) {
+  const nameNoSuffix = imgUrl.substring(0, imgUrl.lastIndexOf('.'))
+  const suffix = imgUrl.slice(imgUrl.lastIndexOf('.'))
+  return nameNoSuffix + '_thumb' + suffix
+}
+
+/**
  * 防抖：防止重复点击触发事件
  * @param fn 执行的函数
  * @param time 间隔时间
@@ -89,4 +112,4 @@ function throttle (fn, time) {
   }
 }
 
-export { formatToTree, hasPermission, removeHtmlTag, debounce, throttle }
+export { formatToTree, hasPermission, removeHtmlTag, getThumbImg, getFirstTagOrAttr, debounce, throttle }
