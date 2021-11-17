@@ -6,10 +6,12 @@
         <el-divider></el-divider>
         <el-form label-width="80px" :model="loginForm">
           <el-form-item label="用户名">
-            <el-input v-model="loginForm.username" placeholder="请输入用户名" clearable></el-input>
+            <el-input ref="username" v-model="loginForm.username" placeholder="请输入用户名" clearable
+                      @keyup.enter.native="inputChange" @keyup.down.native="$refs.password.focus()"></el-input>
           </el-form-item>
           <el-form-item label="密码">
-            <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" clearable></el-input>
+            <el-input ref="password" type="password" v-model="loginForm.password" placeholder="请输入密码" clearable
+                      @keyup.enter.native="inputChange" @keyup.up.native="$refs.username.focus()"></el-input>
           </el-form-item>
         </el-form>
         <div class="login-btn flex">
@@ -27,8 +29,6 @@ export default {
   data () {
     return {
       loginForm: {
-        // username: 'yuxin',
-        // password: '123456'
         username: '',
         password: ''
       },
@@ -37,8 +37,19 @@ export default {
   },
   mounted () {
     this.$keymaster.bind('enter', this.toLogin)
+    this.$refs.username.focus()
   },
   methods: {
+    inputChange () {
+      const { username, password } = this.loginForm
+      if (this._.isEmpty(username)) {
+        this.$refs.username.focus()
+      } else if (this._.isEmpty(password)) {
+        this.$refs.password.focus()
+      } else {
+        this.toLogin()
+      }
+    },
     toLogin () {
       this.loginLoading = true
       this.$store.dispatch('User/login', this.loginForm)
