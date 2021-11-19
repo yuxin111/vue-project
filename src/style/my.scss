@@ -1,3 +1,4 @@
+/* 方位 */
 $num: (
         5: '5px',
         10: '10px',
@@ -12,6 +13,12 @@ $direction: (
 );
 
 @each $num-key, $num-value in $num {
+  .m-#{$num-key}{
+    margin: #{$num-value}
+  }
+  .p-#{$num-key}{
+    margin: #{$num-value}
+  }
   @each $direction-key, $direction-value in $direction {
     .m-#{$direction-key}-#{$num-key} {
       margin-#{$direction-value}: #{$num-value};
@@ -21,6 +28,7 @@ $direction: (
     }
   }
 }
+
 
 /* flex家族 */
 .flex {
@@ -62,8 +70,11 @@ hl{
   background-color: yellow;
 }
 
-.font-color-warn{
+.f-color-warn{
   color: #dc3c3c;
+}
+.bg-light-blue{
+  background-color: #ccc;
 }
 /* 其他 */
 .cursor-pointer {
