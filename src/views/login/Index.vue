@@ -27,7 +27,7 @@
 <script>
 
 export default {
-  data() {
+  data () {
     return {
       loginForm: {
         username: '',
@@ -36,13 +36,13 @@ export default {
       loginLoading: false
     }
   },
-  mounted() {
+  mounted () {
     this.$keymaster.bind('enter', this.toLogin)
     this.$refs.username.focus()
   },
   methods: {
-    inputChange() {
-      const {username, password} = this.loginForm
+    inputChange () {
+      const { username, password } = this.loginForm
       if (this._.isEmpty(username)) {
         this.$refs.username.focus()
       } else if (this._.isEmpty(password)) {
@@ -51,7 +51,7 @@ export default {
         this.toLogin()
       }
     },
-    toLogin() {
+    toLogin () {
       this.loginLoading = true
       this.$store.dispatch('User/login', this.loginForm)
         .then(res => {
@@ -67,14 +67,14 @@ export default {
           this.loginLoading = false
         })
     },
-    reset() {
+    reset () {
       this.loginForm = {
         username: '',
         password: ''
       }
     }
   },
-  beforeDestroy() {
+  beforeDestroy () {
     this.$keymaster.unbind('enter')
   }
 }

@@ -65,12 +65,12 @@
             </div>
           </div>
           <div class="card-main">
-            <img v-if="td.content_previewUrl" :src="td.content_previewUrl" class="card-preview">
+            <img v-if="td.content_previewUrl" :src="td.content_previewUrl" class="card-preview" />
             <div class="card-content" v-html="td.content_withDeal">
             </div>
           </div>
           <div class="card-footer flex-space-between">
-            <span>作者：{{td.author}}</span>
+            <div>作者：<span v-html="td.author"></span></div>
             <span>{{ td.updateTime }}</span>
           </div>
         </div>
