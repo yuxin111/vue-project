@@ -6,11 +6,12 @@
         <el-divider></el-divider>
         <el-form label-width="80px" :model="loginForm">
           <el-form-item label="用户名">
-            <el-input ref="username" v-model="loginForm.username" placeholder="请输入用户名" clearable
+            <el-input ref="username" v-model="loginForm.username" placeholder="请输入用户名" clearable autocomplete
                       @keyup.enter.native="inputChange" @keyup.down.native="$refs.password.focus()"></el-input>
           </el-form-item>
           <el-form-item label="密码">
             <el-input ref="password" type="password" v-model="loginForm.password" placeholder="请输入密码" clearable
+                      autocomplete
                       @keyup.enter.native="inputChange" @keyup.up.native="$refs.username.focus()"></el-input>
           </el-form-item>
         </el-form>
@@ -26,7 +27,7 @@
 <script>
 
 export default {
-  data () {
+  data() {
     return {
       loginForm: {
         username: '',
@@ -35,13 +36,13 @@ export default {
       loginLoading: false
     }
   },
-  mounted () {
+  mounted() {
     this.$keymaster.bind('enter', this.toLogin)
     this.$refs.username.focus()
   },
   methods: {
-    inputChange () {
-      const { username, password } = this.loginForm
+    inputChange() {
+      const {username, password} = this.loginForm
       if (this._.isEmpty(username)) {
         this.$refs.username.focus()
       } else if (this._.isEmpty(password)) {
@@ -50,7 +51,7 @@ export default {
         this.toLogin()
       }
     },
-    toLogin () {
+    toLogin() {
       this.loginLoading = true
       this.$store.dispatch('User/login', this.loginForm)
         .then(res => {
@@ -66,14 +67,14 @@ export default {
           this.loginLoading = false
         })
     },
-    reset () {
+    reset() {
       this.loginForm = {
         username: '',
         password: ''
       }
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     this.$keymaster.unbind('enter')
   }
 }
