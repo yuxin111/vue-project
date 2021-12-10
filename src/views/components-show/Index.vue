@@ -15,6 +15,18 @@
 
       <div class="grid-cell">
         <div class="grid-main">
+          <close-back-icon ref="closeBackIcon"></close-back-icon>
+        </div>
+        <div class="grid-footer">
+          <div class="grid-footer__name">关闭和返回切换</div>
+          <div class="grid-footer__func">
+            <el-link type="primary" @click="showCloseBackIcon">演示</el-link>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-cell">
+        <div class="grid-main">
           <el-empty description="等待制作中..."></el-empty>
         </div>
         <div class="grid-footer">
@@ -31,12 +43,16 @@
 
 <script>
 import ButtonProgress from '@/components/store/button-progress/Index'
+import CloseBackIcon from '@/components/store/close-back-icon/Index'
 
 export default {
-  components: { ButtonProgress },
+  components: { ButtonProgress, CloseBackIcon },
   methods: {
-    showButtonProgress () {
-      this.$refs.buttonProgress.$el.click()
+    showButtonProgress() {
+      this.$refs.buttonProgress.test()
+    },
+    showCloseBackIcon() {
+      this.$refs.closeBackIcon.test()
     }
   }
 }

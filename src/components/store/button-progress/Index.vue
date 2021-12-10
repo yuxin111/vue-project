@@ -13,32 +13,30 @@
 
 <script>
 export default {
-  data () {
+  name: 'ButtonProgress',
+  data() {
     return {
       status: 'wait' // wait,doing,finish
     }
   },
-  mounted () {
-    this.execute()
+  mounted() {
+    // this.execute()
   },
   methods: {
-    execute () {
+    test() {
       const vm = this
-      const btn = document.querySelectorAll('.my-button-progress')[0]
       const pr = document.querySelectorAll('.button-progress__progress')[0]
       const text = document.querySelectorAll('.button-progress__text')[0]
-      btn.addEventListener('click', () => {
-        pr.style.left = '0'
-        text.innerText = 'downloading'
-        vm.status = 'doing'
-        setTimeout(() => {
-          pr.style.top = '0'
-          pr.style.transitionDuration = '.5s'
-          text.style.color = 'white'
-          text.innerText = 'finished'
-          vm.status = 'finish'
-        }, 3000)
-      })
+      pr.style.left = '0'
+      text.innerText = 'downloading'
+      vm.status = 'doing'
+      setTimeout(() => {
+        pr.style.top = '0'
+        pr.style.transitionDuration = '.5s'
+        text.style.color = 'white'
+        text.innerText = 'finished'
+        vm.status = 'finish'
+      }, 3000)
     }
   }
 }

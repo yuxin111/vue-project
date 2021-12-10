@@ -1,5 +1,4 @@
 import store from '@/store'
-import ta from 'element-ui/src/locale/lang/ta'
 
 /**
  * 树形结构数据 <- 列表
