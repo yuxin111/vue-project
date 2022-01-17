@@ -55,7 +55,7 @@
                   </el-dropdown-item>
                   <el-dropdown-item
                     icon="el-icon-delete"
-                    class="font-color-warn"
+                    class="f-color-warn"
                     :command="beforeHandleCommand('delete',td)"
                     :disabled="!$_hasPermission('article:operArticle:delete')"
                   >删除
@@ -65,12 +65,12 @@
             </div>
           </div>
           <div class="card-main">
-            <img v-if="td.content_previewUrl" :src="td.content_previewUrl" class="card-preview">
+            <img v-if="td.content_previewUrl" :src="td.content_previewUrl" class="card-preview" />
             <div class="card-content" v-html="td.content_withDeal">
             </div>
           </div>
           <div class="card-footer flex-space-between">
-            <span v-html="td.author"></span>
+            <div>作者：<span v-html="td.author"></span></div>
             <span>{{ td.updateTime }}</span>
           </div>
         </div>
@@ -380,7 +380,8 @@ export default {
   .card-title {
     font-size: 1.3em;
     color: #207ab7;
-    text-decoration: underline;
+    margin-bottom: 5px;
+    //text-decoration: underline;
     cursor: pointer;
 
     &:hover {
@@ -400,9 +401,10 @@ export default {
     margin: 5px 0;
 
     .card-preview {
+      border-radius: 5px;
       width: 75px;
       height: 75px;
-      padding-right: 5px;
+      margin-right: 5px;
     }
 
     .card-content {
@@ -413,6 +415,7 @@ export default {
   }
 
   .card-footer {
+    margin-top: 10px;
     font-size: .9em;
     color: #ccc;
   }

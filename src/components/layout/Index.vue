@@ -15,7 +15,13 @@
         <div class="tag-container">
           <History></History>
         </div>
-        <div class="main-container">
+        <div :class="[
+          'main-container',
+          bgColor ? `bg-${bgColor}` : '',
+          {
+            'p-15': needPadding
+          }
+        ]">
           <router-view></router-view>
         </div>
       </el-main>
@@ -37,6 +43,14 @@ export default {
     Breadcrumb,
     FoldIcon,
     History
+  },
+  computed: {
+    bgColor () {
+      return this.$route.meta.bgColor
+    },
+    needPadding () {
+      return !this.$route.meta['no-padding']
+    }
   }
 }
 </script>
@@ -61,12 +75,15 @@ export default {
   }
 
   .main-container {
-    padding: 15px;
+    flex-grow: 1;
   }
 
-  .el-main{
+  .el-main {
     height: calc(100vh - 60px);
-    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
   .el-main, .el-header {

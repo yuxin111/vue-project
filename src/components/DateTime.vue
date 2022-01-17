@@ -23,7 +23,7 @@ export default {
   },
   data () {
     return {
-      dateTimeValue: '',
+      dateTimeValue: [],
       pickerOptions: {
         shortcuts: [{
           text: '最近一周',
@@ -58,7 +58,11 @@ export default {
       this.dateTimeValue = value
     },
     dateTimeValue (dateTimeValue) {
-      this.$emit('input', dateTimeValue)
+      if (dateTimeValue === null) {
+        this.$emit('input', [])
+      } else {
+        this.$emit('input', dateTimeValue)
+      }
     }
   }
 }
