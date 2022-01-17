@@ -1,3 +1,9 @@
+/**
+* 多条件组合选择
+* author: yuxin
+* createtime: 2022-01-17
+* All rights reserved.
+*/
 <template>
   <div class="test">
     <div class="multiselect">
@@ -362,8 +368,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '~vue2-org-tree/dist/style.css';
-
 .multiselect {
   display: flex;
   flex-direction: column;
