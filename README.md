@@ -4,7 +4,7 @@
 该项目后端在[这里](https://github.com/yuxin111/java-project)
 
 ## 演示
-http://119.29.197.72:8080/ \
+http://119.29.197.72:8070/ \
 账号：guest\
 密码：guest
 
