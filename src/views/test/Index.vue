@@ -45,7 +45,7 @@
               'multiselect-group__wrap--only': dataList.length === 1
             }">
             <div class="multiselect-group">
-              <div v-show="component.itemList.length !== 0" class="multiselect-group__inner-left">
+              <div v-show="component.itemList.length >= 2" class="multiselect-group__inner-left">
                 <el-select v-model="component.itemConnect" placeholder="请选择" style="width: 120px">
                   <el-option
                     v-for="item in component.itemConnectOption"
