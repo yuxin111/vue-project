@@ -31,9 +31,6 @@
         </div>
         <div class="grid-footer">
           <div class="grid-footer__name">圆柱占比图</div>
-<!--          <div class="grid-footer__func">-->
-<!--            <el-link type="primary">演示</el-link>-->
-<!--          </div>-->
         </div>
       </div>
 
@@ -43,9 +40,30 @@
         </div>
         <div class="grid-footer">
           <div class="grid-footer__name">圆形占比图</div>
-<!--          <div class="grid-footer__func">-->
-<!--            <el-link type="primary">演示</el-link>-->
-<!--          </div>-->
+        </div>
+      </div>
+
+      <div class="grid-cell">
+        <div class="grid-main">
+          懒，到时候再放图片...
+        </div>
+        <div class="grid-footer">
+          <div class="grid-footer__name">多任务选择组件</div>
+          <div class="grid-footer__func">
+            <el-link type="primary" @click="goTo('/components-show/multiselect')">查看</el-link>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-cell">
+        <div class="grid-main">
+          懒，到时候再放图片...
+        </div>
+        <div class="grid-footer">
+          <div class="grid-footer__name">鼠标移动触发侧边栏</div>
+          <div class="grid-footer__func">
+            <el-link type="primary" @click="goTo('/components-show/mouse-move-aside')">查看</el-link>
+          </div>
         </div>
       </div>
 
@@ -72,13 +90,16 @@ import CircleBarRatio from '@/components/store/circle-bar-ratio/Index'
 import CircleRatio from '@/components/store/circle-ratio/Index'
 
 export default {
-  components: {ButtonProgress, CloseBackIcon, CircleBarRatio, CircleRatio},
+  components: { ButtonProgress, CloseBackIcon, CircleBarRatio, CircleRatio },
   methods: {
     showButtonProgress() {
       this.$refs.buttonProgress.test()
     },
     showCloseBackIcon() {
       this.$refs.closeBackIcon.test()
+    },
+    goTo(url) {
+      this.$router.push(url)
     }
   }
 }

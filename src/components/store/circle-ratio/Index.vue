@@ -45,8 +45,6 @@ export default {
     background: #00ff80;
     animation:turn 5s linear infinite;
   }
-
-}
   @keyframes turn{
     0%{-webkit-transform:rotate(0deg);}
     25%{-webkit-transform:rotate(90deg);}
@@ -54,4 +52,6 @@ export default {
     75%{-webkit-transform:rotate(270deg);}
     100%{-webkit-transform:rotate(360deg);}
   }
+
+}
 </style>
