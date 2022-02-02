@@ -10,7 +10,9 @@
     <div class="emit-place" @mouseenter="show = true" @mouseleave="show = false"></div>
     <!--  弹窗  -->
     <transition>
-      <div class="windows-container"></div>
+      <div class="windows-container windows-container--animation"
+           :style="{width: windowWidth + 'px'}">
+      </div>
     </transition>
   </div>
 </template>
@@ -18,9 +20,15 @@
 <script>
 
 export default {
-  data() {
+  data () {
     return {
-      show: false
+      show: false,
+      windowWidth: 0 // 弹窗宽度
+    }
+  },
+  watch: {
+    show (show) {
+      this.windowWidth = show ? 300 : 0
     }
   },
   methods: {}
@@ -42,13 +50,15 @@ export default {
   }
 
   .windows-container {
-    width: 300px;
     height: 100%;
     position: fixed;
     right: 0;
     top: 0;
     background: #1c6ca1;
     opacity: .4;
+  }
+  .windows-container--animation{
+    transition: all 2s;
   }
 }
 </style>
