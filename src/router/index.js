@@ -7,6 +7,7 @@ import Article from './modules/article'
 import System from './modules/system'
 import Log from './modules/log'
 import ComponentsShow from './modules/components-show'
+import LgfExpression from './modules/lgf-expression'
 // import Test from './modules/test'
 
 // const originalPush = VueRouter.prototype.push
@@ -28,7 +29,8 @@ const routes = [
       ...System,
       ...Log,
       ...Article,
-      ...ComponentsShow
+      ...ComponentsShow,
+      ...LgfExpression
       // ...Test
     ],
     meta: {
