@@ -7,7 +7,7 @@
 <template>
   <div class="lgf-expression">
     <el-input v-model="lgfExpression" placeholder="请输入LGF表达式"></el-input>
-<!--    {{ stack }}-->
+    <!--    {{ stack }}-->
     <el-button type="primary" class="m-t-15" @click="vali">校验</el-button>
   </div>
 </template>
@@ -27,6 +27,9 @@ export default {
           name: '(',
           mate: ')'
         }, {
+          name: '.{',
+          mate: '}'
+        }, {
           name: '|'
         }, {
           name: ' '
@@ -42,10 +45,10 @@ export default {
       this.reset()
       const vm = this
       if (this.lgfExpression) {
-        const lgfExpressionCharList = vm.lgfExpression.split('')
+        const lgfExpressionCharList = this.divideIntoCharList()
         for (let i = 0; i < lgfExpressionCharList.length; i++) {
           const inSymbol = lgfExpressionCharList[i]
-          const { symbol: symbolName, i: symbolIndex } = vm.getStackSymbol()
+          const { symbol: symbolName, i: symbolIndex } = this.getStackSymbol()
 
           // 判断|
           if (inSymbol === '|') {
@@ -72,8 +75,58 @@ export default {
             vm.pushStackSymbol(inSymbol, i, true)
           }
         }
+
         vm.getResult()
       }
+    },
+    judgeMultiChar() {
+      let pass = true
+      const lgfList = this.lgfExpression.match(/(\.{.*?})/g)
+      if (lgfList && lgfList.length !== 0) {
+        for (let i = 0; i < lgfList.length; i++) {
+          const lgf = lgfList[i]
+          // 获取.{xxx}中xxx
+          const multiChar = lgf.match(/\.{(\S*)}/)
+          const multiCharContent = multiChar ? multiChar[1] : ''
+          const judge1 = multiCharContent.split(',')
+          // console.log(judge1.length !== 2)
+          // console.log(isNaN(judge1[0]))
+          // console.log(isNaN(judge1[1]))
+          // console.log(parseInt(judge1[0]) < 0)
+          // console.log(parseInt(judge1[0]) > parseInt(judge1[1]))
+          if (
+            judge1.length !== 2 ||
+            isNaN(judge1[0]) ||
+            isNaN(judge1[1]) ||
+            parseInt(judge1[0]) < 0 ||
+            parseInt(judge1[0]) > parseInt(judge1[1])
+          ) {
+            this.$message({
+              message: `${lgf}中格式有误，请检查`,
+              type: 'error'
+            })
+            pass = false
+          }
+        }
+      }
+      return pass
+    },
+    /**
+     * 分割为理想的char数组
+     */
+    divideIntoCharList() {
+      return this.lgfExpression
+        // 先按照.{分组
+        .split(/(\.{)/)
+        .filter(lgf => lgf !== '' && lgf !== undefined && lgf !== null)
+        .reduce((pre, cur) => {
+          if (cur !== '.{') {
+            pre = [...pre, ...cur]
+          } else {
+            pre = [...pre, cur]
+          }
+          return pre
+        }, [])
     },
     getResult() {
       if (this.stack.length !== 0) {
@@ -82,7 +135,8 @@ export default {
           message: `语法错误：符号"${symbol.symbol}"处错误`,
           type: 'error'
         })
-      } else {
+        // 判断.{数字，数字}情况
+      } else if (this.judgeMultiChar()) {
         this.$message({
           message: '校验成功',
           type: 'success'
