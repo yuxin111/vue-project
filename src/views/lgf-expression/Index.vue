@@ -30,6 +30,9 @@ export default {
           name: '.{',
           mate: '}'
         }, {
+          name: '{',
+          mate: '}'
+        }, {
           name: '|'
         }, {
           name: ' '
@@ -54,8 +57,8 @@ export default {
           if (inSymbol === '|') {
             if (i > 0 &&
               i !== lgfExpressionCharList.length - 1 &&
-              !vm.belongSpecialSymbol(lgfExpressionCharList[i - 1]) &&
-              !vm.belongSpecialSymbol(lgfExpressionCharList[i + 1])) {
+              vm.judgeSeperate(lgfExpressionCharList[i - 1], 'left') &&
+              vm.judgeSeperate(lgfExpressionCharList[i + 1], 'right')) {
             } else {
               vm.pushStackSymbol(inSymbol, i)
               break
@@ -81,19 +84,20 @@ export default {
     },
     judgeMultiChar() {
       let pass = true
-      const lgfList = this.lgfExpression.match(/(\.{.*?})/g)
+      const lgfList = this.lgfExpression.match(/(\.{.*?})|({.*?})/g)
       if (lgfList && lgfList.length !== 0) {
         for (let i = 0; i < lgfList.length; i++) {
           const lgf = lgfList[i]
-          // 获取.{xxx}中xxx
-          const multiChar = lgf.match(/\.{(\S*)}/)
-          const multiCharContent = multiChar ? multiChar[1] : ''
+          // 获取.{xxx}或{xxx}中xxx
+          const multiChar = lgf.match(/\.{(\S*)}|{(\S*)}/)
+
+          let multiCharContent = ''
+          if (multiChar && lgf.indexOf('.{') !== -1) {
+            multiCharContent = multiChar[1]
+          } else if (multiChar) {
+            multiCharContent = multiChar[2]
+          }
           const judge1 = multiCharContent.split(',')
-          // console.log(judge1.length !== 2)
-          // console.log(isNaN(judge1[0]))
-          // console.log(isNaN(judge1[1]))
-          // console.log(parseInt(judge1[0]) < 0)
-          // console.log(parseInt(judge1[0]) > parseInt(judge1[1]))
           if (
             judge1.length !== 2 ||
             isNaN(judge1[0]) ||
@@ -151,6 +155,19 @@ export default {
       return this.specialSymbol
         .filter(symbol => isMate ? symbol.mate : true)
         .some(symbol => symbol.name === char || symbol.mate === char)
+    },
+    /**
+     * 对|进行逻辑判断
+     * @char |左边或右边的字符
+     * @position left或right
+     */
+    judgeSeperate(char, position) {
+      if (position === 'left') {
+        return !this.specialSymbol.some(symbol => symbol.name === char)
+      } else if (position === 'right') {
+        return !this.specialSymbol.some(symbol => symbol.mate === char)
+      }
+      return false
     },
     /**
      * 获取特殊字符的mate值
