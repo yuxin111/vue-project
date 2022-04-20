@@ -1,4 +1,6 @@
 import ComponentsShow from '@/views/components-show/Index'
+import MultiSelect from '@/views/components-show/multiselect/Index'
+import MouseMoveAside from '@/views/components-show/mouse-move-aside/Index'
 
 export default [
   {
@@ -7,8 +9,22 @@ export default [
     meta: {
       title: '组件演示',
       icon: 'el-icon-money',
-      bgColor: 'light-blue',
+      bgColor: 'ccc',
       'no-padding': true
+    }
+  }, {
+    path: '/components-show/multiselect',
+    component: MultiSelect,
+    meta: {
+      title: '多任务选择组件',
+      show: false
+    }
+  }, {
+    path: '/components-show/mouse-move-aside',
+    component: MouseMoveAside,
+    meta: {
+      title: '鼠标移动触发侧边栏',
+      show: false
     }
   }
 ]

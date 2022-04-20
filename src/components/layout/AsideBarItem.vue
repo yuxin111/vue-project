@@ -1,7 +1,9 @@
 <template>
   <div v-if="isShowMenu(item)">
     <!-- 单层菜单 -->
-    <el-menu-item v-if="!item.children || item.children.length === 0" :index="item.path">
+    <el-menu-item
+      v-if="!item.children || item.children.length === 0 || item.children.every(ite => ite.meta.show === false)"
+      :index="item.path">
       <i v-if="item.meta.icon" :class="item.meta.icon"></i>
       <span slot="title">{{ item.meta.title }}</span>
     </el-menu-item>
@@ -36,8 +38,8 @@ export default {
     }
   },
   methods: {
-    isShowMenu (item) {
-      return hasPermission(item.meta.permission, this.userInfo.menus)
+    isShowMenu(item) {
+      return item.meta.show !== false && hasPermission(item.meta.permission, this.userInfo.menus)
     }
   },
   computed: {

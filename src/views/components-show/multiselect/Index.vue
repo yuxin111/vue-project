@@ -5,90 +5,88 @@
 * All rights reserved.
 */
 <template>
-  <div class="test">
-    <div class="multiselect">
+  <div class="multiselect">
+    <div
+      v-for="(component,i) in dataList" :key="i"
+      :class="{
+        'multiselect-component': dataList.length > 1,
+        'multiselect-component--only': dataList.length === 1
+      }">
       <div
-        v-for="(component,i) in dataList" :key="i"
         :class="{
-          'multiselect-component': dataList.length > 1,
-          'multiselect-component--only': dataList.length === 1
+          'multiselect-left': dataList.length > 1,
+          'multiselect-left--only': dataList.length === 1
+        }">
+        <el-select
+          v-show="dataList.length > 1 && i !== 0"
+          v-model="component.groupConnect" placeholder="请选择">
+          <el-option
+            v-for="item in component.groupConnectOption"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <div class="multiselect-group-btn"
+             v-show="!(dataList.length > 1 && i === 0)">
+          <i @click="reduceGroup(dataList,i)" v-show="i !== 0" class="el-icon-remove-outline"></i>
+          <i @click="addGroup(dataList)" class="el-icon-circle-plus-outline"></i>
+        </div>
+      </div>
+      <div
+        :class="{
+          'multiselect-right': dataList.length > 1,
+          'multiselect-right--only': dataList.length === 1
         }">
         <div
           :class="{
-            'multiselect-left': dataList.length > 1,
-            'multiselect-left--only': dataList.length === 1
+            'multiselect-group__wrap': dataList.length > 1,
+            'multiselect-group__wrap--only': dataList.length === 1
           }">
-          <el-select
-            v-show="dataList.length > 1 && i !== 0"
-            v-model="component.groupConnect" placeholder="请选择">
-            <el-option
-              v-for="item in component.groupConnectOption"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-          <div class="multiselect-group-btn"
-               v-show="!(dataList.length > 1 && i === 0)">
-            <i @click="reduceGroup(dataList,i)" v-show="i !== 0" class="el-icon-remove-outline"></i>
-            <i @click="addGroup(dataList)" class="el-icon-circle-plus-outline"></i>
-          </div>
-        </div>
-        <div
-          :class="{
-            'multiselect-right': dataList.length > 1,
-            'multiselect-right--only': dataList.length === 1
-          }">
-          <div
-            :class="{
-              'multiselect-group__wrap': dataList.length > 1,
-              'multiselect-group__wrap--only': dataList.length === 1
-            }">
-            <div class="multiselect-group">
-              <div v-show="component.itemList.length !== 0" class="multiselect-group__inner-left">
-                <el-select v-model="component.itemConnect" placeholder="请选择" style="width: 120px">
+          <div class="multiselect-group">
+            <div v-show="component.itemList.length >= 2" class="multiselect-group__inner-left">
+              <el-select v-model="component.itemConnect" placeholder="请选择" style="width: 120px">
+                <el-option
+                  v-for="item in component.itemConnectOption"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </div>
+            <div class="multiselect-group__inner-right">
+              <i @click="addItem(component.itemList)" v-show="component.itemList.length === 0"
+                 class="el-icon-circle-plus-outline" style="margin-bottom:10px;margin-left: 0px"></i>
+              <div class="multiselect-item" v-for="(item,j) in component.itemList" :key="j">
+                <el-select v-model="item.item1" placeholder="请选择" style="width: 140px">
                   <el-option
-                    v-for="item in component.itemConnectOption"
+                    v-for="item in item.item1Option"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
                   </el-option>
                 </el-select>
-              </div>
-              <div class="multiselect-group__inner-right">
-                <i @click="addItem(component.itemList)" v-show="component.itemList.length === 0"
-                   class="el-icon-circle-plus-outline" style="margin-bottom:10px;margin-left: 0px"></i>
-                <div class="multiselect-item" v-for="(item,j) in component.itemList" :key="j">
-                  <el-select v-model="item.item1" placeholder="请选择" style="width: 140px">
-                    <el-option
-                      v-for="item in item.item1Option"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
-                  <el-select v-model="item.item2" placeholder="请选择" style="width: 140px">
-                    <el-option
-                      v-for="item in item.item2Option"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
-                  <el-select v-model="item.item3" placeholder="请选择" style="width: 180px">
-                    <el-option
-                      v-for="item in item.item3Option"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
-                  <span class="multiselect-item-btn">
-                    <i @click="reduceItem(component.itemList,j)" class="el-icon-remove-outline"></i>
-                    <i @click="addItem(component.itemList)" v-show="j === component.itemList.length - 1"
-                       class="el-icon-circle-plus-outline"></i>
-                  </span>
-                </div>
+                <el-select v-model="item.item2" placeholder="请选择" style="width: 140px">
+                  <el-option
+                    v-for="item in item.item2Option"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+                <el-select v-model="item.item3" placeholder="请选择" style="width: 180px">
+                  <el-option
+                    v-for="item in item.item3Option"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+                <span class="multiselect-item-btn">
+                  <i @click="reduceItem(component.itemList,j)" class="el-icon-remove-outline"></i>
+                  <i @click="addItem(component.itemList)" v-show="j === component.itemList.length - 1"
+                     class="el-icon-circle-plus-outline"></i>
+                </span>
               </div>
             </div>
           </div>
@@ -120,12 +118,13 @@ export default {
           /* 具体筛选项 */
           itemList: [
             {
+              itemTest: '',
               item1: '',
               item1Option: [
-                { label: '纳税人名称', value: '纳税人名称' },
-                { label: '纳税人状态', value: '纳税人状态' },
-                { label: '登记注册类型', value: '登记注册类型' },
-                { label: '注册地址', value: '注册地址' }
+                { label: '纳税人名称', value: '纳税人名称', type: '1' },
+                { label: '纳税人状态', value: '纳税人状态', type: '2' },
+                { label: '登记注册类型', value: '登记注册类型', type: '3' },
+                { label: '注册地址', value: '注册地址', type: '4' }
               ],
               item2: '',
               item2Option: [
@@ -367,7 +366,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .multiselect {
   display: flex;
   flex-direction: column;
