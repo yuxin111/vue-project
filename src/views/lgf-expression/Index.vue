@@ -7,12 +7,12 @@
 <template>
   <div class="lgf-expression">
     <el-input v-model="lgfExpression" placeholder="请输入LGF表达式"></el-input>
-    <!--    {{ stack }}-->
     <el-button type="primary" class="m-t-15" @click="vali">校验</el-button>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'lgf-expression',
   data() {
@@ -39,6 +39,8 @@ export default {
         }
       ]
     }
+  },
+  mounted() {
   },
   methods: {
     reset() {

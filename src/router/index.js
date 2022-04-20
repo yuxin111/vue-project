@@ -8,12 +8,7 @@ import System from './modules/system'
 import Log from './modules/log'
 import ComponentsShow from './modules/components-show'
 import LgfExpression from './modules/lgf-expression'
-// import Test from './modules/test'
-
-// const originalPush = VueRouter.prototype.push
-// VueRouter.prototype.push = function push (location) {
-//   return originalPush.call(this, location).catch(err => err)
-// }
+import SingleInputTable from './modules/single-input-table'
 
 const routes = [
   {
@@ -30,8 +25,8 @@ const routes = [
       ...Log,
       ...Article,
       ...ComponentsShow,
-      ...LgfExpression
-      // ...Test
+      ...LgfExpression,
+      ...SingleInputTable
     ],
     meta: {
       validate: true

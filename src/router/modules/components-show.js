@@ -9,7 +9,7 @@ export default [
     meta: {
       title: '组件演示',
       icon: 'el-icon-money',
-      bgColor: 'light-blue',
+      bgColor: 'ccc',
       'no-padding': true
     }
   }, {
