@@ -1,6 +1,7 @@
 import ComponentsShow from '@/views/components-show/Index'
 import MultiSelect from '@/views/components-show/multiselect/Index'
 import MouseMoveAside from '@/views/components-show/mouse-move-aside/Index'
+import Dial from '@/views/components-show/dial/Index'
 
 export default [
   {
@@ -24,6 +25,13 @@ export default [
     component: MouseMoveAside,
     meta: {
       title: '鼠标移动触发侧边栏',
+      show: false
+    }
+  }, {
+    path: '/components-show/dial',
+    component: Dial,
+    meta: {
+      title: '拨号盘',
       show: false
     }
   }

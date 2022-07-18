@@ -88,7 +88,14 @@ export default {
           }
         }
         if (this.isOutputSearch(express)) {
-
+          const outputSplit = express.split(/>>|》》/)
+          let [expressionOrigin, outputValue] = outputSplit
+          if (expressionOrigin && outputValue) {
+            expressionOrigin = expressionOrigin.trim()
+            outputValue = outputValue.trim()
+            new RegExp(/^\(.*?\)$/).test(expressionOrigin)
+            expressionOrigin.split(/\+|-|\*|\//)
+          }
         }
       }
       singleInput.singleInputSearch = singleInputSearch

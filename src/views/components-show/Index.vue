@@ -69,6 +69,18 @@
 
       <div class="grid-cell">
         <div class="grid-main">
+          懒，到时候再放图片...
+        </div>
+        <div class="grid-footer">
+          <div class="grid-footer__name">拨号盘</div>
+          <div class="grid-footer__func">
+            <el-link type="primary" @click="goTo('/components-show/dial')">查看</el-link>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-cell">
+        <div class="grid-main">
           <el-empty description="等待制作中..."></el-empty>
         </div>
         <div class="grid-footer">

@@ -9,6 +9,7 @@ import Log from './modules/log'
 import ComponentsShow from './modules/components-show'
 import LgfExpression from './modules/lgf-expression'
 import SingleInputTable from './modules/single-input-table'
+import TableMultiselect from './modules/table-multiselect'
 
 const routes = [
   {
@@ -26,7 +27,8 @@ const routes = [
       ...Article,
       ...ComponentsShow,
       ...LgfExpression,
-      ...SingleInputTable
+      ...SingleInputTable,
+      ...TableMultiselect
     ],
     meta: {
       validate: true
